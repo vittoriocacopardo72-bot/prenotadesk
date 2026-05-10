@@ -1,7 +1,7 @@
 import { ACTION_ERROR } from "@/lib/actions/types"
 import { getAppState, updateAppState } from "@/lib/store/app-store"
 import type { ActionResult, CreateBookingInput } from "@/types/actions"
-import type { Booking, BookingStatus } from "@/types/domain"
+import type { Booking, BookingStatus, Client } from "@/types/domain"
 
 export async function createBooking(input: CreateBookingInput): Promise<ActionResult<{ bookingId: string }>> {
   if (!input.customerName || !input.boatName || !input.date || !input.time) {
@@ -20,7 +20,42 @@ export async function createBooking(input: CreateBookingInput): Promise<ActionRe
     importo: "€ 0",
   }
 
-  updateAppState((prev) => ({ ...prev, bookings: [booking, ...prev.bookings] }))
+  updateAppState((prev) => {
+    const normalizedName = input.customerName.trim().toLowerCase()
+    const existingClient = prev.clients.find((c) => c.nome.trim().toLowerCase() === normalizedName)
+    const clients = existingClient
+      ? prev.clients
+      : [
+          {
+            id: `client_${Date.now().toString(36)}`,
+            nome: input.customerName.trim(),
+            telefono: input.phone || "",
+            email: "",
+            provenienza: "Mobile/Desktop app",
+            ultimaPrenotazione: booking.data,
+            preferenze: booking.servizio,
+            stato: "Attivo",
+            isNuovo: true,
+            daRicontattare: false,
+            richiesteSpeciali: Boolean(input.notes?.trim()),
+          } satisfies Client,
+          ...prev.clients,
+        ]
+
+    return {
+      ...prev,
+      bookings: [booking, ...prev.bookings],
+      clients,
+      alerts: [
+        {
+          id: `alert_${Date.now().toString(36)}`,
+          text: `Nuova prenotazione: ${booking.cliente} · ${booking.ora} ${booking.barca}`,
+          resolved: false,
+        },
+        ...prev.alerts,
+      ],
+    }
+  })
   return { status: "success", message: "Prenotazione creata.", data: { bookingId: booking.id } }
 }
 
@@ -36,6 +71,14 @@ export async function updateBookingStatus(
   updateAppState((prev) => ({
     ...prev,
     bookings: prev.bookings.map((b) => (b.id === bookingId ? { ...b, stato: status } : b)),
+    alerts: [
+      {
+        id: `alert_${Date.now().toString(36)}`,
+        text: `Stato aggiornato: ${current.cliente} · ${current.ora} ${current.barca} → ${status}`,
+        resolved: false,
+      },
+      ...prev.alerts,
+    ],
   }))
   return { status: "success", message: "Stato prenotazione aggiornato.", data: { bookingId, status } }
 }

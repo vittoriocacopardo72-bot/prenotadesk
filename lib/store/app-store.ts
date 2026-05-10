@@ -6,6 +6,7 @@ import { APP_STORE_VERSION, createSeedState } from "@/lib/store/seed-data"
 import type { AlertItem, AppState, Boat, Booking, Payment } from "@/types/domain"
 import type { BookingRow } from "@/types/booking"
 import type { BoatRow } from "@/types/boat"
+import type { ClientRow } from "@/types/client"
 import type { TransazioneRow } from "@/types/incassi"
 
 const STORAGE_KEY = `prenotadesk_app_store_v${APP_STORE_VERSION}`
@@ -106,4 +107,19 @@ export function selectPaymentRows(s: AppState): TransazioneRow[] {
 
 export function selectActiveAlerts(s: AppState): AlertItem[] {
   return s.alerts.filter((a) => !a.resolved)
+}
+
+export function selectClientRows(s: AppState): ClientRow[] {
+  return s.clients.map((c) => ({
+    nome: c.nome,
+    telefono: c.telefono,
+    email: c.email,
+    provenienza: c.provenienza,
+    ultimaPrenotazione: c.ultimaPrenotazione,
+    preferenze: c.preferenze,
+    stato: c.stato,
+    isNuovo: c.isNuovo,
+    daRicontattare: c.daRicontattare,
+    richiesteSpeciali: c.richiesteSpeciali,
+  }))
 }

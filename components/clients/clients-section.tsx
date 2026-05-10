@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { clientFilters, clientiRows } from "@/lib/mock/clients"
+import { clientFilters } from "@/lib/mock/clients"
+import { selectClientRows, useAppStoreSelector } from "@/lib/store/app-store"
 import type { ClientFilter, ClientRow, ClientStato } from "@/types/client"
 
 function statoBadgeVariant(stato: ClientStato): "default" | "secondary" | "outline" {
@@ -19,6 +20,7 @@ function statoBadgeVariant(stato: ClientStato): "default" | "secondary" | "outli
 export function ClientsSection() {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState<ClientFilter>("Tutti")
+  const clientiRows = useAppStoreSelector((s) => selectClientRows(s))
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -40,7 +42,17 @@ export function ClientsSection() {
 
       return matchesSearch && matchesFilter
     })
-  }, [search, filter])
+  }, [search, filter, clientiRows])
+
+  const metrics = useMemo(
+    () => ({
+      attivi: clientiRows.length,
+      nuovi: clientiRows.filter((c) => c.isNuovo).length,
+      vip: clientiRows.filter((c) => c.stato === "VIP").length,
+      speciali: clientiRows.filter((c) => c.richiesteSpeciali).length,
+    }),
+    [clientiRows]
+  )
 
   return (
     <>
@@ -48,19 +60,19 @@ export function ClientsSection() {
         <CardContent className="grid gap-3 pt-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Clienti attivi</p>
-            <p className="text-xl font-semibold text-slate-800">127</p>
+            <p className="text-xl font-semibold text-slate-800">{metrics.attivi}</p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Nuovi contatti</p>
-            <p className="text-xl font-semibold text-slate-800">14</p>
+            <p className="text-xl font-semibold text-slate-800">{metrics.nuovi}</p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Clienti VIP</p>
-            <p className="text-xl font-semibold text-slate-800">18</p>
+            <p className="text-xl font-semibold text-slate-800">{metrics.vip}</p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Richieste speciali</p>
-            <p className="text-xl font-semibold text-slate-800">5</p>
+            <p className="text-xl font-semibold text-slate-800">{metrics.speciali}</p>
           </div>
         </CardContent>
       </Card>
