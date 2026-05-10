@@ -1,6 +1,6 @@
 "use client"
 
-import { useSyncExternalStore } from "react"
+import { useRef, useSyncExternalStore } from "react"
 
 import { APP_STORE_VERSION, createSeedState } from "@/lib/store/seed-data"
 import type { AlertItem, AppState, Boat, Booking, Payment } from "@/types/domain"
@@ -12,6 +12,11 @@ import type { TransazioneRow } from "@/types/incassi"
 const STORAGE_KEY = `prenotadesk_app_store_v${APP_STORE_VERSION}`
 
 type Listener = () => void
+type SelectorCache<T> = {
+  source: AppState
+  selector: (s: AppState) => T
+  value: T
+}
 
 let state: AppState = createSeedState()
 const listeners = new Set<Listener>()
@@ -60,14 +65,43 @@ function subscribe(listener: Listener) {
 }
 
 export function useAppStoreSelector<T>(selector: (s: AppState) => T): T {
+  const cache = useRef<SelectorCache<T> | null>(null)
+  const getSnapshot = (source: AppState) => {
+    const cached = cache.current
+    if (cached && cached.source === source && cached.selector === selector) {
+      return cached.value
+    }
+
+    const value = selector(source)
+    cache.current = { source, selector, value }
+    return value
+  }
+
   return useSyncExternalStore(
     subscribe,
-    () => selector(getAppState()),
-    () => selector(state)
+    () => getSnapshot(getAppState()),
+    () => getSnapshot(state)
   )
 }
 
-export function selectBookingRows(s: AppState): BookingRow[] {
+function memoizeByState<T>(selector: (s: AppState) => T) {
+  let hasCachedValue = false
+  let cachedSource: AppState
+  let cachedValue: T
+
+  return (s: AppState) => {
+    if (hasCachedValue && cachedSource === s) {
+      return cachedValue
+    }
+
+    cachedSource = s
+    cachedValue = selector(s)
+    hasCachedValue = true
+    return cachedValue
+  }
+}
+
+export const selectBookingRows = memoizeByState((s: AppState): BookingRow[] => {
   return s.bookings.map((b: Booking) => ({
     id: b.id,
     cliente: b.cliente,
@@ -79,9 +113,9 @@ export function selectBookingRows(s: AppState): BookingRow[] {
     stato: b.stato,
     importo: b.importo,
   }))
-}
+})
 
-export function selectBoatRows(s: AppState): BoatRow[] {
+export const selectBoatRows = memoizeByState((s: AppState): BoatRow[] => {
   return s.boats.map((b: Boat) => ({
     nome: b.nome,
     modello: b.modello,
@@ -91,9 +125,9 @@ export function selectBoatRows(s: AppState): BoatRow[] {
     equipaggio: b.equipaggio,
     note: b.note,
   }))
-}
+})
 
-export function selectPaymentRows(s: AppState): TransazioneRow[] {
+export const selectPaymentRows = memoizeByState((s: AppState): TransazioneRow[] => {
   return s.payments.map((p: Payment) => ({
     cliente: p.cliente,
     prenotazioneServizio: p.prenotazioneServizio,
@@ -103,13 +137,13 @@ export function selectPaymentRows(s: AppState): TransazioneRow[] {
     dataOra: p.dataOra,
     note: p.note,
   }))
-}
+})
 
-export function selectActiveAlerts(s: AppState): AlertItem[] {
+export const selectActiveAlerts = memoizeByState((s: AppState): AlertItem[] => {
   return s.alerts.filter((a) => !a.resolved)
-}
+})
 
-export function selectClientRows(s: AppState): ClientRow[] {
+export const selectClientRows = memoizeByState((s: AppState): ClientRow[] => {
   return s.clients.map((c) => ({
     nome: c.nome,
     telefono: c.telefono,
@@ -122,4 +156,4 @@ export function selectClientRows(s: AppState): ClientRow[] {
     daRicontattare: c.daRicontattare,
     richiesteSpeciali: c.richiesteSpeciali,
   }))
-}
+})

@@ -145,11 +145,17 @@ export function getOrderedSectionEntries(): SectionRegistryEntry[] {
  * Mappa type-safe: ogni SectionKey → elemento React della sezione.
  * Nessun lookup dinamico su metadati opzionali: il componente è sempre noto a compile-time.
  */
-export function createSectionContentMap(): Record<SectionKey, ReactElement> {
+function buildSectionContentMap(): Record<SectionKey, ReactElement> {
   const map = {} as Record<SectionKey, ReactElement>
   for (const key of SECTION_ORDER) {
     const Cmp = sectionRegistryByKey[key].component
     map[key] = createElement(Cmp)
   }
   return map
+}
+
+const sectionContentMap = Object.freeze(buildSectionContentMap())
+
+export function createSectionContentMap(): Readonly<Record<SectionKey, ReactElement>> {
+  return sectionContentMap
 }
