@@ -96,6 +96,7 @@ export const selectBoatRows = memoizeByState((s: AppState): BoatRow[] => {
     prossimaUscita: b.prossimaUscita,
     equipaggio: b.equipaggio,
     note: b.note,
+    blocked: b.blocked,
   }))
 })
 

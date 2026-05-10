@@ -20,8 +20,10 @@ export function BoatsSection() {
               <CardDescription>Disponibilita flotta, stato operativo e manutenzioni</CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button type="button">Aggiungi barca</Button>
-              <Button type="button" variant="outline">
+              <Button type="button" disabled title="Non ancora disponibile">
+                Aggiungi barca
+              </Button>
+              <Button type="button" variant="outline" disabled title="Non ancora disponibile">
                 Aggiorna disponibilita
               </Button>
             </div>
@@ -29,11 +31,11 @@ export function BoatsSection() {
         </CardHeader>
       </Card>
 
-      <FleetSummaryCards />
+      <FleetSummaryCards boats={boats} />
 
       <div className="grid gap-6 sm:col-span-2 xl:col-span-4 xl:grid-cols-[1.7fr_0.9fr]">
         <BoatsTable boats={boats} />
-        <MaintenancePanel />
+        <MaintenancePanel boats={boats} />
       </div>
     </>
   )

@@ -38,8 +38,9 @@ export function DesktopHomeShell() {
     () => ({
       bookingFormFocusNonce,
       openDesktopCreateBooking,
+      navigateToSection: navigateSection,
     }),
-    [bookingFormFocusNonce, openDesktopCreateBooking]
+    [bookingFormFocusNonce, openDesktopCreateBooking, navigateSection]
   )
   const access = useMemo<NavAccessContext>(
     () => ({ permissions: new Set<PermissionId>() }),
@@ -87,7 +88,14 @@ export function DesktopHomeShell() {
               </div>
               <div className="relative w-full max-w-xl">
                 <Search className="pointer-events-none absolute top-2 left-2.5 size-4 text-slate-400" />
-                <Input type="search" placeholder="Cerca prenotazioni, barche o clienti..." className="pl-8" />
+                <Input
+                  type="search"
+                  placeholder="Cerca prenotazioni, barche o clienti..."
+                  className="pl-8"
+                  disabled
+                  title="Ricerca globale in arrivo"
+                  aria-label="Ricerca globale (non ancora attiva)"
+                />
               </div>
               <div className="flex items-center gap-3">
                 <Badge variant="outline" className="hidden capitalize text-slate-600 md:inline-flex">

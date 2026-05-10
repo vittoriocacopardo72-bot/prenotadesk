@@ -12,12 +12,14 @@ import { DashboardQuickActions } from "@/components/dashboard/quick-actions"
 import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { isBookingDateToday } from "@/lib/bookings/booking-dates"
+import { parseImportoEurDisplay } from "@/lib/bookings/parse-importo-eur"
 import {
   dashboardAgenda,
   dashboardFinance,
   dashboardKpis,
   dashboardQuickActions,
 } from "@/lib/mock/dashboard"
+import type { SectionKey } from "@/lib/sections/section-registry"
 import { selectActiveAlertTexts, useAppStoreSelector } from "@/lib/store/app-store"
 
 export function DashboardSection() {
@@ -25,8 +27,29 @@ export function DashboardSection() {
 
   const handleDashboardQuickAction = useCallback(
     (label: string) => {
-      if (label === "Nuova prenotazione" && desktopBooking) {
-        desktopBooking.openDesktopCreateBooking()
+      if (!desktopBooking) return
+      const go: (s: SectionKey) => void = desktopBooking.navigateToSection
+      switch (label) {
+        case "Nuova prenotazione":
+          desktopBooking.openDesktopCreateBooking()
+          break
+        case "Assegna equipaggio":
+          go("Prenotazioni")
+          break
+        case "Registra pagamento":
+          go("Finanze")
+          break
+        case "Blocca barca":
+          go("Barche")
+          break
+        case "Apri calendario":
+          go("Calendario")
+          break
+        case "Aggiorna meteo":
+          go("Meteo marino")
+          break
+        default:
+          break
       }
     },
     [desktopBooking]
@@ -40,13 +63,40 @@ export function DashboardSection() {
   const kpisLive = useMemo(() => {
     const todays = bookings.filter((b) => isBookingDateToday(b.data))
     const ospitiSum = todays.reduce((s, b) => s + (Number(b.ospiti) || 0), 0)
+    const incassoSum = todays
+      .filter((b) => b.stato !== "Cancellate")
+      .reduce((s, b) => s + parseImportoEurDisplay(b.importo), 0)
+    const incassoLabel =
+      incassoSum > 0 ? `€ ${Math.round(incassoSum).toLocaleString("it-IT")}` : "€ 0"
+    const boatsFree = boats.filter((b) => !b.blocked && b.stato === "Pronta").length
+    const demo = { demoSubcopy: true as const }
     return [
-      { ...dashboardKpis[0] },
-      { ...dashboardKpis[1], value: String(todays.length) },
-      { ...dashboardKpis[2], value: String(ospitiSum) },
-      { ...dashboardKpis[3] },
+      {
+        ...dashboardKpis[0],
+        ...demo,
+        value: incassoLabel,
+        valueTitle: "Somma importi delle prenotazioni di oggi (escluse cancellate), da store locale",
+      },
+      {
+        ...dashboardKpis[1],
+        ...demo,
+        value: String(todays.length),
+        valueTitle: "Prenotazioni con data odierna nel store locale",
+      },
+      {
+        ...dashboardKpis[2],
+        ...demo,
+        value: String(ospitiSum),
+        valueTitle: "Ospiti totali delle prenotazioni di oggi nel store locale",
+      },
+      {
+        ...dashboardKpis[3],
+        ...demo,
+        value: String(boatsFree),
+        valueTitle: "Barche in stato Pronta e non bloccate nel store locale",
+      },
     ]
-  }, [bookings])
+  }, [bookings, boats])
 
   const departures = bookings.slice(0, 6).map((b) => ({
     ora: b.ora,
@@ -100,7 +150,12 @@ export function DashboardSection() {
 
         <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr_1fr]">
           <FinancialPanel items={dashboardFinance} />
-          <DashboardQuickActions actions={dashboardQuickActions} onAction={handleDashboardQuickAction} />
+          <DashboardQuickActions
+            actions={dashboardQuickActions}
+            onAction={handleDashboardQuickAction}
+            disabled={!desktopBooking}
+            disabledHint="Azioni rapide disponibili dalla console desktop (sidebar)."
+          />
           <Card className="bg-white">
             <CardHeader>
               <CardTitle>Widget marine</CardTitle>

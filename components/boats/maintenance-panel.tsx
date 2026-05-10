@@ -1,6 +1,16 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+"use client"
 
-export function MaintenancePanel() {
+import { useMemo } from "react"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import type { BoatRow } from "@/types/boat"
+
+export function MaintenancePanel({ boats }: { boats: readonly BoatRow[] }) {
+  const openMaintenance = useMemo(
+    () => boats.filter((b) => b.stato === "Manutenzione" || b.stato === "Check tecnico"),
+    [boats]
+  )
+
   return (
     <div className="grid gap-4 content-start">
       <Card className="bg-white">
@@ -9,16 +19,22 @@ export function MaintenancePanel() {
           <CardDescription>Interventi da chiudere entro la settimana</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs">
-            Levante 28 - controllo motore
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs">
-            Mistral 36 - revisione impianto elettrico
-          </div>
+          {openMaintenance.length === 0 ? (
+            <p className="text-xs text-slate-400">Nessuna barca in manutenzione o check tecnico nel store.</p>
+          ) : (
+            openMaintenance.map((boat) => (
+              <div key={boat.nome} className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs">
+                {boat.nome} — {boat.note || boat.stato}
+              </div>
+            ))
+          )}
         </CardContent>
       </Card>
 
-      <Card className="bg-white">
+      <Card
+        className="bg-white"
+        title="Dato dimostrativo — fascia oraria non collegata alle prenotazioni"
+      >
         <CardHeader>
           <CardTitle>Disponibilita per fascia oraria</CardTitle>
           <CardDescription>Capacita operativa della giornata</CardDescription>
@@ -39,7 +55,7 @@ export function MaintenancePanel() {
         </CardContent>
       </Card>
 
-      <Card className="bg-white">
+      <Card className="bg-white" title="Dato dimostrativo">
         <CardHeader>
           <CardTitle>Note operative del giorno</CardTitle>
           <CardDescription>Promemoria rapidi per il team banchina</CardDescription>

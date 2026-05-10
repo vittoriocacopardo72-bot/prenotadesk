@@ -1,0 +1,262 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: Console operativa
+        - heading "PrenotaDesk Marine" [level=1] [ref=e7]
+        - paragraph [ref=e8]: Gestione portuale e charter
+      - navigation "Console operativa" [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - button "Operatività" [expanded] [ref=e12]:
+              - img [ref=e13]
+              - generic [ref=e15]: Operatività
+            - generic [ref=e17]:
+              - button "Dashboard" [ref=e18]:
+                - img [ref=e19]
+                - generic [ref=e22]: Dashboard
+              - button "Prenotazioni" [active] [ref=e23]:
+                - img [ref=e24]
+                - generic [ref=e26]: Prenotazioni
+              - button "Calendario" [ref=e27]:
+                - img [ref=e28]
+                - generic [ref=e30]: Calendario
+              - button "Meteo marino" [ref=e31]:
+                - img [ref=e32]
+                - generic [ref=e38]: Meteo marino
+          - generic [ref=e39]:
+            - button "Risorse" [expanded] [ref=e40]:
+              - img [ref=e41]
+              - generic [ref=e43]: Risorse
+            - generic [ref=e45]:
+              - button "Clienti" [ref=e46]:
+                - img [ref=e47]
+                - generic [ref=e52]: Clienti
+              - button "Barche" [ref=e53]:
+                - img [ref=e54]
+                - generic [ref=e58]: Barche
+              - button "Servizi" [ref=e59]:
+                - img [ref=e60]
+                - generic [ref=e67]: Servizi
+          - generic [ref=e68]:
+            - button "Amministrazione" [expanded] [ref=e69]:
+              - img [ref=e70]
+              - generic [ref=e72]: Amministrazione
+            - generic [ref=e74]:
+              - button "Finanze" [ref=e75]:
+                - img [ref=e76]
+                - generic [ref=e78]: Finanze
+              - button "Report" [ref=e79]:
+                - img [ref=e80]
+                - generic [ref=e82]: Report
+          - button "Impostazioni" [ref=e83]:
+            - img [ref=e84]
+            - generic [ref=e87]: Impostazioni
+      - generic [ref=e88]:
+        - paragraph [ref=e89]: Stato sistema
+        - paragraph [ref=e90]: Sincronizzazione ormeggi attiva
+    - main [ref=e91]:
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - img
+          - searchbox "Ricerca globale (non ancora attiva)" [disabled]
+        - generic [ref=e95]:
+          - generic [ref=e96]: domenica 10 maggio 2026
+          - generic [ref=e97]: Operativo
+          - generic [ref=e98]: VM
+      - generic [ref=e99]:
+        - generic [ref=e2330]:
+          - generic [ref=e2331]:
+            - generic [ref=e2332]:
+              - generic [ref=e2333]: Prenotazioni
+              - generic [ref=e2334]: Gestione richieste, conferme e partenze giornaliere
+            - button "Nuova prenotazione" [ref=e2335]
+          - generic [ref=e2336]:
+            - generic [ref=e2337]:
+              - img
+              - searchbox "Cerca per cliente, barca o servizio..." [ref=e2338]
+            - generic [ref=e2339]:
+              - button "Tutte" [ref=e2340]
+              - button "Confermate" [ref=e2341]
+              - button "In arrivo" [ref=e2342]
+              - button "In attesa" [ref=e2343]
+              - button "Cancellate" [ref=e2344]
+        - generic [ref=e2345]:
+          - generic [ref=e2346]:
+            - generic [ref=e2347]:
+              - generic [ref=e2348]: Elenco prenotazioni
+              - generic [ref=e2349]: Vista operativa compatta della giornata
+            - table [ref=e2351]:
+              - rowgroup [ref=e2352]:
+                - row "Cliente Barca Servizio Data Ora Ospiti Stato Importo Azioni" [ref=e2353]:
+                  - columnheader "Cliente" [ref=e2354]
+                  - columnheader "Barca" [ref=e2355]
+                  - columnheader "Servizio" [ref=e2356]
+                  - columnheader "Data" [ref=e2357]
+                  - columnheader "Ora" [ref=e2358]
+                  - columnheader "Ospiti" [ref=e2359]
+                  - columnheader "Stato" [ref=e2360]
+                  - columnheader "Importo" [ref=e2361]
+                  - columnheader "Azioni" [ref=e2362]
+              - rowgroup [ref=e2363]:
+                - row "Dash Activation QA Orion 31 Servizio standard 10/05/2026 17:45 1 In attesa € 0 Dettagli Modifica Avanza stato" [ref=e2364]:
+                  - cell "Dash Activation QA" [ref=e2365]
+                  - cell "Orion 31" [ref=e2366]
+                  - cell "Servizio standard" [ref=e2367]
+                  - cell "10/05/2026" [ref=e2368]
+                  - cell "17:45" [ref=e2369]
+                  - cell "1" [ref=e2370]
+                  - cell "In attesa" [ref=e2371]:
+                    - generic [ref=e2372]: In attesa
+                  - cell "€ 0" [ref=e2373]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2374]:
+                    - generic [ref=e2375]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2376]
+                - row "QA MCP Booking Azzurra 44 Servizio standard 10/05/2026 16:30 1 Confermate € 0 Dettagli Modifica Avanza stato" [ref=e2377]:
+                  - cell "QA MCP Booking" [ref=e2378]
+                  - cell "Azzurra 44" [ref=e2379]
+                  - cell "Servizio standard" [ref=e2380]
+                  - cell "10/05/2026" [ref=e2381]
+                  - cell "16:30" [ref=e2382]
+                  - cell "1" [ref=e2383]
+                  - cell "Confermate" [ref=e2384]:
+                    - generic [ref=e2385]: Confermate
+                  - cell "€ 0" [ref=e2386]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2387]:
+                    - generic [ref=e2388]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2389]
+                - row "Blue Horizon S.r.l. Azzurra 44 Charter giornaliero 09/05/2026 09:30 8 Confermate € 1.280 Dettagli Modifica Avanza stato" [ref=e2390]:
+                  - cell "Blue Horizon S.r.l." [ref=e2391]
+                  - cell "Azzurra 44" [ref=e2392]
+                  - cell "Charter giornaliero" [ref=e2393]
+                  - cell "09/05/2026" [ref=e2394]
+                  - cell "09:30" [ref=e2395]
+                  - cell "8" [ref=e2396]
+                  - cell "Confermate" [ref=e2397]:
+                    - generic [ref=e2398]: Confermate
+                  - cell "€ 1.280" [ref=e2399]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2400]:
+                    - generic [ref=e2401]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2402]
+                - row "Luca Rinaldi Orion 31 Tour costiero 09/05/2026 10:15 4 In arrivo € 620 Dettagli Modifica Avanza stato" [ref=e2403]:
+                  - cell "Luca Rinaldi" [ref=e2404]
+                  - cell "Orion 31" [ref=e2405]
+                  - cell "Tour costiero" [ref=e2406]
+                  - cell "09/05/2026" [ref=e2407]
+                  - cell "10:15" [ref=e2408]
+                  - cell "4" [ref=e2409]
+                  - cell "In arrivo" [ref=e2410]:
+                    - generic [ref=e2411]: In arrivo
+                  - cell "€ 620" [ref=e2412]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2413]:
+                    - generic [ref=e2414]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2415]
+                - row "Sea & Co. Charter Marlin 52 Noleggio premium 09/05/2026 11:00 10 In attesa € 1.950 Dettagli Modifica Avanza stato" [ref=e2416]:
+                  - cell "Sea & Co. Charter" [ref=e2417]
+                  - cell "Marlin 52" [ref=e2418]
+                  - cell "Noleggio premium" [ref=e2419]
+                  - cell "09/05/2026" [ref=e2420]
+                  - cell "11:00" [ref=e2421]
+                  - cell "10" [ref=e2422]
+                  - cell "In attesa" [ref=e2423]:
+                    - generic [ref=e2424]: In attesa
+                  - cell "€ 1.950" [ref=e2425]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2426]:
+                    - generic [ref=e2427]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2428]
+                - row "Alessia Bianchi Levante 28 Sunset tour 09/05/2026 18:00 3 Confermate € 420 Dettagli Modifica Avanza stato" [ref=e2429]:
+                  - cell "Alessia Bianchi" [ref=e2430]
+                  - cell "Levante 28" [ref=e2431]
+                  - cell "Sunset tour" [ref=e2432]
+                  - cell "09/05/2026" [ref=e2433]
+                  - cell "18:00" [ref=e2434]
+                  - cell "3" [ref=e2435]
+                  - cell "Confermate" [ref=e2436]:
+                    - generic [ref=e2437]: Confermate
+                  - cell "€ 420" [ref=e2438]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2439]:
+                    - generic [ref=e2440]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2441]
+                - row "Mare Vivo Eventi Tyrrhenian 40 Evento privato 10/05/2026 12:30 12 Cancellate € 0 Dettagli Modifica Avanza stato" [ref=e2442]:
+                  - cell "Mare Vivo Eventi" [ref=e2443]
+                  - cell "Tyrrhenian 40" [ref=e2444]
+                  - cell "Evento privato" [ref=e2445]
+                  - cell "10/05/2026" [ref=e2446]
+                  - cell "12:30" [ref=e2447]
+                  - cell "12" [ref=e2448]
+                  - cell "Cancellate" [ref=e2449]:
+                    - generic [ref=e2450]: Cancellate
+                  - cell "€ 0" [ref=e2451]
+                  - cell "Dettagli Modifica Avanza stato" [ref=e2452]:
+                    - generic [ref=e2453]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Avanza stato" [ref=e2454]
+          - generic [ref=e2455]:
+            - generic [ref=e2457]:
+              - generic [ref=e2458]: Prenotazioni oggi
+              - generic [ref=e2459]: "3"
+            - generic "Stima non collegata allo store locale" [ref=e2460]:
+              - generic [ref=e2461]:
+                - generic [ref=e2462]: Incasso previsto
+                - generic [ref=e2463]: —
+            - generic [ref=e2465]:
+              - generic [ref=e2466]: Ospiti totali (oggi)
+              - generic [ref=e2467]: "14"
+            - generic [ref=e2469]:
+              - generic [ref=e2470]: Da confermare
+              - generic [ref=e2471]: "2"
+        - generic [ref=e2473]:
+          - generic [ref=e2474]:
+            - generic [ref=e2475]: Nuova prenotazione
+            - generic [ref=e2476]: Crea una prenotazione operativa e aggiorna planning live
+          - generic [ref=e2477]:
+            - generic [ref=e2478]:
+              - generic [ref=e2479]: Cliente
+              - textbox "Cliente" [ref=e2480]:
+                - /placeholder: Nome cliente
+            - generic [ref=e2481]:
+              - generic [ref=e2482]: Telefono
+              - textbox "Telefono" [ref=e2483]:
+                - /placeholder: +39 000 000 0000
+            - generic [ref=e2484]:
+              - generic [ref=e2485]: Barca
+              - combobox "Barca" [ref=e2486]
+            - generic [ref=e2487]:
+              - generic [ref=e2488]: Servizio
+              - textbox "Servizio" [ref=e2489]:
+                - /placeholder: Tipo servizio
+            - generic [ref=e2490]:
+              - generic [ref=e2491]: Data
+              - textbox "Data" [ref=e2492]
+            - generic [ref=e2493]:
+              - generic [ref=e2494]: Ora
+              - textbox "Ora" [ref=e2495]
+            - generic [ref=e2496]:
+              - generic [ref=e2497]: Ospiti
+              - spinbutton "Ospiti" [ref=e2498]: "1"
+            - generic [ref=e2499]:
+              - generic [ref=e2500]: Stato
+              - textbox "Stato" [ref=e2501]:
+                - /placeholder: In attesa
+                - text: In attesa
+            - generic [ref=e2502]:
+              - generic [ref=e2503]: Note
+              - textbox "Note" [ref=e2504]:
+                - /placeholder: Note operative della prenotazione...
+            - button "Salva prenotazione" [ref=e2507]
+  - button "Open Next.js Dev Tools" [ref=e347] [cursor=pointer]:
+    - img [ref=e348]
+  - alert [ref=e351]

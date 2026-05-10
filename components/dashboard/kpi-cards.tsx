@@ -16,6 +16,10 @@ type KPI = {
   occupancy: string
   note: string
   icon: keyof typeof icons
+  /** When true, trend/occupancy/note are illustrative only (value may still be live). */
+  demoSubcopy?: boolean
+  /** Tooltip for the main numeric value. */
+  valueTitle?: string
 }
 
 export function DashboardKpiCards({ kpis }: { kpis: KPI[] }) {
@@ -29,7 +33,9 @@ export function DashboardKpiCards({ kpis }: { kpis: KPI[] }) {
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <CardDescription>{metric.title}</CardDescription>
-                  <CardTitle className="text-xl">{metric.value}</CardTitle>
+                  <CardTitle className="text-xl" title={metric.valueTitle}>
+                    {metric.value}
+                  </CardTitle>
                 </div>
                 <div className="rounded-md bg-slate-100 p-1.5 text-slate-600">
                   <Icon className="size-4" />
@@ -37,9 +43,24 @@ export function DashboardKpiCards({ kpis }: { kpis: KPI[] }) {
               </div>
             </CardHeader>
             <CardContent className="space-y-1.5">
-              <p className="text-xs text-slate-600">{metric.trend}</p>
-              <p className="text-xs text-slate-500">{metric.occupancy}</p>
-              <p className="text-[11px] text-slate-400">{metric.note}</p>
+              <p
+                className={`text-xs ${metric.demoSubcopy ? "text-slate-400" : "text-slate-600"}`}
+                title={metric.demoSubcopy ? "Dato dimostrativo" : undefined}
+              >
+                {metric.trend}
+              </p>
+              <p
+                className={`text-xs ${metric.demoSubcopy ? "text-slate-400" : "text-slate-500"}`}
+                title={metric.demoSubcopy ? "Dato dimostrativo" : undefined}
+              >
+                {metric.occupancy}
+              </p>
+              <p
+                className={`text-[11px] ${metric.demoSubcopy ? "text-slate-300" : "text-slate-400"}`}
+                title={metric.demoSubcopy ? "Dato dimostrativo" : undefined}
+              >
+                {metric.note}
+              </p>
             </CardContent>
           </Card>
         )

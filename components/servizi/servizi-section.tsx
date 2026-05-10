@@ -1,11 +1,18 @@
 "use client"
 
+import { useMemo } from "react"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { servicesRows } from "@/lib/mock/servizi"
 
 export function ServiziSection() {
+  const serviziAttivi = useMemo(
+    () => servicesRows.filter((s) => s.stato === "Attivo").length,
+    []
+  )
+
   return (
     <>
       <Card className="bg-white sm:col-span-2 xl:col-span-4">
@@ -16,8 +23,10 @@ export function ServiziSection() {
               <CardDescription>Catalogo tour, extra, upgrade e servizi accessori</CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button type="button">Aggiungi servizio</Button>
-              <Button type="button" variant="outline">
+              <Button type="button" disabled title="Non ancora disponibile">
+                Aggiungi servizio
+              </Button>
+              <Button type="button" variant="outline" disabled title="Non ancora disponibile">
                 Nuovo pacchetto
               </Button>
             </div>
@@ -26,21 +35,33 @@ export function ServiziSection() {
       </Card>
       <Card className="bg-white sm:col-span-2 xl:col-span-4">
         <CardContent className="grid gap-3 pt-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Voci catalogo con stato Attivo (dati seed locali)"
+          >
             <p className="text-xs text-slate-500">Servizi attivi</p>
-            <p className="text-xl font-semibold text-slate-800">18</p>
+            <p className="text-xl font-semibold text-slate-800">{serviziAttivi}</p>
           </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Dato dimostrativo — non collegato allo store"
+          >
             <p className="text-xs text-slate-500">Upgrade venduti oggi</p>
-            <p className="text-xl font-semibold text-slate-800">7</p>
+            <p className="text-xl font-semibold text-slate-400">—</p>
           </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Dato dimostrativo — non collegato allo store"
+          >
             <p className="text-xs text-slate-500">Ricavo extra previsto</p>
-            <p className="text-xl font-semibold text-slate-800">€ 1.280</p>
+            <p className="text-xl font-semibold text-slate-400">—</p>
           </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Dato dimostrativo — non collegato allo store"
+          >
             <p className="text-xs text-slate-500">Staff richiesto</p>
-            <p className="text-xl font-semibold text-slate-800">9</p>
+            <p className="text-xl font-semibold text-slate-400">—</p>
           </div>
         </CardContent>
       </Card>
@@ -78,10 +99,10 @@ export function ServiziSection() {
                     </td>
                     <td className="px-2 py-2">
                       <div className="flex justify-end gap-1">
-                        <Button type="button" variant="outline" size="xs">
+                        <Button type="button" variant="outline" size="xs" disabled title="Non ancora disponibile">
                           Dettagli
                         </Button>
-                        <Button type="button" variant="ghost" size="xs">
+                        <Button type="button" variant="ghost" size="xs" disabled title="Non ancora disponibile">
                           Modifica
                         </Button>
                       </div>
@@ -93,7 +114,7 @@ export function ServiziSection() {
           </CardContent>
         </Card>
         <div className="grid gap-4 content-start">
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Pacchetti consigliati</CardTitle>
               <CardDescription>Combinazioni ad alta conversione</CardDescription>
@@ -104,7 +125,7 @@ export function ServiziSection() {
               <p className="rounded-md bg-slate-50 px-3 py-2">Noleggio premium + hostess dedicata</p>
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Extra piu richiesti</CardTitle>
               <CardDescription>Preferenze clienti ultima settimana</CardDescription>
@@ -124,7 +145,7 @@ export function ServiziSection() {
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Note operative servizi</CardTitle>
               <CardDescription>Allineamento rapido team commerciale</CardDescription>

@@ -36,7 +36,9 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
         <Separator />
         <div>
-          <p className="mb-1 font-medium text-slate-700">Manutenzioni programmate</p>
+          <p className="mb-1 font-medium text-slate-700" title="Dato dimostrativo">
+            Manutenzioni programmate
+          </p>
           {agenda.manutenzioni.map((item) => (
             <p key={item} className="text-slate-600">
               {item}
@@ -45,7 +47,9 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
         <Separator />
         <div>
-          <p className="mb-1 font-medium text-slate-700">VIP / Clienti speciali</p>
+          <p className="mb-1 font-medium text-slate-700" title="Dato dimostrativo">
+            VIP / Clienti speciali
+          </p>
           {agenda.vip.map((item) => (
             <p key={item} className="text-slate-600">
               {item}
@@ -54,7 +58,9 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
         <Separator />
         <div>
-          <p className="mb-1 font-medium text-slate-700">Ritardi mock</p>
+          <p className="mb-1 font-medium text-slate-700" title="Dato dimostrativo">
+            Ritardi (dimostrativo)
+          </p>
           {agenda.ritardi.map((item) => (
             <p key={item} className="text-slate-600">
               {item}

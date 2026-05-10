@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import { Search } from "lucide-react"
 
+import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,6 +22,7 @@ export function ClientsSection() {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState<ClientFilter>("Tutti")
   const clientiRows = useAppStoreSelector((s) => selectClientRows(s))
+  const desktopBooking = useDesktopBookingFocusOptional()
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -84,7 +86,9 @@ export function ClientsSection() {
               <CardTitle>Clienti</CardTitle>
               <CardDescription>CRM leggero per anagrafiche, contatti e follow-up</CardDescription>
             </div>
-            <Button type="button">Aggiungi cliente</Button>
+            <Button type="button" disabled title="Non ancora disponibile">
+              Aggiungi cliente
+            </Button>
           </div>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
             <div className="relative w-full lg:max-w-md">
@@ -136,7 +140,7 @@ export function ClientsSection() {
               </thead>
               <tbody>
                 {filtered.map((row: ClientRow) => (
-                  <tr key={row.email} className="border-b border-slate-100 align-middle">
+                  <tr key={`${row.email}-${row.nome}`} className="border-b border-slate-100 align-middle">
                     <td className="px-2 py-2 font-medium text-slate-800">{row.nome}</td>
                     <td className="px-2 py-2 text-slate-600">{row.telefono}</td>
                     <td className="px-2 py-2 text-slate-600">{row.email}</td>
@@ -148,13 +152,24 @@ export function ClientsSection() {
                     </td>
                     <td className="px-2 py-2">
                       <div className="flex flex-wrap justify-end gap-1">
-                        <Button type="button" variant="outline" size="xs">
+                        <Button type="button" variant="outline" size="xs" disabled title="Non ancora disponibile">
                           Dettagli
                         </Button>
-                        <Button type="button" variant="ghost" size="xs">
+                        <Button type="button" variant="ghost" size="xs" disabled title="Non ancora disponibile">
                           Modifica
                         </Button>
-                        <Button type="button" variant="ghost" size="xs">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="xs"
+                          disabled={!desktopBooking}
+                          title={
+                            desktopBooking
+                              ? "Apre la creazione prenotazione (desktop)"
+                              : "Disponibile dalla console desktop"
+                          }
+                          onClick={() => desktopBooking?.openDesktopCreateBooking()}
+                        >
                           Nuova prenotazione
                         </Button>
                       </div>
@@ -169,25 +184,46 @@ export function ClientsSection() {
         <div className="grid gap-4 content-start">
           <Card className="bg-white">
             <CardHeader>
-              <CardTitle>Note clienti speciali</CardTitle>
+              <CardTitle>Clienti con richieste speciali</CardTitle>
+              <CardDescription>Da anagrafica store locale</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
-              <p className="rounded-md bg-slate-50 px-3 py-2">Famiglia Rinaldi: lounge e transfer dedicato.</p>
-              <p className="rounded-md bg-slate-50 px-3 py-2">Sea & Co.: gruppi 10+ richiedono secondo equipaggio.</p>
+              {clientiRows.filter((c) => c.richiesteSpeciali).length === 0 ? (
+                <p className="text-slate-400">Nessun cliente con richieste speciali nel store.</p>
+              ) : (
+                clientiRows
+                  .filter((c) => c.richiesteSpeciali)
+                  .map((c) => (
+                    <p key={c.email} className="rounded-md bg-slate-50 px-3 py-2">
+                      {c.nome}: {c.preferenze || "—"}
+                    </p>
+                  ))
+              )}
             </CardContent>
           </Card>
           <Card className="bg-white">
             <CardHeader>
               <CardTitle>Clienti da ricontattare</CardTitle>
+              <CardDescription>Da anagrafica store locale</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
-              <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800">
-                Sea & Co. Charter — confermare disponibilita weekend 17/05.
-              </p>
-              <p className="rounded-md bg-slate-50 px-3 py-2">Blue Horizon — follow-up preventivo charter Q3.</p>
+              {clientiRows.filter((c) => c.daRicontattare).length === 0 ? (
+                <p className="text-slate-400">Nessun cliente da ricontattare nel store.</p>
+              ) : (
+                clientiRows
+                  .filter((c) => c.daRicontattare)
+                  .map((c) => (
+                    <p
+                      key={c.email}
+                      className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800"
+                    >
+                      {c.nome} — {c.ultimaPrenotazione}
+                    </p>
+                  ))
+              )}
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Preferenze frequenti</CardTitle>
             </CardHeader>
@@ -206,7 +242,7 @@ export function ClientsSection() {
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Provenienza clienti</CardTitle>
             </CardHeader>

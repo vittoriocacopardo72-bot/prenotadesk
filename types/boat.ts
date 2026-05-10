@@ -8,4 +8,5 @@ export type BoatRow = {
   prossimaUscita: string
   equipaggio: string
   note: string
+  blocked: boolean
 }

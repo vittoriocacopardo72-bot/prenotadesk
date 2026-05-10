@@ -9,6 +9,7 @@ export const fleetRows: BoatRow[] = [
     prossimaUscita: "09:30",
     equipaggio: "Marco + Luca",
     note: "Pronta al molo A",
+    blocked: false,
   },
   {
     nome: "Orion 31",
@@ -18,6 +19,7 @@ export const fleetRows: BoatRow[] = [
     prossimaUscita: "10:15",
     equipaggio: "Salvo",
     note: "Imbarco in corso",
+    blocked: false,
   },
   {
     nome: "Marlin 52",
@@ -27,6 +29,7 @@ export const fleetRows: BoatRow[] = [
     prossimaUscita: "11:00",
     equipaggio: "Andrea + Fabio",
     note: "Check-list sicurezza aperta",
+    blocked: false,
   },
   {
     nome: "Levante 28",
@@ -36,6 +39,7 @@ export const fleetRows: BoatRow[] = [
     prossimaUscita: "Nessuna",
     equipaggio: "-",
     note: "Controllo motore pianificato",
+    blocked: false,
   },
   {
     nome: "Tyrrhenian 40",
@@ -45,5 +49,6 @@ export const fleetRows: BoatRow[] = [
     prossimaUscita: "12:30",
     equipaggio: "Giuseppe + Mario",
     note: "Disponibile per charter pomeriggio",
+    blocked: false,
   },
 ]

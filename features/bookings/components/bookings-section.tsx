@@ -9,6 +9,7 @@ import { BookingSummaryCards } from "./booking-summary-cards"
 import { BookingTable } from "./booking-table"
 import { useBookingRows } from "@/features/bookings/hooks/use-booking-rows"
 import { updateBookingStatus } from "@/lib/actions"
+import { isBookingDateToday } from "@/lib/bookings/booking-dates"
 import { bookingStatusFilters } from "@/lib/mock/bookings"
 import type { BookingFilter } from "@/types/booking"
 
@@ -31,6 +32,15 @@ export function BookingsSection() {
     if (desktopBookingFocusNonce === 0) return
     scrollToCreateForm()
   }, [desktopBookingFocusNonce, scrollToCreateForm])
+
+  const summaryStats = useMemo(() => {
+    const todayRows = bookingRows.filter((row) => isBookingDateToday(row.data))
+    return {
+      prenotazioniOggi: todayRows.length,
+      ospitiOggi: todayRows.reduce((s, row) => s + (Number(row.ospiti) || 0), 0),
+      daConfermare: bookingRows.filter((row) => row.stato === "In attesa").length,
+    }
+  }, [bookingRows])
 
   const filteredPrenotazioni = useMemo(() => {
     return bookingRows.filter((row) => {
@@ -65,7 +75,11 @@ export function BookingsSection() {
             void updateBookingStatus(rowId, nextStatus)
           }}
         />
-        <BookingSummaryCards />
+        <BookingSummaryCards
+          prenotazioniOggi={summaryStats.prenotazioniOggi}
+          ospitiOggi={summaryStats.ospitiOggi}
+          daConfermare={summaryStats.daConfermare}
+        />
       </div>
       <div ref={formAnchorRef}>
         <BookingForm />

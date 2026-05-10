@@ -8,7 +8,10 @@ type FinanceItem = {
 
 export function FinancialPanel({ items }: { items: readonly FinanceItem[] }) {
   return (
-    <Card className="bg-white">
+    <Card
+      className="bg-white"
+      title="Valori dimostrativi — collegamento POS/banca e cassa reale in arrivo"
+    >
       <CardHeader>
         <CardTitle>Mini pannello finanziario</CardTitle>
         <CardDescription>Controllo economico rapido della giornata</CardDescription>
