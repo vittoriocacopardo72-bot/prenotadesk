@@ -25,7 +25,7 @@ export function CalendarSection() {
               <Button type="button" size="sm">
                 Settimana
               </Button>
-              <Button type="button" size="sm">
+              <Button type="button" size="sm" disabled title="Non ancora disponibile">
                 Nuovo evento
               </Button>
             </div>

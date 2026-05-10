@@ -53,10 +53,22 @@ export function BookingTable({
                 <td className="px-2 py-2 text-right font-medium text-slate-800">{row.importo}</td>
                 <td className="px-2 py-2">
                   <div className="flex justify-end gap-1">
-                    <Button type="button" variant="outline" size="xs">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="xs"
+                      disabled
+                      title="Non ancora disponibile"
+                    >
                       Dettagli
                     </Button>
-                    <Button type="button" variant="ghost" size="xs">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="xs"
+                      disabled
+                      title="Non ancora disponibile"
+                    >
                       Modifica
                     </Button>
                     <Button

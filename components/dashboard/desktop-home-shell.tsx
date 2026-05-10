@@ -1,9 +1,13 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { Menu, Search } from "lucide-react"
 
-import { DashboardMobileNav, DashboardSidebar } from "@/components/dashboard/shell"
+import {
+  DashboardMobileNav,
+  DashboardSidebar,
+  DesktopBookingFocusContext,
+} from "@/components/dashboard/shell"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,7 +19,28 @@ import type { NavAccessContext, PermissionId } from "@/types/dashboard"
 export function DesktopHomeShell() {
   const [activeSection, setActiveSection] = useState<SectionKey>("Dashboard")
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [bookingFormFocusNonce, setBookingFormFocusNonce] = useState(0)
   const sectionContent = useMemo(() => createSectionContentMap(), [])
+
+  const navigateSection = useCallback((section: SectionKey) => {
+    if (section !== "Prenotazioni") {
+      setBookingFormFocusNonce(0)
+    }
+    setActiveSection(section)
+  }, [])
+
+  const openDesktopCreateBooking = useCallback(() => {
+    setActiveSection("Prenotazioni")
+    setBookingFormFocusNonce((n) => n + 1)
+  }, [])
+
+  const desktopBookingFocus = useMemo(
+    () => ({
+      bookingFormFocusNonce,
+      openDesktopCreateBooking,
+    }),
+    [bookingFormFocusNonce, openDesktopCreateBooking]
+  )
   const access = useMemo<NavAccessContext>(
     () => ({ permissions: new Set<PermissionId>() }),
     []
@@ -41,7 +66,7 @@ export function DesktopHomeShell() {
         <DashboardSidebar
           nodes={navNodes}
           activeSection={activeSection}
-          onNavigate={setActiveSection}
+          onNavigate={navigateSection}
         />
 
         <main className="w-full p-4 md:p-6 lg:p-8">
@@ -74,7 +99,11 @@ export function DesktopHomeShell() {
             </div>
           </header>
 
-          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{sectionContent[activeSection]}</section>
+          <DesktopBookingFocusContext.Provider value={desktopBookingFocus}>
+            <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {sectionContent[activeSection]}
+            </section>
+          </DesktopBookingFocusContext.Provider>
         </main>
       </div>
 
@@ -83,7 +112,7 @@ export function DesktopHomeShell() {
         onOpenChange={setMobileNavOpen}
         nodes={navNodes}
         activeSection={activeSection}
-        onNavigate={setActiveSection}
+        onNavigate={navigateSection}
       />
     </div>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 import { AlertsPanel } from "@/components/dashboard/alerts-panel"
 import { DailyAgenda } from "@/components/dashboard/daily-agenda"
@@ -9,6 +9,7 @@ import { DashboardKpiCards } from "@/components/dashboard/kpi-cards"
 import { MarineWidgets } from "@/components/dashboard/marine-widgets"
 import { OperationalBoard } from "@/components/dashboard/operational-board"
 import { DashboardQuickActions } from "@/components/dashboard/quick-actions"
+import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { isBookingDateToday } from "@/lib/bookings/booking-dates"
 import {
@@ -20,6 +21,17 @@ import {
 import { selectActiveAlertTexts, useAppStoreSelector } from "@/lib/store/app-store"
 
 export function DashboardSection() {
+  const desktopBooking = useDesktopBookingFocusOptional()
+
+  const handleDashboardQuickAction = useCallback(
+    (label: string) => {
+      if (label === "Nuova prenotazione" && desktopBooking) {
+        desktopBooking.openDesktopCreateBooking()
+      }
+    },
+    [desktopBooking]
+  )
+
   const bookings = useAppStoreSelector((s) => s.bookings)
   const boats = useAppStoreSelector((s) => s.boats)
   const weather = useAppStoreSelector((s) => s.weather)
@@ -88,7 +100,7 @@ export function DashboardSection() {
 
         <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr_1fr]">
           <FinancialPanel items={dashboardFinance} />
-          <DashboardQuickActions actions={dashboardQuickActions} />
+          <DashboardQuickActions actions={dashboardQuickActions} onAction={handleDashboardQuickAction} />
           <Card className="bg-white">
             <CardHeader>
               <CardTitle>Widget marine</CardTitle>

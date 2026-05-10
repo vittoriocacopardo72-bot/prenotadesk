@@ -1,7 +1,8 @@
 "use client"
 
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
 import { BookingFilters } from "./booking-filters"
 import { BookingForm } from "./booking-form"
 import { BookingSummaryCards } from "./booking-summary-cards"
@@ -16,6 +17,8 @@ export function BookingsSection() {
   const [bookingFilter, setBookingFilter] = useState<BookingFilter>("Tutte")
   const [bookingSearch, setBookingSearch] = useState("")
   const bookingRows = useBookingRows()
+  const desktopBookingFocus = useDesktopBookingFocusOptional()
+  const desktopBookingFocusNonce = desktopBookingFocus?.bookingFormFocusNonce ?? 0
 
   const scrollToCreateForm = useCallback(() => {
     formAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
@@ -23,6 +26,11 @@ export function BookingsSection() {
       document.getElementById("cliente")?.focus()
     })
   }, [])
+
+  useEffect(() => {
+    if (desktopBookingFocusNonce === 0) return
+    scrollToCreateForm()
+  }, [desktopBookingFocusNonce, scrollToCreateForm])
 
   const filteredPrenotazioni = useMemo(() => {
     return bookingRows.filter((row) => {
