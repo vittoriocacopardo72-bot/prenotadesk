@@ -46,22 +46,28 @@ export function MobileDeparturesSheet({
           <SheetDescription>Prossime uscite e stato imbarco.</SheetDescription>
         </SheetHeader>
         <div className="max-h-[55vh] space-y-2 overflow-y-auto p-4">
-          {departures.map((row) => (
-            <div
-              key={`${row.ora}-${row.barca}`}
-              className="flex items-start justify-between gap-2 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5"
-            >
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-slate-900">
-                  {row.ora} · {row.barca}
-                </p>
-                <p className="truncate text-xs text-slate-600">{row.servizio}</p>
+          {departures.length === 0 ? (
+            <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+              Nessuna partenza imminente.
+            </p>
+          ) : (
+            departures.map((row) => (
+              <div
+                key={`${row.ora}-${row.barca}`}
+                className="flex items-start justify-between gap-2 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5"
+              >
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {row.ora} · {row.barca}
+                  </p>
+                  <p className="truncate text-xs text-slate-600">{row.servizio}</p>
+                </div>
+                <Badge variant={statusVariant(row.stato)} className="shrink-0 text-[10px]">
+                  {row.stato}
+                </Badge>
               </div>
-              <Badge variant={statusVariant(row.stato)} className="shrink-0 text-[10px]">
-                {row.stato}
-              </Badge>
-            </div>
-          ))}
+            ))
+          )}
         </div>
         <SheetFooter className="border-t border-slate-200 p-4">
           <Button type="button" className="w-full" variant="secondary" onClick={onOpenOperazioni}>

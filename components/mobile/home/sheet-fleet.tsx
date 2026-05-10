@@ -40,23 +40,29 @@ export function MobileFleetSheet({
           <SheetDescription>Stato unità e prossime uscite.</SheetDescription>
         </SheetHeader>
         <div className="max-h-[55vh] space-y-2 overflow-y-auto p-4">
-          {items.map((boat) => (
-            <div
-              key={boat.nome}
-              className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-sm font-semibold text-slate-900">{boat.nome}</p>
-                <Badge variant="outline" className="shrink-0 text-[10px]">
-                  {boat.readiness}
-                </Badge>
+          {items.length === 0 ? (
+            <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+              Nessuna barca disponibile.
+            </p>
+          ) : (
+            items.map((boat) => (
+              <div
+                key={boat.nome}
+                className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-semibold text-slate-900">{boat.nome}</p>
+                  <Badge variant="outline" className="shrink-0 text-[10px]">
+                    {boat.readiness}
+                  </Badge>
+                </div>
+                <p className="mt-1 text-xs text-slate-600">
+                  Carburante {boat.fuel} · Prossima {boat.next}
+                </p>
+                <p className="text-xs text-slate-500">Equipaggio: {boat.crew}</p>
               </div>
-              <p className="mt-1 text-xs text-slate-600">
-                Carburante {boat.fuel} · Prossima {boat.next}
-              </p>
-              <p className="text-xs text-slate-500">Equipaggio: {boat.crew}</p>
-            </div>
-          ))}
+            ))
+          )}
         </div>
         <SheetFooter className="border-t border-slate-200 p-4">
           <Button type="button" className="w-full" variant="secondary" onClick={onOpenBarche}>

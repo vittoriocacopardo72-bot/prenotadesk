@@ -17,6 +17,7 @@ export type MobileAppHeaderProps = {
   onMenuOpen?: () => void
   /** Tighter header + search for cockpit / home. */
   compact?: boolean
+  onSearchOpen?: () => void
   className?: string
 }
 
@@ -28,6 +29,7 @@ export function MobileAppHeader({
   showMenuTrigger,
   onMenuOpen,
   compact,
+  onSearchOpen,
   className,
 }: MobileAppHeaderProps) {
   return (
@@ -82,6 +84,9 @@ export function MobileAppHeader({
             type="search"
             placeholder="Cerca prenotazioni, barche o clienti..."
             className={cn("pl-9 text-sm", compact ? "h-9 text-xs" : "h-10")}
+            readOnly
+            onFocus={onSearchOpen}
+            onClick={onSearchOpen}
           />
         </div>
       ) : null}

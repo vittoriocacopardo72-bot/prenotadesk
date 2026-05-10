@@ -31,14 +31,20 @@ export function MobileAlertsSheet({
           <SheetDescription>Tutti gli avvisi operativi attivi.</SheetDescription>
         </SheetHeader>
         <div className="max-h-[55vh] space-y-2 overflow-y-auto p-4">
-          {alerts.map((alert) => (
-            <p
-              key={alert}
-              className="rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2.5 text-sm leading-snug text-amber-950"
-            >
-              {alert}
+          {alerts.length === 0 ? (
+            <p className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-600">
+              Nessun alert attivo.
             </p>
-          ))}
+          ) : (
+            alerts.map((alert) => (
+              <p
+                key={alert}
+                className="rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2.5 text-sm leading-snug text-amber-950"
+              >
+                {alert}
+              </p>
+            ))
+          )}
         </div>
         <SheetFooter className="border-t border-slate-200 p-4">
           <Button type="button" className="w-full" variant="secondary" onClick={onOpenOperazioni}>
