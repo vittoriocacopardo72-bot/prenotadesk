@@ -1,0 +1,236 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: Console operativa
+        - heading "PrenotaDesk Marine" [level=1] [ref=e7]
+        - paragraph [ref=e8]: Gestione portuale e charter
+      - navigation "Console operativa" [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - button "Operatività" [expanded] [ref=e12]:
+              - img [ref=e13]
+              - generic [ref=e15]: Operatività
+            - generic [ref=e17]:
+              - button "Dashboard" [ref=e18]:
+                - img [ref=e19]
+                - generic [ref=e22]: Dashboard
+              - button "Prenotazioni" [ref=e23]:
+                - img [ref=e24]
+                - generic [ref=e26]: Prenotazioni
+              - button "Calendario" [ref=e27]:
+                - img [ref=e28]
+                - generic [ref=e30]: Calendario
+              - button "Meteo marino" [ref=e31]:
+                - img [ref=e32]
+                - generic [ref=e38]: Meteo marino
+          - generic [ref=e39]:
+            - button "Risorse" [expanded] [ref=e40]:
+              - img [ref=e41]
+              - generic [ref=e43]: Risorse
+            - generic [ref=e45]:
+              - button "Clienti" [ref=e46]:
+                - img [ref=e47]
+                - generic [ref=e52]: Clienti
+              - button "Barche" [ref=e53]:
+                - img [ref=e54]
+                - generic [ref=e58]: Barche
+              - button "Servizi" [ref=e59]:
+                - img [ref=e60]
+                - generic [ref=e67]: Servizi
+          - generic [ref=e68]:
+            - button "Amministrazione" [expanded] [ref=e69]:
+              - img [ref=e70]
+              - generic [ref=e72]: Amministrazione
+            - generic [ref=e74]:
+              - button "Finanze" [active] [ref=e75]:
+                - img [ref=e76]
+                - generic [ref=e78]: Finanze
+              - button "Report" [ref=e79]:
+                - img [ref=e80]
+                - generic [ref=e82]: Report
+          - button "Impostazioni" [ref=e83]:
+            - img [ref=e84]
+            - generic [ref=e87]: Impostazioni
+      - generic [ref=e88]:
+        - paragraph [ref=e89]: Stato sistema
+        - paragraph [ref=e90]: Sincronizzazione ormeggi attiva
+    - main [ref=e91]:
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - img
+          - searchbox "Ricerca globale (non ancora attiva)" [disabled]
+        - generic [ref=e95]:
+          - generic [ref=e96]: domenica 10 maggio 2026
+          - generic [ref=e97]: Operativo
+          - generic [ref=e98]: VM
+      - generic [ref=e99]:
+        - generic [ref=e353]:
+          - generic "Pagato e depositi con data/ora odierna nel store" [ref=e354]:
+            - paragraph [ref=e355]: Incasso oggi
+            - paragraph [ref=e356]: € 500
+          - generic "Somma importi prenotazioni di oggi non cancellate (stima da anagrafica)" [ref=e357]:
+            - paragraph [ref=e358]: Incasso previsto
+            - paragraph [ref=e359]: € 0
+          - generic "Somma transazioni in stato In sospeso" [ref=e360]:
+            - paragraph [ref=e361]: In sospeso
+            - paragraph [ref=e362]: € 300
+          - generic "Somma importi contrassegnati come Rimborso" [ref=e363]:
+            - paragraph [ref=e364]: Rimborsi
+            - paragraph [ref=e365]: € 70
+        - generic [ref=e367]:
+          - generic [ref=e368]:
+            - generic [ref=e369]:
+              - generic [ref=e370]: Finanze
+              - generic [ref=e371]: Cassa, transazioni, incassi e movimenti collegati alle prenotazioni (vista operativa)
+            - button "Registra movimento" [ref=e372]
+          - generic [ref=e373]:
+            - generic [ref=e374]:
+              - img
+              - searchbox "Cerca cliente, prenotazione o transazione" [ref=e375]
+            - generic [ref=e376]:
+              - button "Tutti" [ref=e377]
+              - button "Pagato" [ref=e378]
+              - button "In sospeso" [ref=e379]
+              - button "Rimborso" [ref=e380]
+              - button "Deposito" [ref=e381]
+        - generic [ref=e382]:
+          - generic [ref=e383]:
+            - generic [ref=e384]:
+              - generic [ref=e385]: Movimenti e transazioni
+              - generic [ref=e386]: Dati da store locale (integrazione POS/banca in arrivo)
+            - table [ref=e388]:
+              - rowgroup [ref=e389]:
+                - row "Cliente Prenotazione/Servizio Metodo Stato Importo Data/Ora Note Azioni" [ref=e390]:
+                  - columnheader "Cliente" [ref=e391]
+                  - columnheader "Prenotazione/Servizio" [ref=e392]
+                  - columnheader "Metodo" [ref=e393]
+                  - columnheader "Stato" [ref=e394]
+                  - columnheader "Importo" [ref=e395]
+                  - columnheader "Data/Ora" [ref=e396]
+                  - columnheader "Note" [ref=e397]
+                  - columnheader "Azioni" [ref=e398]
+              - rowgroup [ref=e399]:
+                - row "Blue Horizon S.r.l. Charter giornaliero Bonifico Pagato €1.200 09/05 09:10 Saldo saldato Dettagli Modifica Ricevuta" [ref=e400]:
+                  - cell "Blue Horizon S.r.l." [ref=e401]
+                  - cell "Charter giornaliero" [ref=e402]
+                  - cell "Bonifico" [ref=e403]
+                  - cell "Pagato" [ref=e404]:
+                    - generic [ref=e405]: Pagato
+                  - cell "€1.200" [ref=e406]
+                  - cell "09/05 09:10" [ref=e407]
+                  - cell "Saldo saldato" [ref=e408]
+                  - cell "Dettagli Modifica Ricevuta" [ref=e409]:
+                    - generic [ref=e410]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Ricevuta" [disabled]
+                - row "Luca Rinaldi Tour costiero Carta Pagato €180 09/05 10:00 POS banchina Dettagli Modifica Ricevuta" [ref=e411]:
+                  - cell "Luca Rinaldi" [ref=e412]
+                  - cell "Tour costiero" [ref=e413]
+                  - cell "Carta" [ref=e414]
+                  - cell "Pagato" [ref=e415]:
+                    - generic [ref=e416]: Pagato
+                  - cell "€180" [ref=e417]
+                  - cell "09/05 10:00" [ref=e418]
+                  - cell "POS banchina" [ref=e419]
+                  - cell "Dettagli Modifica Ricevuta" [ref=e420]:
+                    - generic [ref=e421]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Ricevuta" [disabled]
+                - row "Sea & Co. Charter Noleggio premium Acconto In sospeso €300 09/05 10:45 In attesa bonifico Dettagli Modifica Ricevuta" [ref=e422]:
+                  - cell "Sea & Co. Charter" [ref=e423]
+                  - cell "Noleggio premium" [ref=e424]
+                  - cell "Acconto" [ref=e425]
+                  - cell "In sospeso" [ref=e426]:
+                    - generic [ref=e427]: In sospeso
+                  - cell "€300" [ref=e428]
+                  - cell "09/05 10:45" [ref=e429]
+                  - cell "In attesa bonifico" [ref=e430]
+                  - cell "Dettagli Modifica Ricevuta" [ref=e431]:
+                    - generic [ref=e432]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Ricevuta" [disabled]
+                - row "Alessia Bianchi Sunset tour Contanti Pagato €210 09/05 17:30 — Dettagli Modifica Ricevuta" [ref=e433]:
+                  - cell "Alessia Bianchi" [ref=e434]
+                  - cell "Sunset tour" [ref=e435]
+                  - cell "Contanti" [ref=e436]
+                  - cell "Pagato" [ref=e437]:
+                    - generic [ref=e438]: Pagato
+                  - cell "€210" [ref=e439]
+                  - cell "09/05 17:30" [ref=e440]
+                  - cell "—" [ref=e441]
+                  - cell "Dettagli Modifica Ricevuta" [ref=e442]:
+                    - generic [ref=e443]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Ricevuta" [disabled]
+                - row "Mare Vivo Eventi Evento privato Bonifico Deposito €500 10/05 12:30 Cauzione evento Dettagli Modifica Ricevuta" [ref=e444]:
+                  - cell "Mare Vivo Eventi" [ref=e445]
+                  - cell "Evento privato" [ref=e446]
+                  - cell "Bonifico" [ref=e447]
+                  - cell "Deposito" [ref=e448]:
+                    - generic [ref=e449]: Deposito
+                  - cell "€500" [ref=e450]
+                  - cell "10/05 12:30" [ref=e451]
+                  - cell "Cauzione evento" [ref=e452]
+                  - cell "Dettagli Modifica Ricevuta" [ref=e453]:
+                    - generic [ref=e454]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Ricevuta" [disabled]
+                - row "Famiglia Rinaldi Upgrade premium Carta Rimborso -€70 09/05 13:15 Annullamento parziale Dettagli Modifica Ricevuta" [ref=e455]:
+                  - cell "Famiglia Rinaldi" [ref=e456]
+                  - cell "Upgrade premium" [ref=e457]
+                  - cell "Carta" [ref=e458]
+                  - cell "Rimborso" [ref=e459]:
+                    - generic [ref=e460]: Rimborso
+                  - cell "-€70" [ref=e461]
+                  - cell "09/05 13:15" [ref=e462]
+                  - cell "Annullamento parziale" [ref=e463]
+                  - cell "Dettagli Modifica Ricevuta" [ref=e464]:
+                    - generic [ref=e465]:
+                      - button "Dettagli" [disabled]
+                      - button "Modifica" [disabled]
+                      - button "Ricevuta" [disabled]
+          - generic [ref=e466]:
+            - generic [ref=e467]:
+              - generic [ref=e468]:
+                - generic [ref=e469]: Pagamenti in sospeso
+                - generic [ref=e470]: Da registro transazioni locale
+              - paragraph [ref=e472]: Sea & Co. Charter — €300 (Acconto) · In attesa bonifico
+            - generic "Distribuzione calcolata sulle transazioni nel store" [ref=e473]:
+              - generic [ref=e475]: Metodi piu usati
+              - generic [ref=e476]:
+                - generic [ref=e477]:
+                  - generic [ref=e478]: Bonifico
+                  - generic [ref=e479]: 33%
+                - generic [ref=e480]:
+                  - generic [ref=e481]: Carta
+                  - generic [ref=e482]: 33%
+                - generic [ref=e483]:
+                  - generic [ref=e484]: Acconto
+                  - generic [ref=e485]: 17%
+                - generic [ref=e486]:
+                  - generic [ref=e487]: Contanti
+                  - generic [ref=e488]: 17%
+            - generic "Dato dimostrativo" [ref=e489]:
+              - generic [ref=e491]: Extra venduti oggi
+              - generic [ref=e492]:
+                - generic [ref=e493]:
+                  - generic [ref=e494]: Prosecco e transfer
+                  - generic [ref=e495]: € 340
+                - generic [ref=e496]:
+                  - generic [ref=e497]: Foto e upgrade tour
+                  - generic [ref=e498]: € 185
+            - generic "Dato dimostrativo" [ref=e499]:
+              - generic [ref=e501]: Note contabili operative
+              - generic [ref=e502]:
+                - paragraph [ref=e503]: Allineare incassi POS con chiusura cassa entro le 20:00.
+                - paragraph [ref=e504]: "Rimborsi: doppia conferma responsabile commerciale (mock)."
+                - paragraph [ref=e505]: "Integrazione gateway e fiscalita: da configurare in versione successiva."
+  - button "Open Next.js Dev Tools" [ref=e347] [cursor=pointer]:
+    - img [ref=e348]
+  - alert [ref=e351]

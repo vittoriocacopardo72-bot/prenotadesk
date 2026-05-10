@@ -102,6 +102,7 @@ export const selectBoatRows = memoizeByState((s: AppState): BoatRow[] => {
 
 export const selectPaymentRows = memoizeByState((s: AppState): TransazioneRow[] => {
   return s.payments.map((p: Payment) => ({
+    id: p.id,
     cliente: p.cliente,
     prenotazioneServizio: p.prenotazioneServizio,
     metodo: p.metodo,

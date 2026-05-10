@@ -88,7 +88,14 @@ export function SettingsSection() {
                             <p className="mt-1 text-lg font-semibold text-slate-900">{plan.prezzo}</p>
                             <p className="mt-2 text-xs text-slate-600">{plan.target}</p>
                             <p className="mt-1 min-h-10 text-xs text-slate-500">{plan.features}</p>
-                            <Button type="button" variant={plan.nome === "Free" ? "outline" : "default"} size="sm" className="mt-3 w-full">
+                            <Button
+                              type="button"
+                              variant={plan.nome === "Free" ? "outline" : "default"}
+                              size="sm"
+                              className="mt-3 w-full"
+                              disabled
+                              title="Selezione piano non ancora disponibile"
+                            >
                               Seleziona piano
                             </Button>
                           </div>

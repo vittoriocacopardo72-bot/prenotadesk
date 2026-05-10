@@ -3,6 +3,7 @@ export type TransazioneStato = "Pagato" | "In sospeso" | "Rimborso" | "Deposito"
 export type TransazioneFilter = "Tutti" | "Pagato" | "In sospeso" | "Rimborso" | "Deposito"
 
 export type TransazioneRow = {
+  id?: string
   cliente: string
   prenotazioneServizio: string
   metodo: string

@@ -1,0 +1,273 @@
+- generic:
+  - generic:
+    - generic:
+      - complementary:
+        - generic:
+          - generic: Console operativa
+          - heading [level=1]: PrenotaDesk Marine
+          - paragraph: Gestione portuale e charter
+        - navigation:
+          - generic:
+            - generic:
+              - button [expanded]:
+                - img
+                - generic: Operatività
+              - generic:
+                - generic:
+                  - button:
+                    - img
+                    - generic: Dashboard
+                  - button:
+                    - img
+                    - generic: Prenotazioni
+                  - button:
+                    - img
+                    - generic: Calendario
+                  - button:
+                    - img
+                    - generic: Meteo marino
+            - generic:
+              - button [expanded]:
+                - img
+                - generic: Risorse
+              - generic:
+                - generic:
+                  - button:
+                    - img
+                    - generic: Clienti
+                  - button:
+                    - img
+                    - generic: Barche
+                  - button:
+                    - img
+                    - generic: Servizi
+            - generic:
+              - button [expanded]:
+                - img
+                - generic: Amministrazione
+              - generic:
+                - generic:
+                  - button:
+                    - img
+                    - generic: Finanze
+                  - button:
+                    - img
+                    - generic: Report
+            - button:
+              - img
+              - generic: Impostazioni
+        - generic:
+          - paragraph: Stato sistema
+          - paragraph: Sincronizzazione ormeggi attiva
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - img
+              - searchbox [disabled]
+            - generic:
+              - generic: domenica 10 maggio 2026
+              - generic: Operativo
+              - generic: VM
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - paragraph: Incasso oggi
+                - paragraph: € 500
+              - generic:
+                - paragraph: Incasso previsto
+                - paragraph: € 0
+              - generic:
+                - paragraph: In sospeso
+                - paragraph: € 300
+              - generic:
+                - paragraph: Rimborsi
+                - paragraph: € 70
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Finanze
+                  - generic: Cassa, transazioni, incassi e movimenti collegati alle prenotazioni (vista operativa)
+                - button: Registra movimento
+              - generic:
+                - generic:
+                  - img
+                  - searchbox
+                - generic:
+                  - button: Tutti
+                  - button: Pagato
+                  - button: In sospeso
+                  - button: Rimborso
+                  - button: Deposito
+          - generic:
+            - generic:
+              - generic:
+                - generic: Movimenti e transazioni
+                - generic: Dati da store locale (integrazione POS/banca in arrivo)
+              - generic:
+                - table:
+                  - rowgroup:
+                    - row:
+                      - columnheader: Cliente
+                      - columnheader: Prenotazione/Servizio
+                      - columnheader: Metodo
+                      - columnheader: Stato
+                      - columnheader: Importo
+                      - columnheader: Data/Ora
+                      - columnheader: Note
+                      - columnheader: Azioni
+                  - rowgroup:
+                    - row:
+                      - cell: Blue Horizon S.r.l.
+                      - cell: Charter giornaliero
+                      - cell: Bonifico
+                      - cell:
+                        - generic: Pagato
+                      - cell: €1.200
+                      - cell: 09/05 09:10
+                      - cell: Saldo saldato
+                      - cell:
+                        - generic:
+                          - button [disabled]: Dettagli
+                          - button [disabled]: Modifica
+                          - button [disabled]: Ricevuta
+                    - row:
+                      - cell: Luca Rinaldi
+                      - cell: Tour costiero
+                      - cell: Carta
+                      - cell:
+                        - generic: Pagato
+                      - cell: €180
+                      - cell: 09/05 10:00
+                      - cell: POS banchina
+                      - cell:
+                        - generic:
+                          - button [disabled]: Dettagli
+                          - button [disabled]: Modifica
+                          - button [disabled]: Ricevuta
+                    - row:
+                      - cell: Sea & Co. Charter
+                      - cell: Noleggio premium
+                      - cell: Acconto
+                      - cell:
+                        - generic: In sospeso
+                      - cell: €300
+                      - cell: 09/05 10:45
+                      - cell: In attesa bonifico
+                      - cell:
+                        - generic:
+                          - button [disabled]: Dettagli
+                          - button [disabled]: Modifica
+                          - button [disabled]: Ricevuta
+                    - row:
+                      - cell: Alessia Bianchi
+                      - cell: Sunset tour
+                      - cell: Contanti
+                      - cell:
+                        - generic: Pagato
+                      - cell: €210
+                      - cell: 09/05 17:30
+                      - cell: —
+                      - cell:
+                        - generic:
+                          - button [disabled]: Dettagli
+                          - button [disabled]: Modifica
+                          - button [disabled]: Ricevuta
+                    - row:
+                      - cell: Mare Vivo Eventi
+                      - cell: Evento privato
+                      - cell: Bonifico
+                      - cell:
+                        - generic: Deposito
+                      - cell: €500
+                      - cell: 10/05 12:30
+                      - cell: Cauzione evento
+                      - cell:
+                        - generic:
+                          - button [disabled]: Dettagli
+                          - button [disabled]: Modifica
+                          - button [disabled]: Ricevuta
+                    - row:
+                      - cell: Famiglia Rinaldi
+                      - cell: Upgrade premium
+                      - cell: Carta
+                      - cell:
+                        - generic: Rimborso
+                      - cell: "-€70"
+                      - cell: 09/05 13:15
+                      - cell: Annullamento parziale
+                      - cell:
+                        - generic:
+                          - button [disabled]: Dettagli
+                          - button [disabled]: Modifica
+                          - button [disabled]: Ricevuta
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Pagamenti in sospeso
+                  - generic: Da registro transazioni locale
+                - generic:
+                  - paragraph: Sea & Co. Charter — €300 (Acconto) · In attesa bonifico
+              - generic:
+                - generic:
+                  - generic: Metodi piu usati
+                - generic:
+                  - generic:
+                    - generic: Bonifico
+                    - generic: 33%
+                  - generic:
+                    - generic: Carta
+                    - generic: 33%
+                  - generic:
+                    - generic: Acconto
+                    - generic: 17%
+                  - generic:
+                    - generic: Contanti
+                    - generic: 17%
+              - generic:
+                - generic:
+                  - generic: Extra venduti oggi
+                - generic:
+                  - generic:
+                    - generic: Prosecco e transfer
+                    - generic: € 340
+                  - generic:
+                    - generic: Foto e upgrade tour
+                    - generic: € 185
+              - generic:
+                - generic:
+                  - generic: Note contabili operative
+                - generic:
+                  - paragraph: Allineare incassi POS con chiusura cassa entro le 20:00.
+                  - paragraph: "Rimborsi: doppia conferma responsabile commerciale (mock)."
+                  - paragraph: "Integrazione gateway e fiscalita: da configurare in versione successiva."
+  - button "Open Next.js Dev Tools" [ref=e347] [cursor=pointer]:
+    - img [ref=e348]
+  - alert
+  - dialog "Registra movimento" [ref=e507]:
+    - generic [ref=e508]:
+      - heading "Registra movimento" [level=2] [ref=e509]
+      - paragraph [ref=e510]: Registra un incasso nel registro locale (stesso flusso dell'app mobile).
+    - generic [ref=e511]:
+      - generic [ref=e512]:
+        - generic [ref=e513]: Riferimento / cliente
+        - textbox "Riferimento / cliente" [active] [ref=e514]:
+          - /placeholder: Es. Blue Horizon S.r.l.
+      - generic [ref=e515]:
+        - generic [ref=e516]: Importo (EUR)
+        - spinbutton "Importo (EUR)" [ref=e517]
+      - generic [ref=e518]:
+        - generic [ref=e519]: Metodo
+        - combobox "Metodo" [ref=e520]: POS
+      - generic [ref=e521]:
+        - generic [ref=e522]: Note
+        - textbox "Note" [ref=e523]:
+          - /placeholder: Note operative...
+    - generic [ref=e524]:
+      - button "Annulla" [ref=e525]
+      - button "Conferma" [ref=e526]
+    - button "Close" [ref=e527]:
+      - img
+      - generic [ref=e528]: Close

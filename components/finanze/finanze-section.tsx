@@ -3,11 +3,15 @@
 import { useMemo, useState } from "react"
 import { Search } from "lucide-react"
 
+import { RegisterMovementDialog } from "@/components/finanze/register-movement-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { isBookingDateToday } from "@/lib/bookings/booking-dates"
+import { parseImportoEurDisplay } from "@/lib/bookings/parse-importo-eur"
 import { incassiFilters } from "@/lib/mock/incassi"
+import { isPaymentDataOraToday } from "@/lib/payments/is-payment-today"
 import { selectPaymentRows, useAppStoreSelector } from "@/lib/store/app-store"
 import type { TransazioneFilter, TransazioneStato } from "@/types/incassi"
 
@@ -18,10 +22,16 @@ function statoVariant(stato: TransazioneStato): "default" | "secondary" | "outli
   return "destructive"
 }
 
+function formatFinEur(n: number): string {
+  return `€ ${Math.round(Math.abs(n)).toLocaleString("it-IT")}`
+}
+
 export function FinanzeSection() {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState<TransazioneFilter>("Tutti")
+  const [registerOpen, setRegisterOpen] = useState(false)
   const transazioniRows = useAppStoreSelector((s) => selectPaymentRows(s))
+  const bookings = useAppStoreSelector((s) => s.bookings)
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -37,25 +47,85 @@ export function FinanzeSection() {
     })
   }, [search, filter, transazioniRows])
 
+  const kpis = useMemo(() => {
+    let incassoOggi = 0
+    let inSospeso = 0
+    let rimborsi = 0
+    for (const row of transazioniRows) {
+      const amt = parseImportoEurDisplay(row.importo)
+      if (row.stato === "In sospeso") {
+        inSospeso += Math.abs(amt)
+      }
+      if (row.stato === "Rimborso") {
+        rimborsi += Math.abs(amt)
+      }
+      if (isPaymentDataOraToday(row.dataOra) && (row.stato === "Pagato" || row.stato === "Deposito")) {
+        incassoOggi += Math.max(0, amt)
+      }
+    }
+    const incassoPrevisto = bookings
+      .filter((b) => isBookingDateToday(b.data) && b.stato !== "Cancellate")
+      .reduce((s, b) => s + parseImportoEurDisplay(b.importo), 0)
+
+    return {
+      incassoOggi,
+      incassoPrevisto,
+      inSospeso,
+      rimborsi,
+    }
+  }, [transazioniRows, bookings])
+
+  const metodiShare = useMemo(() => {
+    if (transazioniRows.length === 0) return []
+    const counts = new Map<string, number>()
+    for (const row of transazioniRows) {
+      const k = row.metodo.trim() || "Altro"
+      counts.set(k, (counts.get(k) ?? 0) + 1)
+    }
+    const total = transazioniRows.length
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([metodo, n]) => ({ metodo, pct: Math.round((n / total) * 100) }))
+  }, [transazioniRows])
+
+  const sospesiList = useMemo(
+    () => transazioniRows.filter((r) => r.stato === "In sospeso"),
+    [transazioniRows]
+  )
+
   return (
     <>
+      <RegisterMovementDialog open={registerOpen} onOpenChange={setRegisterOpen} />
+
       <Card className="bg-white sm:col-span-2 xl:col-span-4">
         <CardContent className="grid gap-3 pt-4 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Pagato e depositi con data/ora odierna nel store"
+          >
             <p className="text-xs text-slate-500">Incasso oggi</p>
-            <p className="text-xl font-semibold text-slate-800">€ 4.860</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.incassoOggi)}</p>
           </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Somma importi prenotazioni di oggi non cancellate (stima da anagrafica)"
+          >
             <p className="text-xs text-slate-500">Incasso previsto</p>
-            <p className="text-xl font-semibold text-slate-800">€ 6.940</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.incassoPrevisto)}</p>
           </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Somma transazioni in stato In sospeso"
+          >
             <p className="text-xs text-slate-500">In sospeso</p>
-            <p className="text-xl font-semibold text-slate-800">€ 820</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.inSospeso)}</p>
           </div>
-          <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+          <div
+            className="rounded-lg border border-slate-200 bg-slate-50 p-3"
+            title="Somma importi contrassegnati come Rimborso"
+          >
             <p className="text-xs text-slate-500">Rimborsi</p>
-            <p className="text-xl font-semibold text-slate-800">€ 70</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.rimborsi)}</p>
           </div>
         </CardContent>
       </Card>
@@ -69,7 +139,9 @@ export function FinanzeSection() {
                 Cassa, transazioni, incassi e movimenti collegati alle prenotazioni (vista operativa)
               </CardDescription>
             </div>
-            <Button type="button">Registra movimento</Button>
+            <Button type="button" onClick={() => setRegisterOpen(true)}>
+              Registra movimento
+            </Button>
           </div>
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
             <div className="relative w-full lg:max-w-md">
@@ -103,7 +175,7 @@ export function FinanzeSection() {
         <Card className="bg-white">
           <CardHeader>
             <CardTitle>Movimenti e transazioni</CardTitle>
-            <CardDescription>Registro operativo giornaliero (mock — integrazione POS/banca futura)</CardDescription>
+            <CardDescription>Dati da store locale (integrazione POS/banca in arrivo)</CardDescription>
           </CardHeader>
           <CardContent className="overflow-x-auto">
             <table className="w-full min-w-[980px] text-xs">
@@ -121,7 +193,10 @@ export function FinanzeSection() {
               </thead>
               <tbody>
                 {filtered.map((row) => (
-                  <tr key={`${row.cliente}-${row.dataOra}-${row.importo}`} className="border-b border-slate-100 align-middle">
+                  <tr
+                    key={row.id ?? `${row.cliente}-${row.dataOra}-${row.importo}`}
+                    className="border-b border-slate-100 align-middle"
+                  >
                     <td className="px-2 py-2 font-medium text-slate-800">{row.cliente}</td>
                     <td className="px-2 py-2 text-slate-600">{row.prenotazioneServizio}</td>
                     <td className="px-2 py-2 text-slate-600">{row.metodo}</td>
@@ -133,13 +208,13 @@ export function FinanzeSection() {
                     <td className="px-2 py-2 text-slate-600">{row.note || "—"}</td>
                     <td className="px-2 py-2">
                       <div className="flex flex-wrap justify-end gap-1">
-                        <Button type="button" variant="outline" size="xs">
+                        <Button type="button" variant="outline" size="xs" disabled title="Non ancora disponibile">
                           Dettagli
                         </Button>
-                        <Button type="button" variant="ghost" size="xs">
+                        <Button type="button" variant="ghost" size="xs" disabled title="Non ancora disponibile">
                           Modifica
                         </Button>
-                        <Button type="button" variant="ghost" size="xs">
+                        <Button type="button" variant="ghost" size="xs" disabled title="Non ancora disponibile">
                           Ricevuta
                         </Button>
                       </div>
@@ -155,38 +230,42 @@ export function FinanzeSection() {
           <Card className="bg-white">
             <CardHeader>
               <CardTitle>Pagamenti in sospeso</CardTitle>
+              <CardDescription>Da registro transazioni locale</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
-              <p className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800">
-                Sea & Co. Charter — €300 acconto noleggio premium (bonifico atteso).
-              </p>
-              <p className="rounded-md bg-slate-50 px-3 py-2">Partner Nord — fattura gruppo 14/05.</p>
+              {sospesiList.length === 0 ? (
+                <p className="text-slate-400">Nessun pagamento in sospeso nel store.</p>
+              ) : (
+                sospesiList.map((row) => (
+                  <p
+                    key={row.id ?? `${row.cliente}-${row.dataOra}`}
+                    className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-amber-800"
+                  >
+                    {row.cliente} — {row.importo} ({row.metodo})
+                    {row.note ? ` · ${row.note}` : ""}
+                  </p>
+                ))
+              )}
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Distribuzione calcolata sulle transazioni nel store">
             <CardHeader>
               <CardTitle>Metodi piu usati</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
-              <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
-                <span>Carta / POS</span>
-                <span className="font-medium">42%</span>
-              </div>
-              <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
-                <span>Bonifico</span>
-                <span className="font-medium">35%</span>
-              </div>
-              <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
-                <span>Contanti</span>
-                <span className="font-medium">18%</span>
-              </div>
-              <div className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
-                <span>Acconti / depositi</span>
-                <span className="font-medium">5%</span>
-              </div>
+              {metodiShare.length === 0 ? (
+                <p className="text-slate-400">Nessuna transazione nel store.</p>
+              ) : (
+                metodiShare.map(({ metodo, pct }) => (
+                  <div key={metodo} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                    <span>{metodo}</span>
+                    <span className="font-medium">{pct}%</span>
+                  </div>
+                ))
+              )}
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Extra venduti oggi</CardTitle>
             </CardHeader>
@@ -201,7 +280,7 @@ export function FinanzeSection() {
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-white">
+          <Card className="bg-white" title="Dato dimostrativo">
             <CardHeader>
               <CardTitle>Note contabili operative</CardTitle>
             </CardHeader>
