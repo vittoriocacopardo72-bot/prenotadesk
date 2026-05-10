@@ -2,7 +2,7 @@ import { createElement, type ComponentType, type ReactElement } from "react"
 import { BarChart3, CalendarDays, CreditCard, Home as HomeIcon, LifeBuoy, Settings, Ship, Sun, Users } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
-import { BookingsSection } from "@/components/bookings/bookings-section"
+import { BookingsSection } from "@/features/bookings"
 import { BoatsSection } from "@/components/boats/boats-section"
 import { CalendarSection } from "@/components/calendar/calendar-section"
 import { ClientsSection } from "@/components/clients/clients-section"

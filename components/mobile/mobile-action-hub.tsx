@@ -81,6 +81,7 @@ export function MobileActionHub({ onNavigateTab, onNavigateSection, children }: 
       <MobileCommandSheet open={searchOpen} onOpenChange={setSearchOpen} onPickResult={handleSearchPick} />
 
       <CreateBookingSheet
+        key={sheet === "create-booking" ? "create-booking-active" : "create-booking-idle"}
         open={sheet === "create-booking"}
         onOpenChange={(open) => {
           if (!open) setSheet(null)

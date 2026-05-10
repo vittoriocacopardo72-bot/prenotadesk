@@ -3,6 +3,7 @@
 import { useState } from "react"
 
 import { createBooking } from "@/lib/actions"
+import { getCreateBookingValidationError } from "@/lib/bookings/validate-create-booking"
 import { useAppStoreSelector } from "@/lib/store/app-store"
 import type { ActionResult, CreateBookingInput } from "@/types/actions"
 import { Button } from "@/components/ui/button"
@@ -31,30 +32,48 @@ const INITIAL: CreateBookingInput = {
 export function CreateBookingSheet({ open, onOpenChange, onResult }: CreateBookingSheetProps) {
   const [form, setForm] = useState<CreateBookingInput>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
+  const [fieldError, setFieldError] = useState<string | null>(null)
   const boats = useAppStoreSelector((s) => s.boats)
 
+  function handleOpenChange(next: boolean) {
+    if (next) setFieldError(null)
+    onOpenChange(next)
+  }
+
   function update<K extends keyof CreateBookingInput>(key: K, value: CreateBookingInput[K]) {
+    setFieldError(null)
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
   async function submit() {
+    const validationError = getCreateBookingValidationError(form)
+    if (validationError) {
+      setFieldError(validationError)
+      return
+    }
+    setFieldError(null)
     setSubmitting(true)
     const res = await createBooking(form)
     setSubmitting(false)
     onResult(res)
     if (res.status === "success") {
       setForm(INITIAL)
-      onOpenChange(false)
+      handleOpenChange(false)
     }
   }
 
   return (
-    <Sheet open={open} onOpenChange={onOpenChange}>
+    <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetContent side="bottom" className="max-h-[92vh] gap-0 p-0" showCloseButton>
         <SheetHeader className="border-b border-slate-200 p-4">
           <SheetTitle>Nuova prenotazione</SheetTitle>
         </SheetHeader>
         <div className="max-h-[62vh] space-y-3 overflow-y-auto p-4">
+          {fieldError ? (
+            <p className="text-sm text-red-600" role="alert">
+              {fieldError}
+            </p>
+          ) : null}
           <div className="space-y-1.5">
             <Label htmlFor="mobile-booking-name">Cliente</Label>
             <Input id="mobile-booking-name" value={form.customerName} onChange={(e) => update("customerName", e.target.value)} />
@@ -117,7 +136,7 @@ export function CreateBookingSheet({ open, onOpenChange, onResult }: CreateBooki
               type="button"
               variant="outline"
               onClick={() => {
-                onOpenChange(false)
+                handleOpenChange(false)
                 onResult({ status: "cancelled", message: "Creazione prenotazione annullata." })
               }}
             >

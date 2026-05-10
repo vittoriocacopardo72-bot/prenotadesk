@@ -2,9 +2,10 @@
 
 import { useRef, useSyncExternalStore } from "react"
 
+import { memoizeByState } from "@/lib/store/memoize-by-app-state"
 import { APP_STORE_VERSION, createSeedState } from "@/lib/store/seed-data"
-import type { AlertItem, AppState, Boat, Booking, Payment } from "@/types/domain"
-import type { BookingRow } from "@/types/booking"
+import { selectBookingRows } from "@/features/bookings/selectors"
+import type { AlertItem, AppState, Boat, Payment } from "@/types/domain"
 import type { BoatRow } from "@/types/boat"
 import type { ClientRow } from "@/types/client"
 import type { TransazioneRow } from "@/types/incassi"
@@ -84,36 +85,7 @@ export function useAppStoreSelector<T>(selector: (s: AppState) => T): T {
   )
 }
 
-function memoizeByState<T>(selector: (s: AppState) => T) {
-  let hasCachedValue = false
-  let cachedSource: AppState
-  let cachedValue: T
-
-  return (s: AppState) => {
-    if (hasCachedValue && cachedSource === s) {
-      return cachedValue
-    }
-
-    cachedSource = s
-    cachedValue = selector(s)
-    hasCachedValue = true
-    return cachedValue
-  }
-}
-
-export const selectBookingRows = memoizeByState((s: AppState): BookingRow[] => {
-  return s.bookings.map((b: Booking) => ({
-    id: b.id,
-    cliente: b.cliente,
-    barca: b.barca,
-    servizio: b.servizio,
-    data: b.data,
-    ora: b.ora,
-    ospiti: b.ospiti,
-    stato: b.stato,
-    importo: b.importo,
-  }))
-})
+export { selectBookingRows }
 
 export const selectBoatRows = memoizeByState((s: AppState): BoatRow[] => {
   return s.boats.map((b: Boat) => ({
@@ -141,6 +113,10 @@ export const selectPaymentRows = memoizeByState((s: AppState): TransazioneRow[] 
 
 export const selectActiveAlerts = memoizeByState((s: AppState): AlertItem[] => {
   return s.alerts.filter((a) => !a.resolved)
+})
+
+export const selectActiveAlertTexts = memoizeByState((s: AppState): string[] => {
+  return selectActiveAlerts(s).map((a) => a.text)
 })
 
 export const selectClientRows = memoizeByState((s: AppState): ClientRow[] => {

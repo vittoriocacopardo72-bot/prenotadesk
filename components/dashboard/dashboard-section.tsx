@@ -1,5 +1,7 @@
 "use client"
 
+import { useMemo } from "react"
+
 import { AlertsPanel } from "@/components/dashboard/alerts-panel"
 import { DailyAgenda } from "@/components/dashboard/daily-agenda"
 import { FinancialPanel } from "@/components/dashboard/financial-panel"
@@ -8,19 +10,31 @@ import { MarineWidgets } from "@/components/dashboard/marine-widgets"
 import { OperationalBoard } from "@/components/dashboard/operational-board"
 import { DashboardQuickActions } from "@/components/dashboard/quick-actions"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { selectActiveAlerts, useAppStoreSelector } from "@/lib/store/app-store"
+import { isBookingDateToday } from "@/lib/bookings/booking-dates"
 import {
   dashboardAgenda,
   dashboardFinance,
   dashboardKpis,
   dashboardQuickActions,
 } from "@/lib/mock/dashboard"
+import { selectActiveAlertTexts, useAppStoreSelector } from "@/lib/store/app-store"
 
 export function DashboardSection() {
   const bookings = useAppStoreSelector((s) => s.bookings)
   const boats = useAppStoreSelector((s) => s.boats)
   const weather = useAppStoreSelector((s) => s.weather)
-  const activeAlerts = useAppStoreSelector((s) => selectActiveAlerts(s).map((a) => a.text))
+  const activeAlerts = useAppStoreSelector(selectActiveAlertTexts)
+
+  const kpisLive = useMemo(() => {
+    const todays = bookings.filter((b) => isBookingDateToday(b.data))
+    const ospitiSum = todays.reduce((s, b) => s + (Number(b.ospiti) || 0), 0)
+    return [
+      { ...dashboardKpis[0] },
+      { ...dashboardKpis[1], value: String(todays.length) },
+      { ...dashboardKpis[2], value: String(ospitiSum) },
+      { ...dashboardKpis[3] },
+    ]
+  }, [bookings])
 
   const departures = bookings.slice(0, 6).map((b) => ({
     ora: b.ora,
@@ -55,7 +69,7 @@ export function DashboardSection() {
 
   return (
     <>
-      <DashboardKpiCards kpis={[...dashboardKpis]} />
+      <DashboardKpiCards kpis={kpisLive} />
 
       <section className="mt-6 space-y-4 sm:col-span-2 xl:col-span-4">
         <div className="grid gap-4 xl:grid-cols-[1.7fr_1fr]">
