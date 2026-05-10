@@ -3,7 +3,7 @@
 import { useState } from "react"
 
 import { assignCrew } from "@/lib/actions"
-import { dashboardDepartures } from "@/lib/mock/dashboard"
+import { useAppStoreSelector } from "@/lib/store/app-store"
 import type { ActionResult, AssignCrewInput } from "@/types/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -26,6 +26,7 @@ const INITIAL: AssignCrewInput = {
 export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewSheetProps) {
   const [form, setForm] = useState<AssignCrewInput>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
+  const bookings = useAppStoreSelector((s) => s.bookings.slice(0, 12))
 
   async function submit() {
     setSubmitting(true)
@@ -55,8 +56,8 @@ export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewShee
               placeholder="Seleziona partenza"
             />
             <datalist id="departure-options">
-              {dashboardDepartures.map((dep) => (
-                <option key={`${dep.ora}-${dep.barca}`} value={`${dep.ora} ${dep.barca}`} />
+              {bookings.map((dep) => (
+                <option key={dep.id} value={`${dep.ora} ${dep.barca}`} />
               ))}
             </datalist>
           </div>

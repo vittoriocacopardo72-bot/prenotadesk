@@ -1,9 +1,22 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { BookingStatusBadge } from "@/components/bookings/booking-status-badge"
-import type { BookingRow } from "@/types/booking"
+import type { BookingRow, BookingStatus } from "@/types/booking"
 
-export function BookingTable({ rows }: { rows: BookingRow[] }) {
+const STATUS_ORDER: BookingStatus[] = ["In attesa", "Confermate", "In arrivo", "Check-in", "Cancellate"]
+
+function nextStatus(status: BookingStatus): BookingStatus {
+  const idx = STATUS_ORDER.indexOf(status)
+  return STATUS_ORDER[(idx + 1) % STATUS_ORDER.length]
+}
+
+export function BookingTable({
+  rows,
+  onAdvanceStatus,
+}: {
+  rows: BookingRow[]
+  onAdvanceStatus?: (rowId: string | undefined, nextStatus: BookingStatus) => void
+}) {
   return (
     <Card className="bg-white">
       <CardHeader>
@@ -27,7 +40,7 @@ export function BookingTable({ rows }: { rows: BookingRow[] }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={`${row.cliente}-${row.data}-${row.ora}`} className="border-b border-slate-100 align-middle">
+              <tr key={row.id ?? `${row.cliente}-${row.data}-${row.ora}`} className="border-b border-slate-100 align-middle">
                 <td className="px-2 py-2 font-medium text-slate-800">{row.cliente}</td>
                 <td className="px-2 py-2 text-slate-600">{row.barca}</td>
                 <td className="px-2 py-2 text-slate-600">{row.servizio}</td>
@@ -45,6 +58,14 @@ export function BookingTable({ rows }: { rows: BookingRow[] }) {
                     </Button>
                     <Button type="button" variant="ghost" size="xs">
                       Modifica
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="xs"
+                      onClick={() => onAdvanceStatus?.(row.id, nextStatus(row.stato))}
+                    >
+                      Avanza stato
                     </Button>
                   </div>
                 </td>

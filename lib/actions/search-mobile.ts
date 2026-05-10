@@ -1,4 +1,4 @@
-import { getSearchSnapshot } from "@/lib/actions/mobile-store"
+import { getAppState } from "@/lib/store/app-store"
 import type { ActionResult, MobileSearchResult } from "@/types/actions"
 
 export async function searchMobile(query: string): Promise<ActionResult<{ items: MobileSearchResult[] }>> {
@@ -7,22 +7,37 @@ export async function searchMobile(query: string): Promise<ActionResult<{ items:
     return { status: "success", message: "Inserisci almeno 1 carattere.", data: { items: [] } }
   }
 
-  const src = getSearchSnapshot()
+  const src = getAppState()
   const items: MobileSearchResult[] = []
 
-  src.alerts.forEach((alert, idx) => {
-    if (alert.toLowerCase().includes(q)) {
+  src.alerts
+    .filter((a) => !a.resolved)
+    .forEach((alert, idx) => {
+      if (alert.text.toLowerCase().includes(q)) {
+        items.push({
+          id: `alert_${idx}`,
+          kind: "alert",
+          title: "Alert operativo",
+          subtitle: alert.text,
+          target: { type: "tab", tab: "home" },
+        })
+      }
+    })
+
+  src.bookings.forEach((booking) => {
+    const line = `${booking.cliente} ${booking.barca} ${booking.servizio}`.toLowerCase()
+    if (line.includes(q)) {
       items.push({
-        id: `alert_${idx}`,
-        kind: "alert",
-        title: "Alert operativo",
-        subtitle: alert,
-        target: { type: "tab", tab: "home" },
+        id: booking.id,
+        kind: "booking",
+        title: booking.cliente,
+        subtitle: `${booking.barca} • ${booking.data} ${booking.ora}`,
+        target: { type: "tab", tab: "prenotazioni" },
       })
     }
   })
 
-  src.departures.forEach((dep, idx) => {
+  src.bookings.forEach((dep, idx) => {
     const line = `${dep.ora} ${dep.barca} ${dep.servizio} ${dep.stato}`.toLowerCase()
     if (line.includes(q)) {
       items.push({
@@ -35,28 +50,15 @@ export async function searchMobile(query: string): Promise<ActionResult<{ items:
     }
   })
 
-  src.fleet.forEach((boat, idx) => {
-    const line = `${boat.nome} ${boat.readiness} ${boat.crew}`.toLowerCase()
+  src.boats.forEach((boat, idx) => {
+    const line = `${boat.nome} ${boat.stato} ${boat.equipaggio}`.toLowerCase()
     if (line.includes(q)) {
       items.push({
         id: `boat_${idx}`,
         kind: "boat",
         title: boat.nome,
-        subtitle: `${boat.readiness} • Prossima ${boat.next}`,
+        subtitle: `${boat.stato} • Prossima ${boat.prossimaUscita}`,
         target: { type: "section", sectionKey: "Barche" },
-      })
-    }
-  })
-
-  src.bookings.forEach((booking) => {
-    const line = `${booking.customerName} ${booking.boatName} ${booking.service}`.toLowerCase()
-    if (line.includes(q)) {
-      items.push({
-        id: booking.id,
-        kind: "booking",
-        title: booking.customerName,
-        subtitle: `${booking.boatName} • ${booking.date} ${booking.time}`,
-        target: { type: "tab", tab: "prenotazioni" },
       })
     }
   })

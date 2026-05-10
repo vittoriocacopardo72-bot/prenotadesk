@@ -1,11 +1,15 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardDescription, CardTitle } from "@/components/ui/card"
 import { BoatsTable } from "@/components/boats/boats-table"
 import { FleetSummaryCards } from "@/components/boats/fleet-summary-cards"
 import { MaintenancePanel } from "@/components/boats/maintenance-panel"
-import { fleetRows } from "@/lib/mock/boats"
+import { selectBoatRows, useAppStoreSelector } from "@/lib/store/app-store"
 
 export function BoatsSection() {
+  const boats = useAppStoreSelector((s) => selectBoatRows(s))
+
   return (
     <>
       <Card className="bg-white sm:col-span-2 xl:col-span-4">
@@ -28,7 +32,7 @@ export function BoatsSection() {
       <FleetSummaryCards />
 
       <div className="grid gap-6 sm:col-span-2 xl:col-span-4 xl:grid-cols-[1.7fr_0.9fr]">
-        <BoatsTable boats={fleetRows} />
+        <BoatsTable boats={boats} />
         <MaintenancePanel />
       </div>
     </>

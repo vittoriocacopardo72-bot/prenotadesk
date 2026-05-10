@@ -21,6 +21,7 @@ export type MobileMarineSheetProps = {
   onOpenChange: (open: boolean) => void
   rows: readonly MarineRow[]
   onOpenMeteo: () => void
+  onRefreshWeather?: () => void
 }
 
 export function MobileMarineSheet({
@@ -28,6 +29,7 @@ export function MobileMarineSheet({
   onOpenChange,
   rows,
   onOpenMeteo,
+  onRefreshWeather,
 }: MobileMarineSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -57,9 +59,14 @@ export function MobileMarineSheet({
           )}
         </div>
         <SheetFooter className="border-t border-slate-200 p-4">
-          <Button type="button" className="w-full" variant="secondary" onClick={onOpenMeteo}>
-            Apri meteo marino completo
-          </Button>
+          <div className="grid w-full grid-cols-2 gap-2">
+            <Button type="button" variant="outline" onClick={onRefreshWeather}>
+              Aggiorna riepilogo
+            </Button>
+            <Button type="button" variant="secondary" onClick={onOpenMeteo}>
+              Apri meteo completo
+            </Button>
+          </div>
         </SheetFooter>
       </SheetContent>
     </Sheet>

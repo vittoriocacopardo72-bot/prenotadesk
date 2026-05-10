@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { incassiFilters, transazioniRows } from "@/lib/mock/incassi"
+import { incassiFilters } from "@/lib/mock/incassi"
+import { selectPaymentRows, useAppStoreSelector } from "@/lib/store/app-store"
 import type { TransazioneFilter, TransazioneStato } from "@/types/incassi"
 
 function statoVariant(stato: TransazioneStato): "default" | "secondary" | "outline" | "destructive" {
@@ -20,6 +21,7 @@ function statoVariant(stato: TransazioneStato): "default" | "secondary" | "outli
 export function FinanzeSection() {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState<TransazioneFilter>("Tutti")
+  const transazioniRows = useAppStoreSelector((s) => selectPaymentRows(s))
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -33,7 +35,7 @@ export function FinanzeSection() {
       const matchesFilter = filter === "Tutti" ? true : row.stato === filter
       return matchesSearch && matchesFilter
     })
-  }, [search, filter])
+  }, [search, filter, transazioniRows])
 
   return (
     <>

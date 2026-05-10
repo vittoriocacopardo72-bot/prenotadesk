@@ -3,7 +3,7 @@
 import { useState } from "react"
 
 import { setBoatBlockState } from "@/lib/actions"
-import { dashboardFleetLive } from "@/lib/mock/dashboard"
+import { useAppStoreSelector } from "@/lib/store/app-store"
 import type { ActionResult } from "@/types/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,6 +22,7 @@ export function BlockBoatSheet({ open, onOpenChange, onResult }: BlockBoatSheetP
   const [reason, setReason] = useState("")
   const [mode, setMode] = useState<"block" | "unblock">("block")
   const [submitting, setSubmitting] = useState(false)
+  const boats = useAppStoreSelector((s) => s.boats)
 
   async function submit() {
     setSubmitting(true)
@@ -67,7 +68,7 @@ export function BlockBoatSheet({ open, onOpenChange, onResult }: BlockBoatSheetP
               onChange={(e) => setBoatName(e.target.value)}
             />
             <datalist id="boat-block-options">
-              {dashboardFleetLive.map((boat) => (
+              {boats.map((boat) => (
                 <option key={boat.nome} value={boat.nome} />
               ))}
             </datalist>

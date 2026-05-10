@@ -3,7 +3,7 @@
 import { useState } from "react"
 
 import { createBooking } from "@/lib/actions"
-import { dashboardFleetLive } from "@/lib/mock/dashboard"
+import { useAppStoreSelector } from "@/lib/store/app-store"
 import type { ActionResult, CreateBookingInput } from "@/types/actions"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -31,6 +31,7 @@ const INITIAL: CreateBookingInput = {
 export function CreateBookingSheet({ open, onOpenChange, onResult }: CreateBookingSheetProps) {
   const [form, setForm] = useState<CreateBookingInput>(INITIAL)
   const [submitting, setSubmitting] = useState(false)
+  const boats = useAppStoreSelector((s) => s.boats)
 
   function update<K extends keyof CreateBookingInput>(key: K, value: CreateBookingInput[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -71,7 +72,7 @@ export function CreateBookingSheet({ open, onOpenChange, onResult }: CreateBooki
               onChange={(e) => update("boatName", e.target.value)}
             />
             <datalist id="boat-options">
-              {dashboardFleetLive.map((boat) => (
+              {boats.map((boat) => (
                 <option key={boat.nome} value={boat.nome} />
               ))}
             </datalist>

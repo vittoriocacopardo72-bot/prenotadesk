@@ -3,14 +3,12 @@
 import { useState } from "react"
 
 import { Badge } from "@/components/ui/badge"
+import { markAlertResolved, updateWeatherSummary } from "@/lib/actions"
 import {
-  dashboardAlerts,
-  dashboardDepartures,
-  dashboardFleetLive,
   dashboardKpis,
-  dashboardMarineWidgets,
   dashboardQuickActions,
 } from "@/lib/mock/dashboard"
+import { selectActiveAlerts, useAppStoreSelector } from "@/lib/store/app-store"
 
 import { CockpitStatusBar, type CockpitStatusTone } from "./home/cockpit-status-bar"
 import { CompactPreviewCard } from "./home/compact-preview-card"
@@ -43,28 +41,35 @@ export function MobileHomeView({
   onOpenBarcheModule,
 }: MobileHomeViewProps) {
   const [sheet, setSheet] = useState<HomeSheet>(null)
+  const activeAlerts = useAppStoreSelector((s) => selectActiveAlerts(s))
+  const bookings = useAppStoreSelector((s) => s.bookings)
+  const boats = useAppStoreSelector((s) => s.boats)
+  const weather = useAppStoreSelector((s) => s.weather)
 
   const kpis = [...dashboardKpis]
   const statusLine = `${kpis[1]?.value ?? "—"} partenze · ${kpis[2]?.value ?? "—"} ospiti · ${kpis[0]?.value ?? "—"}`
 
-  const d0 = dashboardDepartures[0]
-  const d1 = dashboardDepartures[1]
+  const departures = bookings.slice(0, 6).map((b) => ({
+    ora: b.ora,
+    barca: b.barca,
+    servizio: b.servizio,
+    stato: b.stato === "Confermate" ? "Confermata" : b.stato,
+  }))
+  const d0 = departures[0]
+  const d1 = departures[1]
   const departuresPreview = d0 && d1 ? `${d0.ora} ${d0.barca} · ${d1.ora} ${d1.barca}` : d0 ? `${d0.ora} ${d0.barca}` : "Nessuna partenza"
 
   const alertsPreview =
-    dashboardAlerts[0]?.length > 72
-      ? `${dashboardAlerts[0].slice(0, 72)}…`
-      : dashboardAlerts[0] ?? "Nessun alert"
+    activeAlerts[0]?.text.length > 72
+      ? `${activeAlerts[0].text.slice(0, 72)}…`
+      : activeAlerts[0]?.text ?? "Nessun alert"
 
-  const wWind = dashboardMarineWidgets[1]
-  const wSea = dashboardMarineWidgets[0]
-  const marinePreview =
-    wWind && wSea ? `${wWind.value} vento · ${wSea.value} mare` : "Dati meteo"
+  const marinePreview = `${weather.vento} vento · ${weather.mare} mare`
 
-  const f0 = dashboardFleetLive[0]
-  const f1 = dashboardFleetLive[1]
+  const f0 = boats[0]
+  const f1 = boats[1]
   const fleetPreview =
-    f0 && f1 ? `${f0.nome} ${f0.readiness.toLowerCase()} · ${f1.nome}` : f0 ? `${f0.nome} · ${f0.readiness}` : "Flotta"
+    f0 && f1 ? `${f0.nome} ${f0.stato.toLowerCase()} · ${f1.nome}` : f0 ? `${f0.nome} · ${f0.stato}` : "Flotta"
 
   const closeAnd = (fn: () => void) => {
     setSheet(null)
@@ -73,7 +78,7 @@ export function MobileHomeView({
 
   return (
     <div className="flex flex-col gap-2">
-      <CockpitStatusBar tone={cockpitTone(dashboardAlerts)} line={statusLine} />
+      <CockpitStatusBar tone={cockpitTone(activeAlerts.map((a) => a.text))} line={statusLine} />
 
       <div>
         <p className="mb-1.5 text-[10px] font-semibold tracking-wider text-slate-500 uppercase">
@@ -92,7 +97,7 @@ export function MobileHomeView({
             hint="Tocca per il centro alert"
             badge={
               <Badge variant="secondary" className="h-5 px-1.5 text-[10px] tabular-nums">
-                {dashboardAlerts.length}
+                {activeAlerts.length}
               </Badge>
             }
             preview={<p className="line-clamp-2 text-xs text-slate-700">{alertsPreview}</p>}
@@ -127,15 +132,18 @@ export function MobileHomeView({
         onOpenChange={(open) => {
           if (!open) setSheet(null)
         }}
-        alerts={dashboardAlerts}
+        alerts={activeAlerts}
         onOpenOperazioni={() => closeAnd(onOpenOperazioni)}
+        onResolveAlert={(alertId) => {
+          void markAlertResolved(alertId)
+        }}
       />
       <MobileDeparturesSheet
         open={sheet === "departures"}
         onOpenChange={(open) => {
           if (!open) setSheet(null)
         }}
-        departures={dashboardDepartures}
+        departures={departures}
         onOpenOperazioni={() => closeAnd(onOpenOperazioni)}
       />
       <MobileMarineSheet
@@ -143,15 +151,32 @@ export function MobileHomeView({
         onOpenChange={(open) => {
           if (!open) setSheet(null)
         }}
-        rows={[...dashboardMarineWidgets]}
+        rows={[
+          { label: "Mare", value: weather.mare, detail: "Sintesi operativa" },
+          { label: "Vento", value: weather.vento, detail: "Sintesi operativa" },
+          { label: "Visibilita", value: weather.visibilita, detail: "Sintesi operativa" },
+          { label: "Stato porto", value: weather.statoPorto, detail: "Sintesi operativa" },
+        ]}
         onOpenMeteo={() => closeAnd(onOpenMeteoModule)}
+        onRefreshWeather={() => {
+          void updateWeatherSummary({
+            vento: `${Math.max(8, Math.round(Math.random() * 20))} nodi`,
+            livelloOperativo: Math.random() > 0.5 ? "Alto" : "Medio",
+          })
+        }}
       />
       <MobileFleetSheet
         open={sheet === "fleet"}
         onOpenChange={(open) => {
           if (!open) setSheet(null)
         }}
-        items={[...dashboardFleetLive]}
+        items={boats.map((b) => ({
+          nome: b.nome,
+          readiness: b.stato,
+          fuel: "n/d",
+          next: b.prossimaUscita,
+          crew: b.equipaggio,
+        }))}
         onOpenBarche={() => closeAnd(onOpenBarcheModule)}
       />
     </div>

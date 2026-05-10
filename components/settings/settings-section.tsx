@@ -1,16 +1,18 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { updateSettingsPreferences } from "@/lib/actions"
 import { advancedSettingsGroupIds, baseSettingsGroupIds, planCards, settingsGroups } from "@/lib/mock/settings"
+import { useAppStoreSelector } from "@/lib/store/app-store"
 
 type SettingsArea = "Base" | "Avanzate"
 
 export function SettingsSection() {
-  const [settingsArea, setSettingsArea] = useState<SettingsArea>("Base")
+  const settingsArea = useAppStoreSelector((s) => s.settings.settingsArea as SettingsArea)
 
   const visibleSettingsGroups = useMemo(() => {
     const activeIds = settingsArea === "Base" ? new Set<string>(baseSettingsGroupIds) : new Set<string>(advancedSettingsGroupIds)
@@ -33,10 +35,20 @@ export function SettingsSection() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              <Button type="button" size="sm" variant={settingsArea === "Base" ? "default" : "outline"} onClick={() => setSettingsArea("Base")}>
+              <Button
+                type="button"
+                size="sm"
+                variant={settingsArea === "Base" ? "default" : "outline"}
+                onClick={() => void updateSettingsPreferences({ settingsArea: "Base" })}
+              >
                 Base
               </Button>
-              <Button type="button" size="sm" variant={settingsArea === "Avanzate" ? "default" : "outline"} onClick={() => setSettingsArea("Avanzate")}>
+              <Button
+                type="button"
+                size="sm"
+                variant={settingsArea === "Avanzate" ? "default" : "outline"}
+                onClick={() => void updateSettingsPreferences({ settingsArea: "Avanzate" })}
+              >
                 Avanzate
               </Button>
             </div>

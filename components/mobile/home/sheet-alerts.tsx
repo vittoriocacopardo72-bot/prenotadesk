@@ -9,12 +9,14 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet"
+import type { AlertItem } from "@/types/domain"
 
 export type MobileAlertsSheetProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
-  alerts: readonly string[]
+  alerts: readonly AlertItem[]
   onOpenOperazioni: () => void
+  onResolveAlert?: (alertId: string) => void
 }
 
 export function MobileAlertsSheet({
@@ -22,6 +24,7 @@ export function MobileAlertsSheet({
   onOpenChange,
   alerts,
   onOpenOperazioni,
+  onResolveAlert,
 }: MobileAlertsSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -37,12 +40,20 @@ export function MobileAlertsSheet({
             </p>
           ) : (
             alerts.map((alert) => (
-              <p
-                key={alert}
-                className="rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2.5 text-sm leading-snug text-amber-950"
-              >
-                {alert}
-              </p>
+              <div key={alert.id} className="rounded-lg border border-amber-200/90 bg-amber-50 px-3 py-2.5">
+                <p className="text-sm leading-snug text-amber-950">{alert.text}</p>
+                {onResolveAlert ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="mt-1 h-auto px-0 text-xs text-amber-900"
+                    onClick={() => onResolveAlert(alert.id)}
+                  >
+                    Segna come risolto
+                  </Button>
+                ) : null}
+              </div>
             ))
           )}
         </div>

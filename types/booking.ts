@@ -13,6 +13,7 @@ export type BookingFilter =
   | "Cancellate"
 
 export type BookingRow = {
+  id?: string
   cliente: string
   barca: string
   servizio: string
