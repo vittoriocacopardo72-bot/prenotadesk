@@ -7,6 +7,7 @@ import { RegisterMovementDialog } from "@/components/finanze/register-movement-d
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { useFinanceSummary } from "@/features/finance/hooks/use-finance-summary"
 import { addFinanceMovement, deleteFinanceMovement, useFinanceMovements } from "@/lib/finance/movements-store"
 import type { CreateFinanceMovementInput, FinanceMovementType } from "@/types/finance"
 
@@ -20,20 +21,13 @@ function formatDateDisplay(dateIso: string): string {
   return Number.isNaN(date.getTime()) ? dateIso : date.toLocaleDateString("it-IT")
 }
 
-function todayIsoDate(): string {
-  const now = new Date()
-  const year = now.getFullYear()
-  const month = String(now.getMonth() + 1).padStart(2, "0")
-  const day = String(now.getDate()).padStart(2, "0")
-  return `${year}-${month}-${day}`
-}
-
 export function FinanzeSection() {
   const [search, setSearch] = useState("")
   const [filterType, setFilterType] = useState<"Tutti" | FinanceMovementType>("Tutti")
   const [filterDate, setFilterDate] = useState("")
   const [registerOpen, setRegisterOpen] = useState(false)
   const movements = useFinanceMovements()
+  const summary = useFinanceSummary()
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -47,39 +41,6 @@ export function FinanzeSection() {
     })
   }, [search, filterType, filterDate, movements])
 
-  const kpis = useMemo(() => {
-    let totaleEntrate = 0
-    let totaleUscite = 0
-    let movimentiOggi = 0
-    const today = todayIsoDate()
-    for (const movement of movements) {
-      if (movement.tipo === "Entrata") totaleEntrate += movement.importo
-      if (movement.tipo === "Uscita") totaleUscite += movement.importo
-      if (movement.data === today) movimentiOggi += 1
-    }
-    return {
-      totaleEntrate,
-      totaleUscite,
-      saldo: totaleEntrate - totaleUscite,
-      movimentiOggi,
-    }
-  }, [movements])
-
-  const categoryShare = useMemo(() => {
-    if (movements.length === 0) return []
-    const counts = new Map<string, number>()
-    for (const movement of movements) {
-      const key = movement.categoria
-      counts.set(key, (counts.get(key) ?? 0) + 1)
-    }
-    const total = movements.length
-    return [...counts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([categoria, n]) => ({ categoria, pct: Math.round((n / total) * 100) }))
-  }, [movements])
-
-  const latestMovements = useMemo(() => movements.slice(0, 5), [movements])
-
   function onCreateMovement(input: CreateFinanceMovementInput) {
     addFinanceMovement(input)
   }
@@ -92,23 +53,26 @@ export function FinanzeSection() {
     <>
       <RegisterMovementDialog open={registerOpen} onOpenChange={setRegisterOpen} onSubmit={onCreateMovement} />
 
-      <Card className="bg-white sm:col-span-2 xl:col-span-4">
+      <Card
+        className="bg-white sm:col-span-2 xl:col-span-4"
+        title="KPI da movimenti salvati in locale (chiave prenotadesk_finance_movements_v1)."
+      >
         <CardContent className="grid gap-3 pt-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Totale entrate</p>
-            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.totaleEntrate)}</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(summary.totaleEntrate)}</p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Totale uscite</p>
-            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.totaleUscite)}</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(summary.totaleUscite)}</p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Saldo</p>
-            <p className="text-xl font-semibold text-slate-800">{formatFinEur(kpis.saldo)}</p>
+            <p className="text-xl font-semibold text-slate-800">{formatFinEur(summary.saldo)}</p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Movimenti oggi</p>
-            <p className="text-xl font-semibold text-slate-800">{kpis.movimentiOggi}</p>
+            <p className="text-xl font-semibold text-slate-800">{summary.movimentiOggi}</p>
           </div>
         </CardContent>
       </Card>
@@ -119,7 +83,8 @@ export function FinanzeSection() {
             <div>
               <CardTitle>Finanze</CardTitle>
               <CardDescription>
-                Cassa operativa locale con entrate e uscite persistenti su dispositivo.
+                Cassa operativa locale con entrate e uscite persistenti su dispositivo. I KPI sopra seguono i movimenti
+                salvati (nessun dato dimostrativo).
               </CardDescription>
             </div>
             <Button type="button" onClick={() => setRegisterOpen(true)}>
@@ -213,10 +178,10 @@ export function FinanzeSection() {
               <CardDescription>Prime 5 registrazioni dal registro locale</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
-              {latestMovements.length === 0 ? (
+              {summary.ultimiMovimenti.length === 0 ? (
                 <p className="text-slate-400">Nessun movimento registrato.</p>
               ) : (
-                latestMovements.map((row) => (
+                summary.ultimiMovimenti.map((row) => (
                   <p
                     key={row.id}
                     className="rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-slate-700"
@@ -230,16 +195,19 @@ export function FinanzeSection() {
           </Card>
           <Card className="bg-white" title="Distribuzione categorie su movimenti reali">
             <CardHeader>
-              <CardTitle>Categorie piu usate</CardTitle>
+              <CardTitle>Categorie più usate</CardTitle>
+              <CardDescription>
+                Percentuali sull&apos;intero registro movimenti (non filtrate dalla ricerca sotto).
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
-              {categoryShare.length === 0 ? (
+              {summary.distribuzioneCategorie.length === 0 ? (
                 <p className="text-slate-400">Nessun movimento nel registro.</p>
               ) : (
-                categoryShare.map(({ categoria, pct }) => (
+                summary.distribuzioneCategorie.map(({ categoria, percentage }) => (
                   <div key={categoria} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
                     <span>{categoria}</span>
-                    <span className="font-medium">{pct}%</span>
+                    <span className="font-medium">{percentage}%</span>
                   </div>
                 ))
               )}
