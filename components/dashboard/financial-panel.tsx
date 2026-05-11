@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 type FinanceItem = {
@@ -6,15 +7,22 @@ type FinanceItem = {
   detail: string
 }
 
-export function FinancialPanel({ items }: { items: readonly FinanceItem[] }) {
+export function FinancialPanel({
+  items,
+  sourceNote,
+}: {
+  items: readonly FinanceItem[]
+  /** Always-visible honesty line (device-local, demo, etc.); not tooltip-only */
+  sourceNote: string
+}) {
   return (
-    <Card
-      className="bg-white"
-      title="Valori dimostrativi — collegamento POS/banca e cassa reale in arrivo"
-    >
-      <CardHeader>
+    <Card className="bg-white" title={sourceNote}>
+      <CardHeader className="gap-2">
         <CardTitle>Mini pannello finanziario</CardTitle>
         <CardDescription>Controllo economico rapido della giornata</CardDescription>
+        <Badge variant="secondary" className="w-fit text-[11px] font-normal text-slate-600">
+          {sourceNote}
+        </Badge>
       </CardHeader>
       <CardContent className="grid gap-2 sm:grid-cols-2">
         {items.map((item) => (

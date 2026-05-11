@@ -13,17 +13,18 @@ import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { isBookingDateToday } from "@/lib/bookings/booking-dates"
 import { parseImportoEurDisplay } from "@/lib/bookings/parse-importo-eur"
-import {
-  dashboardAgenda,
-  dashboardFinance,
-  dashboardKpis,
-  dashboardQuickActions,
-} from "@/lib/mock/dashboard"
+import { useFinanceSummary } from "@/features/finance/hooks/use-finance-summary"
+import { dashboardAgenda, dashboardKpis, dashboardQuickActions } from "@/lib/mock/dashboard"
 import type { SectionKey } from "@/lib/sections/section-registry"
 import { selectActiveAlertTexts, useAppStoreSelector } from "@/lib/store/app-store"
 
+function formatFinEur(n: number): string {
+  return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(n)
+}
+
 export function DashboardSection() {
   const desktopBooking = useDesktopBookingFocusOptional()
+  const financeSummary = useFinanceSummary()
 
   const handleDashboardQuickAction = useCallback(
     (label: string) => {
@@ -129,6 +130,35 @@ export function DashboardSection() {
     partenze: departures.slice(0, 3).map((d) => `${d.ora} ${d.barca}`),
   }
 
+  const financePanelItems = useMemo(
+    () => [
+      {
+        label: "Totale entrate",
+        value: formatFinEur(financeSummary.totaleEntrate),
+        detail: "Somma movimenti «Entrata» nel registro salvato su questo dispositivo",
+      },
+      {
+        label: "Totale uscite",
+        value: formatFinEur(financeSummary.totaleUscite),
+        detail: "Somma movimenti «Uscita» nel registro salvato su questo dispositivo",
+      },
+      {
+        label: "Saldo",
+        value: formatFinEur(financeSummary.saldo),
+        detail: "Entrate − uscite (stesso registro locale)",
+      },
+      {
+        label: "Movimenti oggi",
+        value: String(financeSummary.movimentiOggi),
+        detail: "Movimenti con data odierna; non collegato a POS o conti bancari",
+      },
+    ],
+    [financeSummary]
+  )
+
+  const financePanelSourceNote =
+    "Dati da cassa locale (movimenti app su questo dispositivo) — non dimostrativo, non sincronizzato, non POS/banca"
+
   return (
     <>
       <DashboardKpiCards kpis={kpisLive} />
@@ -149,7 +179,7 @@ export function DashboardSection() {
         </div>
 
         <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr_1fr]">
-          <FinancialPanel items={dashboardFinance} />
+          <FinancialPanel items={financePanelItems} sourceNote={financePanelSourceNote} />
           <DashboardQuickActions
             actions={dashboardQuickActions}
             onAction={handleDashboardQuickAction}

@@ -74,3 +74,17 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** (product): Finanze list/filters and dashboard finance mini-panel remain as prior lanes; Report trend cards **fake** but labeled **Dimostrativo**; Settings rows mostly static per M2 log. **Integration gate: working** (merge + compile + smoke QA green). |
 | **main merge** | Fast-forward `main` to `phase3/integration` tip `47de607` (includes docs commit + integration merge `f59e599` + lane commits). |
+
+---
+
+## 2026-05-11 — Phase 3 refinement **R1** (dashboard mini financial panel honesty)
+
+| Field | Value |
+|--------|--------|
+| **Scope** | Post-M4: wire `FinancialPanel` to `useFinanceSummary` (same source as Finanze KPIs); visible header badge for device-local / non-POS / non-sync honesty; no layout grid change; `prenotadesk_finance_movements_v1` unchanged |
+| **Files changed** | `components/dashboard/dashboard-section.tsx`, `components/dashboard/financial-panel.tsx` |
+| **QA performed** | Playwright MCP: **1440×900** — Dashboard (mini panel shows «Totale entrate», badge «Dati da cassa locale…»); **Finanze**, **Report**, **Impostazioni**, **Prenotazioni** nav smoke. **390×844** — **Report**; drawer **Impostazioni**; **Preno** → **Prenotazioni** |
+| **Console** | `browser_console_messages` level `error`: **0** |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **partial** (product): dashboard panel KPIs now **working** (real movements); overall dashboard still mixes live and mock elsewhere per prior state |
+| **Commit** | `fix(dashboard): wire financial mini-panel to finance summary with local honesty badge` — verify with `git log -1 --oneline` |
