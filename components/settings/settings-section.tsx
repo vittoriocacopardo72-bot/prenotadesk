@@ -1,23 +1,14 @@
 "use client"
 
-import { useMemo } from "react"
-
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { updateSettingsPreferences } from "@/lib/actions"
-import { advancedSettingsGroupIds, baseSettingsGroupIds, planCards, settingsGroups } from "@/lib/mock/settings"
-import { useAppStoreSelector } from "@/lib/store/app-store"
-
-type SettingsArea = "Base" | "Avanzate"
+import { useSettingsSectionDisplay } from "@/features/settings"
+import { updateSettingsPreferences } from "@/lib/actions/settings"
+import { planCards } from "@/lib/mock/settings"
 
 export function SettingsSection() {
-  const settingsArea = useAppStoreSelector((s) => s.settings.settingsArea as SettingsArea)
-
-  const visibleSettingsGroups = useMemo(() => {
-    const activeIds = settingsArea === "Base" ? new Set<string>(baseSettingsGroupIds) : new Set<string>(advancedSettingsGroupIds)
-    return settingsGroups.filter((group) => activeIds.has(group.id))
-  }, [settingsArea])
+  const { settingsArea, groups } = useSettingsSectionDisplay()
 
   return (
     <>
@@ -57,8 +48,16 @@ export function SettingsSection() {
             ) : (
               <div className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">Area consigliata per utenti operativi e amministrativi non tecnici.</div>
             )}
-            {visibleSettingsGroups.map((group) => (
-              <details key={group.id} className="group rounded-lg border border-slate-200 bg-slate-50/70" open={group.id === "profilo-azienda" || group.id === "operativita-giornaliera"}>
+            {groups.map((group) => (
+              <details
+                key={group.id}
+                className="group rounded-lg border border-slate-200 bg-slate-50/70"
+                open={
+                  group.id === "profilo-azienda" ||
+                  group.id === "preferenze-app" ||
+                  group.id === "operativita-giornaliera"
+                }
+              >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3">
                   <div>
                     <p className="text-sm font-medium text-slate-800">{group.title}</p>
@@ -71,6 +70,11 @@ export function SettingsSection() {
                 <div className="border-t border-slate-200 px-4 py-3">
                   {group.id === "piani-abbonamento" ? (
                     <div className="space-y-4">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <Badge variant="secondary" className="text-[11px] font-normal text-slate-600">
+                          Dati dimostrativi: limiti e contatori non collegati a dati reali
+                        </Badge>
+                      </div>
                       <div className="grid gap-3 md:grid-cols-2">
                         <div className="rounded-lg border border-slate-200 bg-white p-4">
                           <p className="text-xs text-slate-500">Piano corrente</p>
@@ -115,12 +119,37 @@ export function SettingsSection() {
                     </div>
                   ) : (
                     <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-                      {group.items.map((item) => (
-                        <div key={item.label} className="rounded-md border border-slate-200 bg-white px-3 py-2">
-                          <p className="text-[11px] text-slate-500">{item.label}</p>
-                          <p className="text-sm text-slate-800">{item.value}</p>
-                        </div>
-                      ))}
+                      {group.itemsResolved.map((row) =>
+                        row.control === "toggle" ? (
+                          <div
+                            key={row.label}
+                            className="flex flex-col gap-2 rounded-md border border-slate-200 bg-white px-3 py-2 sm:flex-row sm:items-center sm:justify-between"
+                          >
+                            <div className="min-w-0 flex-1">
+                              <p className="text-[11px] text-slate-500">{row.label}</p>
+                              <p className="text-sm text-slate-800">{row.value}</p>
+                            </div>
+                            <Button
+                              type="button"
+                              size="sm"
+                              variant="outline"
+                              className="shrink-0 self-start sm:self-center"
+                              onClick={() =>
+                                void updateSettingsPreferences({
+                                  preferenze: { [row.prefKey]: row.isOn ? "off" : "on" },
+                                })
+                              }
+                            >
+                              {row.isOn ? "Disattiva" : "Attiva"}
+                            </Button>
+                          </div>
+                        ) : (
+                          <div key={row.label} className="rounded-md border border-slate-200 bg-white px-3 py-2">
+                            <p className="text-[11px] text-slate-500">{row.label}</p>
+                            <p className="text-sm text-slate-800">{row.value}</p>
+                          </div>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
