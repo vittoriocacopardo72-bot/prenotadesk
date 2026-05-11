@@ -57,3 +57,20 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** — real wired: booking counts, payment row count, finance totals/movement count from public finance summary; **fake**: three trend/performance cards explicitly **Dimostrativo** + mock copy |
 | **Commit** | `feat(reports): make reports data-honest and activation-ready` — verify with `git log -1 --oneline` |
+
+---
+
+## 2026-05-11 — Mission **M4 Phase 3 Integration** (branch `phase3/integration`)
+
+| Field | Value |
+|--------|--------|
+| **Git topology** | No remote branch `phase3/finance`; finance lane is already on `main` (`6e7b3c0`, `7c77504`). `phase3/reports` is **linear** after `phase3/settings` (`5839074` → `95687e2`). **Single merge** of `phase3/reports` into `phase3/integration` from `main` (settings-before-reports satisfied inside the reports branch stack). |
+| **Merge commits** | `f59e599` — `chore(integration): M4 merge phase3/reports (includes phase3/settings)` (merge commit onto `main` at `7c77504`). |
+| **Conflict handling** | None (`ops/activation-log.md` merged cleanly). |
+| **Protected paths** | No edits to shell, navigation, mobile cockpit, section-registry, `app-store.ts`, `types/domain.ts`, `lib/actions/index.ts`. |
+| **Persistence** | Frozen key `prenotadesk_finance_movements_v1` unchanged (verified in Report copy and Finanze KPI `title`). |
+| **QA performed (Playwright MCP)** | **1440×900** — Dashboard; **Report** (“Riepilogo da dati locali”, `prenotadesk_finance_movements_v1`, **Dimostrativo** cards); **Finanze** (“Totale entrate”, KPI from local movements); **Impostazioni** (Base / Avanzate); **Prenotazioni** (cross-section). **390×844** — fresh load; **Altro** → **Report** (same honest copy); **Altro** → **Impostazioni** (Base / Avanzate). Mid-session Next.js dev-indicator overlay briefly blocked bottom-nav clicks; closed via Dev Tools close + full reload; not an app regression. |
+| **Console** | `browser_console_messages` level `error`: **0** (post-merge checks). |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **partial** (product): Finanze list/filters and dashboard finance mini-panel remain as prior lanes; Report trend cards **fake** but labeled **Dimostrativo**; Settings rows mostly static per M2 log. **Integration gate: working** (merge + compile + smoke QA green). |
+| **main merge** | After this log entry: merge `phase3/integration` → `main` when PO confirms (agent performed local merge in same session if branch fast-forward is clean). |
