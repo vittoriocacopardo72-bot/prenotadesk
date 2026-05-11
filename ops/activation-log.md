@@ -73,4 +73,4 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **Console** | `browser_console_messages` level `error`: **0** (post-merge checks). |
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** (product): Finanze list/filters and dashboard finance mini-panel remain as prior lanes; Report trend cards **fake** but labeled **Dimostrativo**; Settings rows mostly static per M2 log. **Integration gate: working** (merge + compile + smoke QA green). |
-| **main merge** | After this log entry: merge `phase3/integration` → `main` when PO confirms (agent performed local merge in same session if branch fast-forward is clean). |
+| **main merge** | Fast-forward `main` to `phase3/integration` tip `47de607` (includes docs commit + integration merge `f59e599` + lane commits). |
