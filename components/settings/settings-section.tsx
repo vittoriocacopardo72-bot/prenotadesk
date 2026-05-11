@@ -118,7 +118,18 @@ export function SettingsSection() {
                       <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">Gateway di pagamento abbonamento non ancora attivo in questa versione</div>
                     </div>
                   ) : (
-                    <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="space-y-3">
+                      {group.id === "preferenze-app" ? (
+                        <Badge variant="secondary" className="w-fit text-[11px] font-normal text-slate-600">
+                          Parzialmente dimostrativo: le righe con «Attiva»/«Disattiva» salvano preferenze sul dispositivo; le altre
+                          voci sono testo statico di esempio
+                        </Badge>
+                      ) : (
+                        <Badge variant="secondary" className="w-fit text-[11px] font-normal text-slate-600">
+                          Dati dimostrativi: configurazione di esempio, non collegata a dati reali o backend
+                        </Badge>
+                      )}
+                      <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
                       {group.itemsResolved.map((row) =>
                         row.control === "toggle" ? (
                           <div
@@ -150,6 +161,7 @@ export function SettingsSection() {
                           </div>
                         )
                       )}
+                      </div>
                     </div>
                   )}
                 </div>

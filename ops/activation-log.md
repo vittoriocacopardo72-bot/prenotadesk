@@ -87,4 +87,16 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **Console** | `browser_console_messages` level `error`: **0** |
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** (product): dashboard panel KPIs now **working** (real movements); overall dashboard still mixes live and mock elsewhere per prior state |
-| **Commit** | `fix(dashboard): wire financial mini-panel to finance summary with local honesty badge` — verify with `git log -1 --oneline` |
+---
+
+## 2026-05-11 — Phase 3 refinement **R2** (Settings demo parity badges)
+
+| Field | Value |
+|--------|--------|
+| **Scope** | Visible `Badge` on every non–piani-abbonamento settings group: static/mock blocks labeled like subscription area; `preferenze-app` split copy for real toggles vs static rows; no new persisted fields |
+| **Files changed** | `components/settings/settings-section.tsx` |
+| **QA performed** | Playwright MCP: **1440×900** — **Impostazioni** (Profilo azienda + Preferenze app show new badges); smoke **Finanze** → **Report** → **Prenotazioni** → **Dashboard**. **390×844** — drawer **Impostazioni**, badge «configurazione di esempio» visible in expanded group |
+| **Console** | `browser_console_messages` level `error`: **0** |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **partial** — subscription block unchanged; other groups now explicitly labeled demonstrative or mixed |
+| **Commit** | `fix(settings): label static mock groups with visible demonstrative badges` — verify with `git log -1 --oneline` |
