@@ -43,3 +43,17 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** — most rows remain static/mock; **Preferenze app** has two real toggles (`suggerimenti-rapidi`, `conferme-azioni-sensibili`); subscription/plan KPIs explicitly labeled demonstrative; plan selection still disabled |
 | **Commit** | Single commit on `phase3/settings`; verify with `git log -1 --oneline` (hash changes if amended) |
+
+---
+
+## 2026-05-11 — Mission **M3 Phase 3 Reports** (branch `phase3/reports`)
+
+| Field | Value |
+|--------|--------|
+| **Scope** | Reports lane: read-only local summaries (app store bookings/payments + `useFinanceSummary`); demo KPI cards labeled **Dimostrativo**; honest empty / partial-empty copy; no shell, no `app-store` edits, no finance store internals |
+| **Files changed** | `features/reports/selectors.ts`, `features/reports/hooks/use-reports-local-snapshot.ts`, `features/reports/index.ts`, `components/report/report-section.tsx`, `lib/mock/report.ts`, `ops/activation-log.md` |
+| **QA performed** | Playwright MCP: **1440×900** — **Dashboard** → **Report** (see “Riepilogo da dati locali”, `prenotadesk_finance_movements_v1`, badges **Dimostrativo**) → **Finanze** → **Report** again; **390×844** — **Altro** → **Report**, layout readable; no freeze observed |
+| **Console** | `browser_console_messages` level `error`: **0** |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **partial** — real wired: booking counts, payment row count, finance totals/movement count from public finance summary; **fake**: three trend/performance cards explicitly **Dimostrativo** + mock copy |
+| **Commit** | `feat(reports): make reports data-honest and activation-ready` — verify with `git log -1 --oneline` |
