@@ -36,7 +36,9 @@ export function MobileAppHeader({
     <header
       className={cn(
         "sticky top-0 z-30 border-b border-slate-200 bg-slate-50/95 px-4 backdrop-blur-md",
-        compact ? "pt-2 pb-2" : "pt-3 pb-3",
+        compact
+          ? "pt-[calc(0.5rem+env(safe-area-inset-top,0px))] pb-2"
+          : "pt-[calc(0.75rem+env(safe-area-inset-top,0px))] pb-3",
         className
       )}
     >
@@ -48,6 +50,7 @@ export function MobileAppHeader({
             size="icon-sm"
             aria-label="Indietro"
             onClick={onBack}
+            className="size-11 min-h-11 min-w-11 shrink-0"
           >
             <ChevronLeft className="size-4" />
           </Button>
@@ -58,6 +61,7 @@ export function MobileAppHeader({
             size="icon-sm"
             aria-label="Apri menu"
             onClick={onMenuOpen}
+            className="size-11 min-h-11 min-w-11 shrink-0"
           >
             <Menu className="size-4" />
           </Button>

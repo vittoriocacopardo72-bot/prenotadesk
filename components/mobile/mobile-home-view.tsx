@@ -3,11 +3,12 @@
 import { useState } from "react"
 
 import { Badge } from "@/components/ui/badge"
+import { useBookingRows } from "@/features/bookings/hooks/use-booking-rows"
+import { useFinanceSummary } from "@/features/finance/hooks/use-finance-summary"
 import { markAlertResolved, updateWeatherSummary } from "@/lib/actions"
-import {
-  dashboardKpis,
-  dashboardQuickActions,
-} from "@/lib/mock/dashboard"
+import { isBookingDateToday } from "@/lib/bookings/booking-dates"
+import { buildCockpitStatusLine } from "@/lib/mobile/cockpit-status-line"
+import { dashboardQuickActions } from "@/lib/mock/dashboard"
 import { selectActiveAlerts, useAppStoreSelector } from "@/lib/store/app-store"
 
 import { CockpitStatusBar, type CockpitStatusTone } from "./home/cockpit-status-bar"
@@ -45,9 +46,18 @@ export function MobileHomeView({
   const bookings = useAppStoreSelector((s) => s.bookings)
   const boats = useAppStoreSelector((s) => s.boats)
   const weather = useAppStoreSelector((s) => s.weather)
+  const bookingRows = useBookingRows()
+  const financeSummary = useFinanceSummary()
 
-  const kpis = [...dashboardKpis]
-  const statusLine = `${kpis[1]?.value ?? "—"} partenze · ${kpis[2]?.value ?? "—"} ospiti · ${kpis[0]?.value ?? "—"}`
+  const todayRows = bookingRows.filter((row) => isBookingDateToday(row.data))
+  const prenotazioniOggi = todayRows.length
+  const ospitiOggi = todayRows.reduce((s, row) => s + (Number(row.ospiti) || 0), 0)
+  const statusLine = buildCockpitStatusLine({
+    prenotazioniOggi,
+    ospitiOggi,
+    saldoLocaleEur: financeSummary.saldo,
+    movimentiCassaOggi: financeSummary.movimentiOggi,
+  })
 
   const departures = bookings.slice(0, 6).map((b) => ({
     ora: b.ora,

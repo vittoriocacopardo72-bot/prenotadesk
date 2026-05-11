@@ -114,3 +114,84 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** (unchanged product classification for Report; copy-only friction fix) |
 | **Commit** | `fix(report): add device-local non-sync disclaimer` — verify with `git log -1 --oneline` |
+
+---
+
+## 2026-05-11 — Phase 4 Mobile **P4-1** (cockpit status line + badge honesty)
+
+| Field | Value |
+|--------|--------|
+| **Allowlist** | `components/mobile/mobile-home-view.tsx`, `components/mobile/home/cockpit-status-bar.tsx`, `lib/mobile/cockpit-status-line.ts` |
+| **Scope** | Replace mock `dashboardKpis` cockpit line with `useBookingRows` + `isBookingDateToday` + `useFinanceSummary`; badge **Live** → default **Locale** (optional `badgeLabel`); pure `buildCockpitStatusLine` helper |
+| **Forbidden touched** | None |
+| **QA** | Playwright MCP **390×844** — home shows store-derived status text + badge «Locale»; **1440×900** — desktop shell + Dashboard unchanged |
+| **Console** | `browser_console_messages`: **0** errors (sampled) |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **working** (cockpit strip); weather/quick actions unchanged |
+| **Commit** | `no-commit` (batch with P4-2–P4-5 or user commit) |
+
+---
+
+## 2026-05-11 — Phase 4 Mobile **P4-2** (compact Operazioni hub)
+
+| Field | Value |
+|--------|--------|
+| **Allowlist** | `components/mobile/mobile-operazioni-view.tsx`, `components/mobile/mobile-app-root.tsx` |
+| **Scope** | Remove `DashboardSection` embed; compact module cards + navigation to **Prenotazioni** tab or **Altro** sections |
+| **Forbidden touched** | None |
+| **QA** | Playwright **390×844** — **Ops** tab shows card grid (Prenotazioni, Finanze, …); no dashboard grid |
+| **Console** | No new errors in sampled session |
+| **lint / build / typecheck** | **PASS** |
+| **Classification** | **working** (navigation hub) |
+| **Commit** | `no-commit` |
+
+---
+
+## 2026-05-11 — Phase 4 Mobile **P4-3** (mobile Prenotazioni stack)
+
+| Field | Value |
+|--------|--------|
+| **Allowlist** | `components/mobile/mobile-bookings-stack.tsx`, `components/mobile/mobile-app-root.tsx` |
+| **Scope** | Mobile **Preno** tab renders `MobileBookingsStack` (`useBookingRows`, filters, **Avanza stato**); desktop still uses registry `BookingsSection` |
+| **QA** | **390×844** — **Preno** shows stacked cards + filters; **1440×900** — sidebar **Prenotazioni** still shows **Elenco prenotazioni** table |
+| **lint / build / typecheck** | **PASS** |
+| **Classification** | **working** (mobile list); desktop bookings unchanged |
+| **Commit** | `no-commit` |
+
+---
+
+## 2026-05-11 — Phase 4 Mobile **P4-4** (Altro Finanze compact + scroll shell)
+
+| Field | Value |
+|--------|--------|
+| **Allowlist** | `components/mobile/finanze/mobile-finanze-compact.tsx`, `components/mobile/wrappers/mobile-altro-scroll-shell.tsx`, `components/mobile/mobile-app-root.tsx` |
+| **Scope** | Mobile **Altro → Finanze** uses `MobileFinanzeCompact` (same movements store + dialog; card stack); other Altro modules in `MobileAltroScrollShell`; desktop **FinanzeSection** unchanged |
+| **QA** | **390×844** — **Altro** → **Finanze** compact view; **1440×900** — sidebar **Finanze** full section (**Totale entrate**, table **Movimenti**) |
+| **lint / build / typecheck** | **PASS** |
+| **Classification** | **working** (mobile path); desktop finance/report/settings unchanged |
+| **Commit** | `no-commit` |
+
+---
+
+## 2026-05-11 — Phase 4 Mobile **P4-5** (header safe-area + touch targets)
+
+| Field | Value |
+|--------|--------|
+| **Allowlist** | `components/mobile/mobile-app-header.tsx`, `components/mobile/mobile-bottom-nav.tsx` |
+| **Scope** | Header top padding adds `env(safe-area-inset-top)`; menu/back buttons **≥44px**; bottom nav items `min-h-[48px]` |
+| **QA** | **390×844** — home boot; **1440×900** — **Report** + **Impostazioni** smoke after phase |
+| **Console** | **0** errors (sampled) |
+| **lint / build / typecheck** | **PASS** |
+| **Classification** | **working** (touch / notch) |
+| **Commit** | `no-commit` |
+
+---
+
+## 2026-05-11 — Phase 4 Mobile **P4-6** (trace closure)
+
+| Field | Value |
+|--------|--------|
+| **Cumulative paths** | `lib/mobile/cockpit-status-line.ts`, `components/mobile/home/cockpit-status-bar.tsx`, `components/mobile/mobile-home-view.tsx`, `components/mobile/mobile-operazioni-view.tsx`, `components/mobile/mobile-bookings-stack.tsx`, `components/mobile/finanze/mobile-finanze-compact.tsx`, `components/mobile/wrappers/mobile-altro-scroll-shell.tsx`, `components/mobile/mobile-app-root.tsx`, `components/mobile/mobile-app-header.tsx`, `components/mobile/mobile-bottom-nav.tsx`, `ops/activation-log.md` |
+| **Guardrails** | No edits to forbidden shell/registry/store contract paths per mission brief |
+| **Desktop regression** | Finanze / Report / Settings sections smoke-tested at **1440×900** — OK |
+| **Commit** | Recommend one commit after review, e.g. `feat(mobile): phase 4 cockpit, operazioni, preno stack, altro finanze, safe-area` |

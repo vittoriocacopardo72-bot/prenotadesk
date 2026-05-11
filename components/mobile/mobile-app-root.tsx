@@ -13,9 +13,12 @@ import type { NavAccessContext, PermissionId } from "@/types/dashboard"
 import { MobileAltroHub } from "./mobile-altro-hub"
 import { MobileAppHeader } from "./mobile-app-header"
 import { MobileBottomNav } from "./mobile-bottom-nav"
+import { MobileFinanzeCompact } from "./finanze/mobile-finanze-compact"
+import { MobileAltroScrollShell } from "./wrappers/mobile-altro-scroll-shell"
 import { MobileHomeView } from "./mobile-home-view"
 import { MobileOperazioniView } from "./mobile-operazioni-view"
 import { MobileActionHub } from "./mobile-action-hub"
+import { MobileBookingsStack } from "./mobile-bookings-stack"
 
 export function MobileAppRoot() {
   const [tab, setTab] = useState<MobileMainTab>("home")
@@ -123,16 +126,30 @@ export function MobileAppRoot() {
               />
             ) : null}
 
-            {tab === "operazioni" ? <MobileOperazioniView /> : null}
-
-            {tab === "prenotazioni" ? (
-              <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{sectionContent.Prenotazioni}</section>
+            {tab === "operazioni" ? (
+              <MobileOperazioniView
+                onNavigateTab={handleTabChange}
+                onOpenAltroSection={(key) => {
+                  setTab("altro")
+                  setAltroSection(key)
+                }}
+              />
             ) : null}
+
+            {tab === "prenotazioni" ? <MobileBookingsStack /> : null}
 
             {tab === "altro" && !altroSection ? <MobileAltroHub onSelect={setAltroSection} /> : null}
 
             {tab === "altro" && altroSection ? (
-              <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{sectionContent[altroSection]}</section>
+              altroSection === "Finanze" ? (
+                <MobileFinanzeCompact />
+              ) : (
+                <MobileAltroScrollShell>
+                  <section className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                    {sectionContent[altroSection]}
+                  </section>
+                </MobileAltroScrollShell>
+              )
             ) : null}
           </main>
 

@@ -47,7 +47,7 @@ export function MobileBottomNav({ active, onChange, className }: MobileBottomNav
               size="sm"
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "h-auto min-w-0 flex-1 flex-col gap-0.5 rounded-lg py-2 text-[10px] font-medium",
+                "h-auto min-h-[48px] min-w-0 flex-1 flex-col justify-center gap-1 rounded-lg py-2 text-[10px] font-medium",
                 isActive ? "text-sky-800 bg-sky-50" : "text-slate-600"
               )}
               onClick={() => onChange(tab)}
