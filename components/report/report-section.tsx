@@ -24,6 +24,10 @@ export function ReportSection() {
           <CardTitle>Report</CardTitle>
           <CardDescription className="space-y-3 text-pretty">
             <p>{reportSectionMeta.subtitle}</p>
+            <p className="text-muted-foreground text-xs">
+              Questa sezione legge solo dati presenti su questo dispositivo; nulla è sincronizzato con altri browser o
+              utenti.
+            </p>
             <div className="text-foreground space-y-2 text-sm">
               <p className="font-medium">Riepilogo da dati locali (sola lettura)</p>
               <ul className="list-disc space-y-1 pl-4">

@@ -100,3 +100,17 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** — subscription block unchanged; other groups now explicitly labeled demonstrative or mixed |
 | **Commit** | `fix(settings): label static mock groups with visible demonstrative badges` — verify with `git log -1 --oneline` |
+
+---
+
+## 2026-05-11 — Phase 3 refinement **R3** (Report device-local disclaimer)
+
+| Field | Value |
+|--------|--------|
+| **Scope** | One-line copy clarifying Report reads only device-local data and is not synced across browsers/users; no data logic change |
+| **Files changed** | `components/report/report-section.tsx` |
+| **QA performed** | Playwright MCP: **1440×900** — **Report** (new paragraph visible); regression smoke **Dashboard**, **Finanze**, **Impostazioni**, **Prenotazioni**. **390×844** — **Altro** → **Report** (same line visible) |
+| **Console** | `browser_console_messages` level `error`: **0** |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **partial** (unchanged product classification for Report; copy-only friction fix) |
+| **Commit** | `fix(report): add device-local non-sync disclaimer` — verify with `git log -1 --oneline` |
