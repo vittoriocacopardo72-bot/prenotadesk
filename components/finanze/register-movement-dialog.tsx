@@ -2,8 +2,6 @@
 
 import { useState } from "react"
 
-import { registerPayment } from "@/lib/actions"
-import type { ActionResult, RegisterPaymentInput } from "@/types/actions"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -16,38 +14,37 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import type { CreateFinanceMovementInput, FinanceMovementCategory, FinanceMovementType } from "@/types/finance"
 
-const INITIAL: RegisterPaymentInput = {
-  bookingRef: "",
-  amount: 0,
-  method: "POS",
-  notes: "",
+const INITIAL: CreateFinanceMovementInput = {
+  tipo: "Entrata",
+  importo: 0,
+  descrizione: "",
+  data: "",
+  categoria: "Altro",
 }
 
 export function RegisterMovementDialog({
   open,
   onOpenChange,
+  onSubmit,
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSubmit: (input: CreateFinanceMovementInput) => void
 }) {
-  const [form, setForm] = useState<RegisterPaymentInput>(INITIAL)
-  const [submitting, setSubmitting] = useState(false)
+  const [form, setForm] = useState<CreateFinanceMovementInput>(INITIAL)
   const [feedback, setFeedback] = useState<string | null>(null)
 
-  async function submit() {
+  function submit() {
     setFeedback(null)
-    setSubmitting(true)
-    const res: ActionResult<{ paymentId: string }> = await registerPayment(form)
-    setSubmitting(false)
-    if (res.status === "success") {
-      setForm(INITIAL)
-      onOpenChange(false)
+    if (!form.descrizione.trim() || form.importo <= 0 || !form.data) {
+      setFeedback("Inserisci descrizione, importo valido e data.")
       return
     }
-    if (res.status === "error") {
-      setFeedback(res.message)
-    }
+    onSubmit(form)
+    setForm(INITIAL)
+    onOpenChange(false)
   }
 
   return (
@@ -55,56 +52,71 @@ export function RegisterMovementDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Registra movimento</DialogTitle>
-          <DialogDescription>
-            Registra un incasso nel registro locale (stesso flusso dell&apos;app mobile).
-          </DialogDescription>
+          <DialogDescription>Registra un movimento nel registro locale finanze.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-3 py-2">
           <div className="space-y-1.5">
-            <Label htmlFor="desk-payment-ref">Riferimento / cliente</Label>
-            <Input
-              id="desk-payment-ref"
-              value={form.bookingRef}
-              onChange={(e) => setForm((prev) => ({ ...prev, bookingRef: e.target.value }))}
-              placeholder="Es. Blue Horizon S.r.l."
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="desk-payment-amount">Importo (EUR)</Label>
-            <Input
-              id="desk-payment-amount"
-              type="number"
-              min={0}
-              step={0.01}
-              value={form.amount || ""}
-              onChange={(e) => setForm((prev) => ({ ...prev, amount: Number(e.target.value || 0) }))}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="desk-payment-method">Metodo</Label>
-            <Input
-              id="desk-payment-method"
-              list="desk-payment-methods"
-              value={form.method}
+            <Label htmlFor="desk-movement-type">Tipo</Label>
+            <select
+              id="desk-movement-type"
+              value={form.tipo}
               onChange={(e) =>
                 setForm((prev) => ({
                   ...prev,
-                  method: (e.target.value as RegisterPaymentInput["method"]) || "POS",
+                  tipo: e.target.value as FinanceMovementType,
                 }))
               }
-            />
-            <datalist id="desk-payment-methods">
-              <option value="POS" />
-              <option value="Bonifico" />
-              <option value="Contanti" />
-            </datalist>
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+            >
+              <option value="Entrata">Entrata</option>
+              <option value="Uscita">Uscita</option>
+            </select>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="desk-payment-notes">Note</Label>
+            <Label htmlFor="desk-movement-category">Categoria</Label>
+            <select
+              id="desk-movement-category"
+              value={form.categoria}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  categoria: e.target.value as FinanceMovementCategory,
+                }))
+              }
+              className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm"
+            >
+              <option value="Acconto">Acconto</option>
+              <option value="Carburante">Carburante</option>
+              <option value="Manutenzione">Manutenzione</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="desk-movement-amount">Importo (EUR)</Label>
+            <Input
+              id="desk-movement-amount"
+              type="number"
+              min={0}
+              step={0.01}
+              value={form.importo || ""}
+              onChange={(e) => setForm((prev) => ({ ...prev, importo: Number(e.target.value || 0) }))}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="desk-movement-date">Data</Label>
+            <Input
+              id="desk-movement-date"
+              type="date"
+              value={form.data}
+              onChange={(e) => setForm((prev) => ({ ...prev, data: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="desk-movement-description">Descrizione</Label>
             <Textarea
-              id="desk-payment-notes"
-              value={form.notes}
-              onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
+              id="desk-movement-description"
+              value={form.descrizione}
+              onChange={(e) => setForm((prev) => ({ ...prev, descrizione: e.target.value }))}
               placeholder="Note operative..."
             />
           </div>
@@ -114,8 +126,8 @@ export function RegisterMovementDialog({
           <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
             Annulla
           </Button>
-          <Button type="button" onClick={() => void submit()} disabled={submitting}>
-            {submitting ? "Registrazione..." : "Conferma"}
+          <Button type="button" onClick={submit}>
+            Conferma
           </Button>
         </DialogFooter>
       </DialogContent>
