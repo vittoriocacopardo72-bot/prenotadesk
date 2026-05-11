@@ -29,3 +29,17 @@ Frozen: `localStorage` key `prenotadesk_finance_movements_v1` (unchanged).
 | **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
 | **Classification** | **partial** (Finanze list/filters still local to section; dashboard panel Chunk D **not** in scope) |
 | **Commit** | `feat(finance): wire Finanze to summary hook and log 3A (C+E)` — verify with `git log -1 --oneline` (avoid embedding short hash; it changes on amend) |
+
+---
+
+## 2026-05-11 — Mission **M2 Phase 3 Settings** (branch `phase3/settings`)
+
+| Field | Value |
+|--------|--------|
+| **Scope** | Settings UI activation lane: Base/Avanzate + `preferenze` toggles via `updateSettingsPreferences` only; no `AppSettings` / domain extension; no `app-store` edits |
+| **Files changed** | `components/settings/settings-section.tsx`, `lib/mock/settings.ts`, `features/settings/selectors.ts`, `features/settings/hooks/use-settings-section-display.ts`, `features/settings/index.ts` |
+| **QA performed** | Playwright MCP: **1440×900** — sidebar **Impostazioni**; toggle **Base** / **Avanzate**; **Preferenze app** toggles; `localStorage` key `prenotadesk_app_store_v1` — `settingsArea` and `preferenze["suggerimenti-rapidi"]` persisted after full page reload; **390×844** — **Altro** → **Impostazioni**; **Base** / **Avanzate** visible; expanded **Piani e abbonamento** — copy **Dati dimostrativi** present |
+| **Console** | `browser_console_messages` level `error`: **0** (session slice) |
+| **lint / build / typecheck** | `npm run lint` **PASS**; `npm run build` **PASS**; `npx tsc --noEmit` **PASS** |
+| **Classification** | **partial** — most rows remain static/mock; **Preferenze app** has two real toggles (`suggerimenti-rapidi`, `conferme-azioni-sensibili`); subscription/plan KPIs explicitly labeled demonstrative; plan selection still disabled |
+| **Commit** | Single commit on `phase3/settings`; verify with `git log -1 --oneline` (hash changes if amended) |
