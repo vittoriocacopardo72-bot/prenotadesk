@@ -1,4 +1,4 @@
-import type { ClientFilter, ClientRow } from "@/types/client"
+import type { ClientFilter, ClientRow } from "@/types/client";
 
 export const clientFilters: ClientFilter[] = [
   "Tutti",
@@ -6,7 +6,7 @@ export const clientFilters: ClientFilter[] = [
   "Nuovi",
   "Da ricontattare",
   "Con richieste speciali",
-]
+];
 
 export const clientiRows: ClientRow[] = [
   {
@@ -69,4 +69,4 @@ export const clientiRows: ClientRow[] = [
     daRicontattare: false,
     richiesteSpeciali: true,
   },
-]
+];

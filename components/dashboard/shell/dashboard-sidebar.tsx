@@ -1,16 +1,16 @@
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import type { SectionKey } from "@/lib/sections/section-registry"
-import type { NavNode } from "@/types/dashboard"
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import type { SectionKey } from "@/lib/sections/section-registry";
+import type { NavNode } from "@/types/dashboard";
 
-import { DashboardSidebarNav } from "./dashboard-sidebar-nav"
+import { DashboardSidebarNav } from "./dashboard-sidebar-nav";
 
 export type DashboardSidebarProps = {
-  nodes: readonly NavNode[]
-  activeSection: SectionKey
-  onNavigate: (key: SectionKey) => void
-  className?: string
-}
+  nodes: readonly NavNode[];
+  activeSection: SectionKey;
+  onNavigate: (key: SectionKey) => void;
+  className?: string;
+};
 
 export function DashboardSidebar({
   nodes,
@@ -26,10 +26,15 @@ export function DashboardSidebar({
       )}
     >
       <div className="mb-8 space-y-1">
-        <Badge variant="outline" className="border-sky-200 bg-sky-50 text-sky-700">
+        <Badge
+          variant="outline"
+          className="border-sky-200 bg-sky-50 text-sky-700"
+        >
           Console operativa
         </Badge>
-        <h1 className="text-xl font-semibold tracking-tight">PrenotaDesk Marine</h1>
+        <h1 className="text-xl font-semibold tracking-tight">
+          PrenotaDesk Marine
+        </h1>
         <p className="text-sm text-slate-500">Gestione portuale e charter</p>
       </div>
 
@@ -42,8 +47,10 @@ export function DashboardSidebar({
 
       <div className="mt-auto rounded-xl border border-sky-100 bg-sky-50/70 p-4">
         <p className="text-xs font-medium text-sky-700">Stato sistema</p>
-        <p className="mt-1 text-sm text-slate-700">Sincronizzazione ormeggi attiva</p>
+        <p className="mt-1 text-sm text-slate-700">
+          Sincronizzazione ormeggi attiva
+        </p>
       </div>
     </aside>
-  )
+  );
 }

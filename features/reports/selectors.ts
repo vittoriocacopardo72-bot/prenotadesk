@@ -1,18 +1,23 @@
-import type { FinanceSummary } from "@/features/finance"
-import { isBookingDateToday } from "@/lib/bookings/booking-dates"
-import type { BookingRow } from "@/types/booking"
+import type { FinanceSummary } from "@/features/finance";
+import { isBookingDateToday } from "@/lib/bookings/booking-dates";
+import type { BookingRow } from "@/types/booking";
 
 export type ReportsLocalSnapshot = {
-  bookingTotal: number
-  bookingToday: number
-  paymentRowCount: number
-  financeMovementCount: number
-  financeTotals: Pick<FinanceSummary, "totaleEntrate" | "totaleUscite" | "saldo" | "movimentiOggi">
-}
+  bookingTotal: number;
+  bookingToday: number;
+  paymentRowCount: number;
+  financeMovementCount: number;
+  financeTotals: Pick<
+    FinanceSummary,
+    "totaleEntrate" | "totaleUscite" | "saldo" | "movimentiOggi"
+  >;
+};
 
 /** Total movement count derived from category distribution (matches full register length). */
-export function countMovementsFromFinanceSummary(summary: FinanceSummary): number {
-  return summary.distribuzioneCategorie.reduce((n, c) => n + c.count, 0)
+export function countMovementsFromFinanceSummary(
+  summary: FinanceSummary
+): number {
+  return summary.distribuzioneCategorie.reduce((n, c) => n + c.count, 0);
 }
 
 export function selectReportsLocalSnapshot(
@@ -31,5 +36,5 @@ export function selectReportsLocalSnapshot(
       saldo: financeSummary.saldo,
       movimentiOggi: financeSummary.movimentiOggi,
     },
-  }
+  };
 }

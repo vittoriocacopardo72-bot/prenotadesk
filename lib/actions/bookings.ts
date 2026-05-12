@@ -1,1 +1,4 @@
-export { createBooking, updateBookingStatus } from "@/features/bookings/actions/bookings"
+export {
+  createBooking,
+  updateBookingStatus,
+} from "@/features/bookings/actions/bookings";

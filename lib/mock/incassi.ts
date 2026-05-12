@@ -1,4 +1,4 @@
-import type { TransazioneFilter, TransazioneRow } from "@/types/incassi"
+import type { TransazioneFilter, TransazioneRow } from "@/types/incassi";
 
 export const incassiFilters: TransazioneFilter[] = [
   "Tutti",
@@ -6,7 +6,7 @@ export const incassiFilters: TransazioneFilter[] = [
   "In sospeso",
   "Rimborso",
   "Deposito",
-]
+];
 
 export const transazioniRows: TransazioneRow[] = [
   {
@@ -63,4 +63,4 @@ export const transazioniRows: TransazioneRow[] = [
     dataOra: "09/05 13:15",
     note: "Annullamento parziale",
   },
-]
+];

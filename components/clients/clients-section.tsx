@@ -1,35 +1,46 @@
-"use client"
+"use client";
 
-import { useMemo, useState } from "react"
-import { Search } from "lucide-react"
+import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 
-import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { clientFilters } from "@/lib/mock/clients"
-import { selectClientRows, useAppStoreSelector } from "@/lib/store/app-store"
-import type { ClientFilter, ClientRow, ClientStato } from "@/types/client"
+import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { clientFilters } from "@/lib/mock/clients";
+import { selectClientRows, useAppStoreSelector } from "@/lib/store/app-store";
+import type { ClientFilter, ClientRow, ClientStato } from "@/types/client";
 
-function statoBadgeVariant(stato: ClientStato): "default" | "secondary" | "outline" {
-  if (stato === "VIP") return "default"
-  if (stato === "Business") return "secondary"
-  return "outline"
+function statoBadgeVariant(
+  stato: ClientStato
+): "default" | "secondary" | "outline" {
+  if (stato === "VIP") return "default";
+  if (stato === "Business") return "secondary";
+  return "outline";
 }
 
 export function ClientsSection() {
-  const [search, setSearch] = useState("")
-  const [filter, setFilter] = useState<ClientFilter>("Tutti")
-  const clientiRows = useAppStoreSelector((s) => selectClientRows(s))
-  const desktopBooking = useDesktopBookingFocusOptional()
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<ClientFilter>("Tutti");
+  const clientiRows = useAppStoreSelector((s) => selectClientRows(s));
+  const desktopBooking = useDesktopBookingFocusOptional();
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
+    const q = search.trim().toLowerCase();
     return clientiRows.filter((row) => {
       const matchesSearch =
         q.length === 0 ||
-        [row.nome, row.telefono, row.email, row.provenienza, row.preferenze].join(" ").toLowerCase().includes(q)
+        [row.nome, row.telefono, row.email, row.provenienza, row.preferenze]
+          .join(" ")
+          .toLowerCase()
+          .includes(q);
 
       const matchesFilter =
         filter === "Tutti"
@@ -40,11 +51,11 @@ export function ClientsSection() {
               ? row.isNuovo
               : filter === "Da ricontattare"
                 ? row.daRicontattare
-                : row.richiesteSpeciali
+                : row.richiesteSpeciali;
 
-      return matchesSearch && matchesFilter
-    })
-  }, [search, filter, clientiRows])
+      return matchesSearch && matchesFilter;
+    });
+  }, [search, filter, clientiRows]);
 
   const metrics = useMemo(
     () => ({
@@ -54,7 +65,7 @@ export function ClientsSection() {
       speciali: clientiRows.filter((c) => c.richiesteSpeciali).length,
     }),
     [clientiRows]
-  )
+  );
 
   return (
     <>
@@ -62,19 +73,27 @@ export function ClientsSection() {
         <CardContent className="grid gap-3 pt-4 sm:grid-cols-2 xl:grid-cols-4">
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Clienti attivi</p>
-            <p className="text-xl font-semibold text-slate-800">{metrics.attivi}</p>
+            <p className="text-xl font-semibold text-slate-800">
+              {metrics.attivi}
+            </p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Nuovi contatti</p>
-            <p className="text-xl font-semibold text-slate-800">{metrics.nuovi}</p>
+            <p className="text-xl font-semibold text-slate-800">
+              {metrics.nuovi}
+            </p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Clienti VIP</p>
-            <p className="text-xl font-semibold text-slate-800">{metrics.vip}</p>
+            <p className="text-xl font-semibold text-slate-800">
+              {metrics.vip}
+            </p>
           </div>
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
             <p className="text-xs text-slate-500">Richieste speciali</p>
-            <p className="text-xl font-semibold text-slate-800">{metrics.speciali}</p>
+            <p className="text-xl font-semibold text-slate-800">
+              {metrics.speciali}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -84,7 +103,9 @@ export function ClientsSection() {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <CardTitle>Clienti</CardTitle>
-              <CardDescription>CRM leggero per anagrafiche, contatti e follow-up</CardDescription>
+              <CardDescription>
+                CRM leggero per anagrafiche, contatti e follow-up
+              </CardDescription>
             </div>
             <Button type="button" disabled title="Non ancora disponibile">
               Aggiungi cliente
@@ -122,7 +143,9 @@ export function ClientsSection() {
         <Card className="bg-white">
           <CardHeader>
             <CardTitle>Elenco clienti</CardTitle>
-            <CardDescription>Vista operativa contatti e stato relazione</CardDescription>
+            <CardDescription>
+              Vista operativa contatti e stato relazione
+            </CardDescription>
           </CardHeader>
           <CardContent className="overflow-x-auto">
             <table className="w-full min-w-[1020px] text-xs">
@@ -132,7 +155,9 @@ export function ClientsSection() {
                   <th className="px-2 py-1.5 font-medium">Telefono</th>
                   <th className="px-2 py-1.5 font-medium">Email</th>
                   <th className="px-2 py-1.5 font-medium">Provenienza</th>
-                  <th className="px-2 py-1.5 font-medium">Ultima prenotazione</th>
+                  <th className="px-2 py-1.5 font-medium">
+                    Ultima prenotazione
+                  </th>
                   <th className="px-2 py-1.5 font-medium">Preferenze</th>
                   <th className="px-2 py-1.5 font-medium">Stato</th>
                   <th className="px-2 py-1.5 text-right font-medium">Azioni</th>
@@ -140,22 +165,47 @@ export function ClientsSection() {
               </thead>
               <tbody>
                 {filtered.map((row: ClientRow) => (
-                  <tr key={`${row.email}-${row.nome}`} className="border-b border-slate-100 align-middle">
-                    <td className="px-2 py-2 font-medium text-slate-800">{row.nome}</td>
+                  <tr
+                    key={`${row.email}-${row.nome}`}
+                    className="border-b border-slate-100 align-middle"
+                  >
+                    <td className="px-2 py-2 font-medium text-slate-800">
+                      {row.nome}
+                    </td>
                     <td className="px-2 py-2 text-slate-600">{row.telefono}</td>
                     <td className="px-2 py-2 text-slate-600">{row.email}</td>
-                    <td className="px-2 py-2 text-slate-600">{row.provenienza}</td>
-                    <td className="px-2 py-2 text-slate-600">{row.ultimaPrenotazione}</td>
-                    <td className="px-2 py-2 text-slate-600">{row.preferenze}</td>
+                    <td className="px-2 py-2 text-slate-600">
+                      {row.provenienza}
+                    </td>
+                    <td className="px-2 py-2 text-slate-600">
+                      {row.ultimaPrenotazione}
+                    </td>
+                    <td className="px-2 py-2 text-slate-600">
+                      {row.preferenze}
+                    </td>
                     <td className="px-2 py-2">
-                      <Badge variant={statoBadgeVariant(row.stato)}>{row.stato}</Badge>
+                      <Badge variant={statoBadgeVariant(row.stato)}>
+                        {row.stato}
+                      </Badge>
                     </td>
                     <td className="px-2 py-2">
                       <div className="flex flex-wrap justify-end gap-1">
-                        <Button type="button" variant="outline" size="xs" disabled title="Non ancora disponibile">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="xs"
+                          disabled
+                          title="Non ancora disponibile"
+                        >
                           Dettagli
                         </Button>
-                        <Button type="button" variant="ghost" size="xs" disabled title="Non ancora disponibile">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="xs"
+                          disabled
+                          title="Non ancora disponibile"
+                        >
                           Modifica
                         </Button>
                         <Button
@@ -168,7 +218,9 @@ export function ClientsSection() {
                               ? "Apre la creazione prenotazione (desktop)"
                               : "Disponibile dalla console desktop"
                           }
-                          onClick={() => desktopBooking?.openDesktopCreateBooking()}
+                          onClick={() =>
+                            desktopBooking?.openDesktopCreateBooking()
+                          }
                         >
                           Nuova prenotazione
                         </Button>
@@ -189,12 +241,17 @@ export function ClientsSection() {
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
               {clientiRows.filter((c) => c.richiesteSpeciali).length === 0 ? (
-                <p className="text-slate-400">Nessun cliente con richieste speciali nel store.</p>
+                <p className="text-slate-400">
+                  Nessun cliente con richieste speciali nel store.
+                </p>
               ) : (
                 clientiRows
                   .filter((c) => c.richiesteSpeciali)
                   .map((c) => (
-                    <p key={c.email} className="rounded-md bg-slate-50 px-3 py-2">
+                    <p
+                      key={c.email}
+                      className="rounded-md bg-slate-50 px-3 py-2"
+                    >
                       {c.nome}: {c.preferenze || "—"}
                     </p>
                   ))
@@ -208,7 +265,9 @@ export function ClientsSection() {
             </CardHeader>
             <CardContent className="space-y-2 text-xs text-slate-700">
               {clientiRows.filter((c) => c.daRicontattare).length === 0 ? (
-                <p className="text-slate-400">Nessun cliente da ricontattare nel store.</p>
+                <p className="text-slate-400">
+                  Nessun cliente da ricontattare nel store.
+                </p>
               ) : (
                 clientiRows
                   .filter((c) => c.daRicontattare)
@@ -268,5 +327,5 @@ export function ClientsSection() {
         </div>
       </div>
     </>
-  )
+  );
 }

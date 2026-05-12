@@ -1,82 +1,103 @@
-"use client"
+"use client";
 
-import { useCallback, useMemo } from "react"
+import { useCallback, useMemo } from "react";
 
-import { AlertsPanel } from "@/components/dashboard/alerts-panel"
-import { DailyAgenda } from "@/components/dashboard/daily-agenda"
-import { FinancialPanel } from "@/components/dashboard/financial-panel"
-import { DashboardKpiCards } from "@/components/dashboard/kpi-cards"
-import { MarineWidgets } from "@/components/dashboard/marine-widgets"
-import { OperationalBoard } from "@/components/dashboard/operational-board"
-import { DashboardQuickActions } from "@/components/dashboard/quick-actions"
-import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { isBookingDateToday } from "@/lib/bookings/booking-dates"
-import { parseImportoEurDisplay } from "@/lib/bookings/parse-importo-eur"
-import { useFinanceSummary } from "@/features/finance/hooks/use-finance-summary"
-import { dashboardAgenda, dashboardKpis, dashboardQuickActions } from "@/lib/mock/dashboard"
-import type { SectionKey } from "@/lib/sections/section-registry"
-import { selectActiveAlertTexts, useAppStoreSelector } from "@/lib/store/app-store"
+import { AlertsPanel } from "@/components/dashboard/alerts-panel";
+import { DailyAgenda } from "@/components/dashboard/daily-agenda";
+import { FinancialPanel } from "@/components/dashboard/financial-panel";
+import { DashboardKpiCards } from "@/components/dashboard/kpi-cards";
+import { MarineWidgets } from "@/components/dashboard/marine-widgets";
+import { OperationalBoard } from "@/components/dashboard/operational-board";
+import { DashboardQuickActions } from "@/components/dashboard/quick-actions";
+import { useDesktopBookingFocusOptional } from "@/components/dashboard/shell";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { isBookingDateToday } from "@/lib/bookings/booking-dates";
+import { parseImportoEurDisplay } from "@/lib/bookings/parse-importo-eur";
+import { useFinanceSummary } from "@/features/finance/hooks/use-finance-summary";
+import {
+  dashboardAgenda,
+  dashboardKpis,
+  dashboardQuickActions,
+} from "@/lib/mock/dashboard";
+import type { SectionKey } from "@/lib/sections/section-registry";
+import {
+  selectActiveAlertTexts,
+  useAppStoreSelector,
+} from "@/lib/store/app-store";
 
 function formatFinEur(n: number): string {
-  return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(n)
+  return new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "EUR",
+  }).format(n);
 }
 
 export function DashboardSection() {
-  const desktopBooking = useDesktopBookingFocusOptional()
-  const financeSummary = useFinanceSummary()
+  const desktopBooking = useDesktopBookingFocusOptional();
+  const financeSummary = useFinanceSummary();
 
   const handleDashboardQuickAction = useCallback(
     (label: string) => {
-      if (!desktopBooking) return
-      const go: (s: SectionKey) => void = desktopBooking.navigateToSection
+      if (!desktopBooking) return;
+      const go: (s: SectionKey) => void = desktopBooking.navigateToSection;
       switch (label) {
         case "Nuova prenotazione":
-          desktopBooking.openDesktopCreateBooking()
-          break
+          desktopBooking.openDesktopCreateBooking();
+          break;
         case "Assegna equipaggio":
-          go("Prenotazioni")
-          break
+          go("Prenotazioni");
+          break;
         case "Registra pagamento":
-          go("Finanze")
-          break
+          go("Finanze");
+          break;
         case "Blocca barca":
-          go("Barche")
-          break
+          go("Barche");
+          break;
         case "Apri calendario":
-          go("Calendario")
-          break
+          go("Calendario");
+          break;
         case "Aggiorna meteo":
-          go("Meteo marino")
-          break
+          go("Meteo marino");
+          break;
         default:
-          break
+          break;
       }
     },
     [desktopBooking]
-  )
+  );
 
-  const bookings = useAppStoreSelector((s) => s.bookings)
-  const boats = useAppStoreSelector((s) => s.boats)
-  const weather = useAppStoreSelector((s) => s.weather)
-  const activeAlerts = useAppStoreSelector(selectActiveAlertTexts)
+  const bookings = useAppStoreSelector((s) => s.bookings);
+  const boats = useAppStoreSelector((s) => s.boats);
+  const weather = useAppStoreSelector((s) => s.weather);
+  const activeAlerts = useAppStoreSelector(selectActiveAlertTexts);
 
   const kpisLive = useMemo(() => {
-    const todays = bookings.filter((b) => isBookingDateToday(b.data))
-    const ospitiSum = todays.reduce((s, b) => s + (Number(b.ospiti) || 0), 0)
+    const todays = bookings.filter((b) => isBookingDateToday(b.data));
+    const ospitiSum = todays.reduce((s, b) => s + (Number(b.ospiti) || 0), 0);
     const incassoSum = todays
       .filter((b) => b.stato !== "Cancellate")
-      .reduce((s, b) => s + parseImportoEurDisplay(b.importo), 0)
+      .reduce((s, b) => s + parseImportoEurDisplay(b.importo), 0);
     const incassoLabel =
-      incassoSum > 0 ? `€ ${Math.round(incassoSum).toLocaleString("it-IT")}` : "€ 0"
-    const boatsFree = boats.filter((b) => !b.blocked && b.stato === "Pronta").length
-    const demo = { demoSubcopy: true as const }
+      incassoSum > 0
+        ? `€ ${Math.round(incassoSum).toLocaleString("it-IT")}`
+        : "€ 0";
+    const boatsFree = boats.filter(
+      (b) => !b.blocked && b.stato === "Pronta"
+    ).length;
+    const demo = { demoSubcopy: true as const };
     return [
       {
         ...dashboardKpis[0],
         ...demo,
         value: incassoLabel,
-        valueTitle: "Somma importi delle prenotazioni di oggi (escluse cancellate), da store locale",
+        valueTitle:
+          "Somma importi delle prenotazioni di oggi (escluse cancellate), da store locale",
       },
       {
         ...dashboardKpis[1],
@@ -96,51 +117,53 @@ export function DashboardSection() {
         value: String(boatsFree),
         valueTitle: "Barche in stato Pronta e non bloccate nel store locale",
       },
-    ]
-  }, [bookings, boats])
+    ];
+  }, [bookings, boats]);
 
   const departures = bookings.slice(0, 6).map((b) => ({
     ora: b.ora,
     barca: b.barca,
     servizio: b.servizio,
     stato: b.stato === "Confermate" ? "Confermata" : b.stato,
-  }))
+  }));
   const fleetLive = boats.slice(0, 4).map((b) => ({
     nome: b.nome,
     readiness: b.stato,
     fuel: "n/d",
     next: b.prossimaUscita,
     crew: b.equipaggio,
-  }))
+  }));
   const activeCrew = boats
     .map((b) => b.equipaggio)
     .filter((crew) => crew && crew !== "-")
-    .slice(0, 6)
+    .slice(0, 6);
 
   const marineWidgets = [
     { label: "Mare", value: weather.mare, detail: "Store locale" },
     { label: "Vento", value: weather.vento, detail: "Store locale" },
     { label: "Visibilita", value: weather.visibilita, detail: "Store locale" },
     { label: "Stato porto", value: weather.statoPorto, detail: "Store locale" },
-  ]
+  ];
 
   const agenda = {
     ...dashboardAgenda,
     checkIn: bookings.slice(0, 3).map((b) => `${b.ora} ${b.cliente}`),
     partenze: departures.slice(0, 3).map((d) => `${d.ora} ${d.barca}`),
-  }
+  };
 
   const financePanelItems = useMemo(
     () => [
       {
         label: "Totale entrate",
         value: formatFinEur(financeSummary.totaleEntrate),
-        detail: "Somma movimenti «Entrata» nel registro salvato su questo dispositivo",
+        detail:
+          "Somma movimenti «Entrata» nel registro salvato su questo dispositivo",
       },
       {
         label: "Totale uscite",
         value: formatFinEur(financeSummary.totaleUscite),
-        detail: "Somma movimenti «Uscita» nel registro salvato su questo dispositivo",
+        detail:
+          "Somma movimenti «Uscita» nel registro salvato su questo dispositivo",
       },
       {
         label: "Saldo",
@@ -150,14 +173,15 @@ export function DashboardSection() {
       {
         label: "Movimenti oggi",
         value: String(financeSummary.movimentiOggi),
-        detail: "Movimenti con data odierna; non collegato a POS o conti bancari",
+        detail:
+          "Movimenti con data odierna; non collegato a POS o conti bancari",
       },
     ],
     [financeSummary]
-  )
+  );
 
   const financePanelSourceNote =
-    "Dati da cassa locale (movimenti app su questo dispositivo) — non dimostrativo, non sincronizzato, non POS/banca"
+    "Dati da cassa locale (movimenti app su questo dispositivo) — non dimostrativo, non sincronizzato, non POS/banca";
 
   return (
     <>
@@ -179,7 +203,10 @@ export function DashboardSection() {
         </div>
 
         <div className="grid gap-4 xl:grid-cols-[1.4fr_1fr_1fr]">
-          <FinancialPanel items={financePanelItems} sourceNote={financePanelSourceNote} />
+          <FinancialPanel
+            items={financePanelItems}
+            sourceNote={financePanelSourceNote}
+          />
           <DashboardQuickActions
             actions={dashboardQuickActions}
             onAction={handleDashboardQuickAction}
@@ -189,7 +216,9 @@ export function DashboardSection() {
           <Card className="bg-white">
             <CardHeader>
               <CardTitle>Widget marine</CardTitle>
-              <CardDescription>Condizioni operative in tempo reale (store locale)</CardDescription>
+              <CardDescription>
+                Condizioni operative in tempo reale (store locale)
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <MarineWidgets widgets={marineWidgets} />
@@ -198,5 +227,5 @@ export function DashboardSection() {
         </div>
       </section>
     </>
-  )
+  );
 }

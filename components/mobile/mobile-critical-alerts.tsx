@@ -1,23 +1,26 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export type MobileCriticalAlertsProps = {
-  alerts: readonly string[]
+  alerts: readonly string[];
   /** Cap visible alerts on home to reduce scroll. */
-  maxVisible?: number
-  className?: string
-}
+  maxVisible?: number;
+  className?: string;
+};
 
 export function MobileCriticalAlerts({
   alerts,
   maxVisible = 3,
   className,
 }: MobileCriticalAlertsProps) {
-  const visible = alerts.slice(0, maxVisible)
-  if (visible.length === 0) return null
+  const visible = alerts.slice(0, maxVisible);
+  if (visible.length === 0) return null;
 
   return (
-    <Card className={cn("border-slate-200 bg-white shadow-xs", className)} size="sm">
+    <Card
+      className={cn("border-slate-200 bg-white shadow-xs", className)}
+      size="sm"
+    >
       <CardHeader className="pb-2">
         <CardTitle className="text-base">Alert critici</CardTitle>
       </CardHeader>
@@ -32,5 +35,5 @@ export function MobileCriticalAlerts({
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }

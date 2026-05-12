@@ -8,9 +8,9 @@ import {
   Sun,
   Users,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import type { SectionKey } from "@/lib/sections/section-registry"
+import type { SectionKey } from "@/lib/sections/section-registry";
 
 /** Secondary modules reachable from the mobile Altro hub (Calendar lives here per product decision). */
 export const ALTRO_SECTION_KEYS = [
@@ -22,15 +22,15 @@ export const ALTRO_SECTION_KEYS = [
   "Finanze",
   "Report",
   "Impostazioni",
-] as const satisfies readonly SectionKey[]
+] as const satisfies readonly SectionKey[];
 
-export type AltroSectionKey = (typeof ALTRO_SECTION_KEYS)[number]
+export type AltroSectionKey = (typeof ALTRO_SECTION_KEYS)[number];
 
 export type AltroModuleEntry = {
-  key: AltroSectionKey
-  label: string
-  icon: LucideIcon
-}
+  key: AltroSectionKey;
+  label: string;
+  icon: LucideIcon;
+};
 
 export const ALTRO_MODULE_ENTRIES: readonly AltroModuleEntry[] = [
   { key: "Calendario", label: "Calendario", icon: CalendarDays },
@@ -41,4 +41,4 @@ export const ALTRO_MODULE_ENTRIES: readonly AltroModuleEntry[] = [
   { key: "Finanze", label: "Finanze", icon: CreditCard },
   { key: "Report", label: "Report", icon: BarChart3 },
   { key: "Impostazioni", label: "Impostazioni", icon: Settings },
-]
+];

@@ -1,5 +1,5 @@
-import type { BoatRow } from "@/types/boat"
-import { BoatStatusBadge } from "@/components/boats/boat-status-badge"
+import type { BoatRow } from "@/types/boat";
+import { BoatStatusBadge } from "@/components/boats/boat-status-badge";
 
 export function BoatCard({ boat }: { boat: BoatRow }) {
   return (
@@ -11,7 +11,9 @@ export function BoatCard({ boat }: { boat: BoatRow }) {
       <p className="mt-1 text-[11px] text-slate-500">
         {boat.modello} - {boat.capacita} - Prossima uscita {boat.prossimaUscita}
       </p>
-      <p className="text-[11px] text-slate-500">Equipaggio: {boat.equipaggio}</p>
+      <p className="text-[11px] text-slate-500">
+        Equipaggio: {boat.equipaggio}
+      </p>
     </div>
-  )
+  );
 }

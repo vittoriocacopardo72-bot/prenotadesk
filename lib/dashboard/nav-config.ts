@@ -1,4 +1,4 @@
-import type { DashboardNavConfig } from "@/types/dashboard"
+import type { DashboardNavConfig } from "@/types/dashboard";
 
 /**
  * Single source of truth for dashboard navigation structure.
@@ -101,4 +101,4 @@ export const dashboardNavConfig: DashboardNavConfig = {
       sectionKey: "Impostazioni",
     },
   ],
-}
+};

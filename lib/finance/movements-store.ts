@@ -1,29 +1,32 @@
-"use client"
+"use client";
 
-import { useSyncExternalStore } from "react"
+import { useSyncExternalStore } from "react";
 
-import type { CreateFinanceMovementInput, FinanceMovement } from "@/types/finance"
+import type {
+  CreateFinanceMovementInput,
+  FinanceMovement,
+} from "@/types/finance";
 
-const STORAGE_KEY = "prenotadesk_finance_movements_v1"
+const STORAGE_KEY = "prenotadesk_finance_movements_v1";
 
-type Listener = () => void
+type Listener = () => void;
 
-let movementsState: FinanceMovement[] = []
-let hydrated = false
-const listeners = new Set<Listener>()
+let movementsState: FinanceMovement[] = [];
+let hydrated = false;
+const listeners = new Set<Listener>();
 
 function notify() {
-  listeners.forEach((listener) => listener())
+  listeners.forEach((listener) => listener());
 }
 
 function persist() {
-  if (typeof window === "undefined") return
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(movementsState))
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(movementsState));
 }
 
 function isMovementLike(value: unknown): value is FinanceMovement {
-  if (!value || typeof value !== "object") return false
-  const item = value as Partial<FinanceMovement>
+  if (!value || typeof value !== "object") return false;
+  const item = value as Partial<FinanceMovement>;
   return (
     typeof item.id === "string" &&
     (item.tipo === "Entrata" || item.tipo === "Uscita") &&
@@ -34,39 +37,41 @@ function isMovementLike(value: unknown): value is FinanceMovement {
       item.categoria === "Carburante" ||
       item.categoria === "Manutenzione" ||
       item.categoria === "Altro")
-  )
+  );
 }
 
 function tryHydrate() {
-  if (hydrated || typeof window === "undefined") return
-  hydrated = true
-  const raw = window.localStorage.getItem(STORAGE_KEY)
-  if (!raw) return
+  if (hydrated || typeof window === "undefined") return;
+  hydrated = true;
+  const raw = window.localStorage.getItem(STORAGE_KEY);
+  if (!raw) return;
   try {
-    const parsed = JSON.parse(raw) as unknown
+    const parsed = JSON.parse(raw) as unknown;
     if (Array.isArray(parsed)) {
-      movementsState = parsed.filter(isMovementLike)
+      movementsState = parsed.filter(isMovementLike);
     }
   } catch {
-    movementsState = []
+    movementsState = [];
   }
 }
 
 function getSnapshot() {
-  tryHydrate()
-  return movementsState
+  tryHydrate();
+  return movementsState;
 }
 
 function subscribe(listener: Listener) {
-  listeners.add(listener)
-  return () => listeners.delete(listener)
+  listeners.add(listener);
+  return () => listeners.delete(listener);
 }
 
 export function useFinanceMovements(): FinanceMovement[] {
-  return useSyncExternalStore(subscribe, getSnapshot, () => [])
+  return useSyncExternalStore(subscribe, getSnapshot, () => []);
 }
 
-export function addFinanceMovement(input: CreateFinanceMovementInput): FinanceMovement {
+export function addFinanceMovement(
+  input: CreateFinanceMovementInput
+): FinanceMovement {
   const movement: FinanceMovement = {
     id: `mov_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`,
     tipo: input.tipo,
@@ -74,15 +79,17 @@ export function addFinanceMovement(input: CreateFinanceMovementInput): FinanceMo
     descrizione: input.descrizione.trim(),
     data: input.data,
     categoria: input.categoria,
-  }
-  movementsState = [movement, ...getSnapshot()]
-  persist()
-  notify()
-  return movement
+  };
+  movementsState = [movement, ...getSnapshot()];
+  persist();
+  notify();
+  return movement;
 }
 
 export function deleteFinanceMovement(movementId: string): void {
-  movementsState = getSnapshot().filter((movement) => movement.id !== movementId)
-  persist()
-  notify()
+  movementsState = getSnapshot().filter(
+    (movement) => movement.id !== movementId
+  );
+  persist();
+  notify();
 }

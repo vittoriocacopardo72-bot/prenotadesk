@@ -1,18 +1,28 @@
-import { createElement, type ComponentType, type ReactElement } from "react"
-import { BarChart3, CalendarDays, CreditCard, Home as HomeIcon, LifeBuoy, Settings, Ship, Sun, Users } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+import { createElement, type ComponentType, type ReactElement } from "react";
+import {
+  BarChart3,
+  CalendarDays,
+  CreditCard,
+  Home as HomeIcon,
+  LifeBuoy,
+  Settings,
+  Ship,
+  Sun,
+  Users,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-import { BookingsSection } from "@/features/bookings"
-import { BoatsSection } from "@/components/boats/boats-section"
-import { CalendarSection } from "@/components/calendar/calendar-section"
-import { ClientsSection } from "@/components/clients/clients-section"
-import { DashboardSection } from "@/components/dashboard/dashboard-section"
-import { FinanzeSection } from "@/components/finanze/finanze-section"
-import { MeteoSection } from "@/components/meteo/meteo-section"
-import { ReportSection } from "@/components/report/report-section"
-import { ServiziSection } from "@/components/servizi/servizi-section"
-import { SettingsSection } from "@/components/settings/settings-section"
-import { reportSectionMeta } from "@/lib/mock/report"
+import { BookingsSection } from "@/features/bookings";
+import { BoatsSection } from "@/components/boats/boats-section";
+import { CalendarSection } from "@/components/calendar/calendar-section";
+import { ClientsSection } from "@/components/clients/clients-section";
+import { DashboardSection } from "@/components/dashboard/dashboard-section";
+import { FinanzeSection } from "@/components/finanze/finanze-section";
+import { MeteoSection } from "@/components/meteo/meteo-section";
+import { ReportSection } from "@/components/report/report-section";
+import { ServiziSection } from "@/components/servizi/servizi-section";
+import { SettingsSection } from "@/components/settings/settings-section";
+import { reportSectionMeta } from "@/lib/mock/report";
 
 /** Ordine voci sidebar e chiavi sezione (fonte unica per SectionKey). */
 export const SECTION_ORDER = [
@@ -26,26 +36,26 @@ export const SECTION_ORDER = [
   "Finanze",
   "Report",
   "Impostazioni",
-] as const
+] as const;
 
-export type SectionKey = (typeof SECTION_ORDER)[number]
+export type SectionKey = (typeof SECTION_ORDER)[number];
 
 export type SectionMetadata = {
   /** Descrizione breve: header, tooltips, documentazione */
-  description: string
+  description: string;
   /** Card riepilogo opzionali (es. Report) */
-  highlights?: readonly { title: string; description: string }[]
-}
+  highlights?: readonly { title: string; description: string }[];
+};
 
 export type SectionRegistryEntry = {
-  key: SectionKey
-  title: string
-  icon: LucideIcon
-  component: ComponentType<Record<string, never>>
-  metadata: SectionMetadata
-}
+  key: SectionKey;
+  title: string;
+  icon: LucideIcon;
+  component: ComponentType<Record<string, never>>;
+  metadata: SectionMetadata;
+};
 
-type SectionDefinition = Omit<SectionRegistryEntry, "key">
+type SectionDefinition = Omit<SectionRegistryEntry, "key">;
 
 const sectionRegistryDefinitions = {
   Dashboard: {
@@ -109,7 +119,8 @@ const sectionRegistryDefinitions = {
     icon: CreditCard,
     component: FinanzeSection,
     metadata: {
-      description: "Cassa, transazioni, incassi e movimenti collegati alle prenotazioni",
+      description:
+        "Cassa, transazioni, incassi e movimenti collegati alle prenotazioni",
     },
   },
   Report: {
@@ -129,16 +140,17 @@ const sectionRegistryDefinitions = {
       description: "Configurazioni operative del sistema e integrazioni",
     },
   },
-} satisfies Record<SectionKey, SectionDefinition>
+} satisfies Record<SectionKey, SectionDefinition>;
 
-export const sectionRegistryByKey: Record<SectionKey, SectionDefinition> = sectionRegistryDefinitions
+export const sectionRegistryByKey: Record<SectionKey, SectionDefinition> =
+  sectionRegistryDefinitions;
 
 /** Voci registry nell’ordine sidebar (per navigazione e menu). */
 export function getOrderedSectionEntries(): SectionRegistryEntry[] {
   return SECTION_ORDER.map((key) => ({
     key,
     ...sectionRegistryByKey[key],
-  }))
+  }));
 }
 
 /**
@@ -146,16 +158,18 @@ export function getOrderedSectionEntries(): SectionRegistryEntry[] {
  * Nessun lookup dinamico su metadati opzionali: il componente è sempre noto a compile-time.
  */
 function buildSectionContentMap(): Record<SectionKey, ReactElement> {
-  const map = {} as Record<SectionKey, ReactElement>
+  const map = {} as Record<SectionKey, ReactElement>;
   for (const key of SECTION_ORDER) {
-    const Cmp = sectionRegistryByKey[key].component
-    map[key] = createElement(Cmp)
+    const Cmp = sectionRegistryByKey[key].component;
+    map[key] = createElement(Cmp);
   }
-  return map
+  return map;
 }
 
-const sectionContentMap = Object.freeze(buildSectionContentMap())
+const sectionContentMap = Object.freeze(buildSectionContentMap());
 
-export function createSectionContentMap(): Readonly<Record<SectionKey, ReactElement>> {
-  return sectionContentMap
+export function createSectionContentMap(): Readonly<
+  Record<SectionKey, ReactElement>
+> {
+  return sectionContentMap;
 }

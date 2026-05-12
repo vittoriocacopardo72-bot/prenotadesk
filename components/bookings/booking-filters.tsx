@@ -1,1 +1,1 @@
-export { BookingFilters } from "@/features/bookings/components/booking-filters"
+export { BookingFilters } from "@/features/bookings/components/booking-filters";

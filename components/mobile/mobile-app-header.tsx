@@ -1,25 +1,25 @@
-"use client"
+"use client";
 
-import { ChevronLeft, Menu, Search } from "lucide-react"
+import { ChevronLeft, Menu, Search } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 export type MobileAppHeaderProps = {
-  title: string
-  showBack?: boolean
-  onBack?: () => void
-  showSearch?: boolean
+  title: string;
+  showBack?: boolean;
+  onBack?: () => void;
+  showSearch?: boolean;
   /** Side navigation (full module list). Hidden when `showBack` is true. */
-  showMenuTrigger?: boolean
-  onMenuOpen?: () => void
+  showMenuTrigger?: boolean;
+  onMenuOpen?: () => void;
   /** Tighter header + search for cockpit / home. */
-  compact?: boolean
-  onSearchOpen?: () => void
-  className?: string
-}
+  compact?: boolean;
+  onSearchOpen?: () => void;
+  className?: string;
+};
 
 export function MobileAppHeader({
   title,
@@ -66,7 +66,9 @@ export function MobileAppHeader({
             <Menu className="size-4" />
           </Button>
         ) : null}
-        <h1 className="min-w-0 flex-1 truncate text-base font-semibold tracking-tight">{title}</h1>
+        <h1 className="min-w-0 flex-1 truncate text-base font-semibold tracking-tight">
+          {title}
+        </h1>
         <div className="flex shrink-0 items-center gap-1.5">
           <Badge className="bg-emerald-100 text-[10px] text-emerald-800 hover:bg-emerald-100">
             Operativo
@@ -95,5 +97,5 @@ export function MobileAppHeader({
         </div>
       ) : null}
     </header>
-  )
+  );
 }

@@ -1,28 +1,36 @@
-import type { NavAccessContext, NavGroupItem, NavLinkItem, NavNode } from "@/types/dashboard"
+import type {
+  NavAccessContext,
+  NavGroupItem,
+  NavLinkItem,
+  NavNode,
+} from "@/types/dashboard";
 
 function linkVisible(link: NavLinkItem, ctx: NavAccessContext): boolean {
-  const req = link.requiredPermissions
-  if (!req?.length) return true
-  return req.every((p) => ctx.permissions.has(p))
+  const req = link.requiredPermissions;
+  if (!req?.length) return true;
+  return req.every((p) => ctx.permissions.has(p));
 }
 
-function filterChildren(nodes: readonly NavNode[], ctx: NavAccessContext): NavNode[] {
-  const out: NavNode[] = []
+function filterChildren(
+  nodes: readonly NavNode[],
+  ctx: NavAccessContext
+): NavNode[] {
+  const out: NavNode[] = [];
   for (const node of nodes) {
     if (node.kind === "link") {
-      if (linkVisible(node, ctx)) out.push(node)
-      continue
+      if (linkVisible(node, ctx)) out.push(node);
+      continue;
     }
-    const req = node.requiredPermissions
+    const req = node.requiredPermissions;
     if (req?.length && !req.every((p) => ctx.permissions.has(p))) {
-      continue
+      continue;
     }
-    const children = filterChildren(node.children, ctx)
-    if (children.length === 0) continue
-    const next: NavGroupItem = { ...node, children }
-    out.push(next)
+    const children = filterChildren(node.children, ctx);
+    if (children.length === 0) continue;
+    const next: NavGroupItem = { ...node, children };
+    out.push(next);
   }
-  return out
+  return out;
 }
 
 /**
@@ -33,5 +41,5 @@ export function filterNavByPermissions(
   nodes: readonly NavNode[],
   ctx: NavAccessContext
 ): NavNode[] {
-  return filterChildren(nodes, ctx)
+  return filterChildren(nodes, ctx);
 }

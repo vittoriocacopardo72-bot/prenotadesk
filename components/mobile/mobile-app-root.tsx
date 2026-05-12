@@ -1,72 +1,80 @@
-"use client"
+"use client";
 
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react";
 
-import { DashboardMobileNav } from "@/components/dashboard/shell"
-import { filterNavByPermissions } from "@/lib/dashboard/filter-nav-tree"
-import { dashboardNavConfig } from "@/lib/dashboard/nav-config"
-import { ALTRO_SECTION_KEYS, type AltroSectionKey } from "@/lib/mobile/altro-sections"
-import { createSectionContentMap, type SectionKey } from "@/lib/sections/section-registry"
-import type { MobileMainTab } from "@/types/mobile"
-import type { NavAccessContext, PermissionId } from "@/types/dashboard"
+import { DashboardMobileNav } from "@/components/dashboard/shell";
+import { filterNavByPermissions } from "@/lib/dashboard/filter-nav-tree";
+import { dashboardNavConfig } from "@/lib/dashboard/nav-config";
+import {
+  ALTRO_SECTION_KEYS,
+  type AltroSectionKey,
+} from "@/lib/mobile/altro-sections";
+import {
+  createSectionContentMap,
+  type SectionKey,
+} from "@/lib/sections/section-registry";
+import type { MobileMainTab } from "@/types/mobile";
+import type { NavAccessContext, PermissionId } from "@/types/dashboard";
 
-import { MobileAltroHub } from "./mobile-altro-hub"
-import { MobileAppHeader } from "./mobile-app-header"
-import { MobileBottomNav } from "./mobile-bottom-nav"
-import { MobileFinanzeCompact } from "./finanze/mobile-finanze-compact"
-import { MobileAltroScrollShell } from "./wrappers/mobile-altro-scroll-shell"
-import { MobileHomeView } from "./mobile-home-view"
-import { MobileOperazioniView } from "./mobile-operazioni-view"
-import { MobileActionHub } from "./mobile-action-hub"
-import { MobileBookingsStack } from "./mobile-bookings-stack"
+import { MobileAltroHub } from "./mobile-altro-hub";
+import { MobileAppHeader } from "./mobile-app-header";
+import { MobileBottomNav } from "./mobile-bottom-nav";
+import { MobileFinanzeCompact } from "./finanze/mobile-finanze-compact";
+import { MobileAltroScrollShell } from "./wrappers/mobile-altro-scroll-shell";
+import { MobileHomeView } from "./mobile-home-view";
+import { MobileOperazioniView } from "./mobile-operazioni-view";
+import { MobileActionHub } from "./mobile-action-hub";
+import { MobileBookingsStack } from "./mobile-bookings-stack";
 
 export function MobileAppRoot() {
-  const [tab, setTab] = useState<MobileMainTab>("home")
-  const [altroSection, setAltroSection] = useState<AltroSectionKey | null>(null)
-  const [sideNavOpen, setSideNavOpen] = useState(false)
+  const [tab, setTab] = useState<MobileMainTab>("home");
+  const [altroSection, setAltroSection] = useState<AltroSectionKey | null>(
+    null
+  );
+  const [sideNavOpen, setSideNavOpen] = useState(false);
 
-  const sectionContent = useMemo(() => createSectionContentMap(), [])
+  const sectionContent = useMemo(() => createSectionContentMap(), []);
   const access = useMemo<NavAccessContext>(
     () => ({ permissions: new Set<PermissionId>() }),
     []
-  )
+  );
   const navNodes = useMemo(
     () => filterNavByPermissions(dashboardNavConfig.nodes, access),
     [access]
-  )
+  );
 
   const handleTabChange = useCallback((next: MobileMainTab) => {
-    setTab(next)
-    if (next !== "altro") setAltroSection(null)
-  }, [])
+    setTab(next);
+    if (next !== "altro") setAltroSection(null);
+  }, []);
 
   const navigateToSection = useCallback((key: SectionKey | string) => {
     if (key === "Dashboard") {
-      setTab("home")
-      setAltroSection(null)
-      return
+      setTab("home");
+      setAltroSection(null);
+      return;
     }
     if (key === "Prenotazioni") {
-      setTab("prenotazioni")
-      setAltroSection(null)
-      return
+      setTab("prenotazioni");
+      setAltroSection(null);
+      return;
     }
     if ((ALTRO_SECTION_KEYS as readonly string[]).includes(key)) {
-      setTab("altro")
-      setAltroSection(key as AltroSectionKey)
-      return
+      setTab("altro");
+      setAltroSection(key as AltroSectionKey);
+      return;
     }
-    setTab("home")
-    setAltroSection(null)
-  }, [])
+    setTab("home");
+    setAltroSection(null);
+  }, []);
 
   const navigateFromMenu = useCallback(
     (key: SectionKey) => {
-      setSideNavOpen(false)
-      navigateToSection(key)
+      setSideNavOpen(false);
+      navigateToSection(key);
     },
     [navigateToSection]
-  )
+  );
 
   const menuActiveSection: SectionKey =
     tab === "home"
@@ -75,7 +83,7 @@ export function MobileAppRoot() {
         ? "Prenotazioni"
         : tab === "operazioni"
           ? "Dashboard"
-          : altroSection ?? "Calendario"
+          : (altroSection ?? "Calendario");
 
   const headerTitle =
     tab === "altro" && altroSection
@@ -86,11 +94,11 @@ export function MobileAppRoot() {
           ? "Operazioni"
           : tab === "prenotazioni"
             ? "Prenotazioni"
-            : "Altro"
+            : "Altro";
 
-  const showBack = tab === "altro" && altroSection !== null
-  const showSearch = !(tab === "altro" && altroSection !== null)
-  const showShellMenu = !showBack
+  const showBack = tab === "altro" && altroSection !== null;
+  const showSearch = !(tab === "altro" && altroSection !== null);
+  const showShellMenu = !showBack;
 
   return (
     <MobileActionHub
@@ -116,12 +124,12 @@ export function MobileAppRoot() {
                 onQuickAction={flow.handleQuickAction}
                 onOpenOperazioni={() => handleTabChange("operazioni")}
                 onOpenMeteoModule={() => {
-                  setTab("altro")
-                  setAltroSection("Meteo marino")
+                  setTab("altro");
+                  setAltroSection("Meteo marino");
                 }}
                 onOpenBarcheModule={() => {
-                  setTab("altro")
-                  setAltroSection("Barche")
+                  setTab("altro");
+                  setAltroSection("Barche");
                 }}
               />
             ) : null}
@@ -130,15 +138,17 @@ export function MobileAppRoot() {
               <MobileOperazioniView
                 onNavigateTab={handleTabChange}
                 onOpenAltroSection={(key) => {
-                  setTab("altro")
-                  setAltroSection(key)
+                  setTab("altro");
+                  setAltroSection(key);
                 }}
               />
             ) : null}
 
             {tab === "prenotazioni" ? <MobileBookingsStack /> : null}
 
-            {tab === "altro" && !altroSection ? <MobileAltroHub onSelect={setAltroSection} /> : null}
+            {tab === "altro" && !altroSection ? (
+              <MobileAltroHub onSelect={setAltroSection} />
+            ) : null}
 
             {tab === "altro" && altroSection ? (
               altroSection === "Finanze" ? (
@@ -165,5 +175,5 @@ export function MobileAppRoot() {
         </div>
       )}
     </MobileActionHub>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-import type { SectionKey } from "@/lib/sections/section-registry"
+import type { SectionKey } from "@/lib/sections/section-registry";
 
 /** Opaque permission key for future RBAC; nav items can declare requirements now. */
-export type PermissionId = string
+export type PermissionId = string;
 
 export const NAV_ICON_IDS = [
   "home",
@@ -13,37 +13,37 @@ export const NAV_ICON_IDS = [
   "credit-card",
   "bar-chart",
   "settings",
-] as const
+] as const;
 
-export type NavIconId = (typeof NAV_ICON_IDS)[number]
+export type NavIconId = (typeof NAV_ICON_IDS)[number];
 
 export type NavLinkItem = {
-  kind: "link"
-  id: string
-  label: string
-  icon: NavIconId
-  sectionKey: SectionKey
-  requiredPermissions?: readonly PermissionId[]
-  badge?: string
-}
+  kind: "link";
+  id: string;
+  label: string;
+  icon: NavIconId;
+  sectionKey: SectionKey;
+  requiredPermissions?: readonly PermissionId[];
+  badge?: string;
+};
 
 export type NavGroupItem = {
-  kind: "group"
-  id: string
-  label: string
+  kind: "group";
+  id: string;
+  label: string;
   /** Optional group icon (e.g. section headers in dense sidebars). */
-  icon?: NavIconId
-  defaultOpen?: boolean
-  children: readonly NavNode[]
-  requiredPermissions?: readonly PermissionId[]
-}
+  icon?: NavIconId;
+  defaultOpen?: boolean;
+  children: readonly NavNode[];
+  requiredPermissions?: readonly PermissionId[];
+};
 
-export type NavNode = NavLinkItem | NavGroupItem
+export type NavNode = NavLinkItem | NavGroupItem;
 
 export type DashboardNavConfig = {
-  readonly nodes: readonly NavNode[]
-}
+  readonly nodes: readonly NavNode[];
+};
 
 export type NavAccessContext = {
-  readonly permissions: ReadonlySet<PermissionId>
-}
+  readonly permissions: ReadonlySet<PermissionId>;
+};

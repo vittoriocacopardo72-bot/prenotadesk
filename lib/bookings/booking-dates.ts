@@ -3,4 +3,4 @@ export {
   formatTodayIt,
   formatTodayIsoLocal,
   isBookingDateToday,
-} from "@/features/bookings/booking-dates"
+} from "@/features/bookings/booking-dates";

@@ -1,38 +1,41 @@
-"use client"
+"use client";
 
-import { useCallback, useMemo, useState } from "react"
-import { Menu, Search } from "lucide-react"
+import { useCallback, useMemo, useState } from "react";
+import { Menu, Search } from "lucide-react";
 
 import {
   DashboardMobileNav,
   DashboardSidebar,
   DesktopBookingFocusContext,
-} from "@/components/dashboard/shell"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { filterNavByPermissions } from "@/lib/dashboard/filter-nav-tree"
-import { dashboardNavConfig } from "@/lib/dashboard/nav-config"
-import { createSectionContentMap, type SectionKey } from "@/lib/sections/section-registry"
-import type { NavAccessContext, PermissionId } from "@/types/dashboard"
+} from "@/components/dashboard/shell";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { filterNavByPermissions } from "@/lib/dashboard/filter-nav-tree";
+import { dashboardNavConfig } from "@/lib/dashboard/nav-config";
+import {
+  createSectionContentMap,
+  type SectionKey,
+} from "@/lib/sections/section-registry";
+import type { NavAccessContext, PermissionId } from "@/types/dashboard";
 
 export function DesktopHomeShell() {
-  const [activeSection, setActiveSection] = useState<SectionKey>("Dashboard")
-  const [mobileNavOpen, setMobileNavOpen] = useState(false)
-  const [bookingFormFocusNonce, setBookingFormFocusNonce] = useState(0)
-  const sectionContent = useMemo(() => createSectionContentMap(), [])
+  const [activeSection, setActiveSection] = useState<SectionKey>("Dashboard");
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [bookingFormFocusNonce, setBookingFormFocusNonce] = useState(0);
+  const sectionContent = useMemo(() => createSectionContentMap(), []);
 
   const navigateSection = useCallback((section: SectionKey) => {
     if (section !== "Prenotazioni") {
-      setBookingFormFocusNonce(0)
+      setBookingFormFocusNonce(0);
     }
-    setActiveSection(section)
-  }, [])
+    setActiveSection(section);
+  }, []);
 
   const openDesktopCreateBooking = useCallback(() => {
-    setActiveSection("Prenotazioni")
-    setBookingFormFocusNonce((n) => n + 1)
-  }, [])
+    setActiveSection("Prenotazioni");
+    setBookingFormFocusNonce((n) => n + 1);
+  }, []);
 
   const desktopBookingFocus = useMemo(
     () => ({
@@ -41,15 +44,15 @@ export function DesktopHomeShell() {
       navigateToSection: navigateSection,
     }),
     [bookingFormFocusNonce, openDesktopCreateBooking, navigateSection]
-  )
+  );
   const access = useMemo<NavAccessContext>(
     () => ({ permissions: new Set<PermissionId>() }),
     []
-  )
+  );
   const navNodes = useMemo(
     () => filterNavByPermissions(dashboardNavConfig.nodes, access),
     [access]
-  )
+  );
   const formattedDate = useMemo(
     () =>
       new Intl.DateTimeFormat("it-IT", {
@@ -59,7 +62,7 @@ export function DesktopHomeShell() {
         year: "numeric",
       }).format(new Date()),
     []
-  )
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
@@ -98,10 +101,15 @@ export function DesktopHomeShell() {
                 />
               </div>
               <div className="flex items-center gap-3">
-                <Badge variant="outline" className="hidden capitalize text-slate-600 md:inline-flex">
+                <Badge
+                  variant="outline"
+                  className="hidden capitalize text-slate-600 md:inline-flex"
+                >
                   {formattedDate}
                 </Badge>
-                <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">Operativo</Badge>
+                <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
+                  Operativo
+                </Badge>
                 <Badge variant="secondary">VM</Badge>
               </div>
             </div>
@@ -123,5 +131,5 @@ export function DesktopHomeShell() {
         onNavigate={navigateSection}
       />
     </div>
-  )
+  );
 }

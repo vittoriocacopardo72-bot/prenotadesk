@@ -20,19 +20,19 @@ PrenotaDesk is a **real operational** booking and marine/port management workspa
 
 Modules are **loosely coupled** but share a common spine: **bookings** reference **clients** and **boats**; **payments** attach to booking or operational line items; **alerts** aggregate exceptions from bookings, fleet, weather, and pontile; **report** reads aggregated facts, never raw UI state.
 
-| Module | Role |
-|--------|------|
-| **Bookings / Prenotazioni** | Core: requests, confirmations, departures, day operations. Source of truth for “who goes when on what.” |
-| **Clients** | Guest profiles, history, preferences, commercial signals. Linked to bookings and payment notes, not duplicated identity. |
-| **Boats / Fleet** | Availability, status, maintenance, blocking. Consumed by bookings and departure views; maintenance blocks propagate as alerts. |
-| **Services** | Catalog and add-ons tied to trips. Priced lines roll into payments and reporting when activated. |
-| **Payments / Finanze** | Cash register, movements, KPIs from real state (local then synced). Separate from “booking quote” until explicitly reconciled. |
-| **Marina / Pontile & berths** | Berth assignment, occupancy windows, transit, and pier-side operations. See §9. |
-| **Crew** | Assignments and operational notes. Tied to departure slots and boat, not a parallel calendar silo. |
-| **Alerts** | Operational signals and follow-ups. Fed by rules and thresholds across modules; see §16. |
-| **Weather** | Marine context for go/no-go decisions. Inputs to alerts and optional hard gates on departure; see §22. |
-| **Settings** | Base and advanced configuration, integrations, berth catalog parameters, fiscal placeholders. |
-| **Report** | Operational and commercial rollups **only when upstream modules supply real data**; see §14–§15, §25, and finance philosophy below. |
+| Module                        | Role                                                                                                                                |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Bookings / Prenotazioni**   | Core: requests, confirmations, departures, day operations. Source of truth for “who goes when on what.”                             |
+| **Clients**                   | Guest profiles, history, preferences, commercial signals. Linked to bookings and payment notes, not duplicated identity.            |
+| **Boats / Fleet**             | Availability, status, maintenance, blocking. Consumed by bookings and departure views; maintenance blocks propagate as alerts.      |
+| **Services**                  | Catalog and add-ons tied to trips. Priced lines roll into payments and reporting when activated.                                    |
+| **Payments / Finanze**        | Cash register, movements, KPIs from real state (local then synced). Separate from “booking quote” until explicitly reconciled.      |
+| **Marina / Pontile & berths** | Berth assignment, occupancy windows, transit, and pier-side operations. See §9.                                                     |
+| **Crew**                      | Assignments and operational notes. Tied to departure slots and boat, not a parallel calendar silo.                                  |
+| **Alerts**                    | Operational signals and follow-ups. Fed by rules and thresholds across modules; see §16.                                            |
+| **Weather**                   | Marine context for go/no-go decisions. Inputs to alerts and optional hard gates on departure; see §22.                              |
+| **Settings**                  | Base and advanced configuration, integrations, berth catalog parameters, fiscal placeholders.                                       |
+| **Report**                    | Operational and commercial rollups **only when upstream modules supply real data**; see §14–§15, §25, and finance philosophy below. |
 
 **Finance / reporting philosophy (cross-cutting):** Reporting is **downstream of ledger truth**. Movement-level cash data (entrate/uscite, categories) must reconcile to booking commercial state over time, not replace it overnight. Until adapters sync to Supabase, exports are **device-local truth** plus explicit “not synced” labeling when relevant.
 
@@ -84,12 +84,12 @@ Phases are **sequential by priority**; parallel polish only after the earlier ga
 
 ## 6. Agent pipeline (roles and handoffs)
 
-| Agent | Responsibility |
-|-------|----------------|
-| **Cursor** | Product implementation: features, UI/UX within rules, wiring flows, shadcn/Figma alignment. |
-| **Codex** | Repair: runtime, build/lint/types, hydration, imports—**no** redesign or feature expansion during bugfix. |
-| **Figma** | Reference only for structure and consistency. |
-| **Human (Vittorio)** | Approves structural or large-scope changes; sets phase priorities. |
+| Agent                | Responsibility                                                                                            |
+| -------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Cursor**           | Product implementation: features, UI/UX within rules, wiring flows, shadcn/Figma alignment.               |
+| **Codex**            | Repair: runtime, build/lint/types, hydration, imports—**no** redesign or feature expansion during bugfix. |
+| **Figma**            | Reference only for structure and consistency.                                                             |
+| **Human (Vittorio)** | Approves structural or large-scope changes; sets phase priorities.                                        |
 
 **Handoff discipline:** Implementation stops for **Bugfix mode** when the app is broken—smallest fix, lint/build, no scope creep. **Documentation-only** changes (e.g. this file) do not bypass activation rules when later implementing features.
 
@@ -109,16 +109,16 @@ Phases are **sequential by priority**; parallel polish only after the earlier ga
 
 ## 8. Risks and mitigations
 
-| Risk | Mitigation |
-|------|------------|
-| Mock UI lingering | Activation protocol + classification + disable/label fake controls. |
-| Big-bang Supabase | Adapters, phased cutover, keep local fallback until verified. |
-| Shell regression | Explicit “no shell/navigation rewrite” in activations; smoke tests across sections. |
-| Berth double-booking | Time-window constraints, pessimistic overlap checks, visible conflict state (§9). |
+| Risk                           | Mitigation                                                                             |
+| ------------------------------ | -------------------------------------------------------------------------------------- |
+| Mock UI lingering              | Activation protocol + classification + disable/label fake controls.                    |
+| Big-bang Supabase              | Adapters, phased cutover, keep local fallback until verified.                          |
+| Shell regression               | Explicit “no shell/navigation rewrite” in activations; smoke tests across sections.    |
+| Berth double-booking           | Time-window constraints, pessimistic overlap checks, visible conflict state (§9).      |
 | Weather mis-read as hard block | Policy: weather informs alerts; **hard stop** only when configured and explicit in UI. |
-| AI suggestions taken as facts | Boundaries in §23; suggestions never write ledger without human confirm. |
-| Meteoblue dependency | Cache + stale indicators + offline last-known (§22). |
-| Multi-language scope creep | §26: ship Italian first; i18n as structural phase, not string sweep in hot paths. |
+| AI suggestions taken as facts  | Boundaries in §23; suggestions never write ledger without human confirm.               |
+| Meteoblue dependency           | Cache + stale indicators + offline last-known (§22).                                   |
+| Multi-language scope creep     | §26: ship Italian first; i18n as structural phase, not string sweep in hot paths.      |
 
 ---
 

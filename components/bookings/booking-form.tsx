@@ -1,1 +1,1 @@
-export { BookingForm } from "@/features/bookings/components/booking-form"
+export { BookingForm } from "@/features/bookings/components/booking-form";

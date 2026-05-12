@@ -1,40 +1,56 @@
-"use client"
+"use client";
 
-import { useMemo } from "react"
+import { useMemo } from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { selectBookingRows, useAppStoreSelector } from "@/lib/store/app-store"
-import { isBookingDateToday } from "@/lib/bookings/booking-dates"
-import { calendarWeek } from "@/lib/mock/calendar"
-import type { BookingStatus } from "@/types/booking"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { selectBookingRows, useAppStoreSelector } from "@/lib/store/app-store";
+import { isBookingDateToday } from "@/lib/bookings/booking-dates";
+import { calendarWeek } from "@/lib/mock/calendar";
+import type { BookingStatus } from "@/types/booking";
 
-const GIORNI_IT = ["Domenica", "Lunedi", "Martedi", "Mercoledi", "Giovedi", "Venerdi", "Sabato"] as const
+const GIORNI_IT = [
+  "Domenica",
+  "Lunedi",
+  "Martedi",
+  "Mercoledi",
+  "Giovedi",
+  "Venerdi",
+  "Sabato",
+] as const;
 
 function giornoItalianoOggi(): (typeof GIORNI_IT)[number] {
-  return GIORNI_IT[new Date().getDay()]
+  return GIORNI_IT[new Date().getDay()];
 }
 
-function badgeVariantAgenda(stato: BookingStatus): "default" | "secondary" | "outline" {
-  if (stato === "Confermate" || stato === "Check-in") return "default"
-  if (stato === "In arrivo") return "secondary"
-  return "outline"
+function badgeVariantAgenda(
+  stato: BookingStatus
+): "default" | "secondary" | "outline" {
+  if (stato === "Confermate" || stato === "Check-in") return "default";
+  if (stato === "In arrivo") return "secondary";
+  return "outline";
 }
 
 export function CalendarSection() {
-  const bookingRows = useAppStoreSelector((s) => selectBookingRows(s))
+  const bookingRows = useAppStoreSelector((s) => selectBookingRows(s));
   const partenzeOggi = useMemo(
     () => bookingRows.filter((r) => isBookingDateToday(r.data)).length,
     [bookingRows]
-  )
-  const oggiWeekdayLabel = useMemo(() => giornoItalianoOggi(), [])
+  );
+  const oggiWeekdayLabel = useMemo(() => giornoItalianoOggi(), []);
   const agendaOggi = useMemo(() => {
     return bookingRows
       .filter((r) => isBookingDateToday(r.data))
       .slice()
-      .sort((a, b) => a.ora.localeCompare(b.ora))
-  }, [bookingRows])
+      .sort((a, b) => a.ora.localeCompare(b.ora));
+  }, [bookingRows]);
 
   return (
     <>
@@ -43,19 +59,43 @@ export function CalendarSection() {
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <CardTitle>Calendario</CardTitle>
-              <CardDescription>Pianificazione operativa giornaliera e settimanale</CardDescription>
+              <CardDescription>
+                Pianificazione operativa giornaliera e settimanale
+              </CardDescription>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Button type="button" variant="outline" size="sm" disabled title="Non ancora disponibile">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled
+                title="Non ancora disponibile"
+              >
                 Oggi
               </Button>
-              <Button type="button" variant="outline" size="sm" disabled title="Non ancora disponibile">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled
+                title="Non ancora disponibile"
+              >
                 Giorno
               </Button>
-              <Button type="button" size="sm" disabled title="Non ancora disponibile">
+              <Button
+                type="button"
+                size="sm"
+                disabled
+                title="Non ancora disponibile"
+              >
                 Settimana
               </Button>
-              <Button type="button" size="sm" disabled title="Non ancora disponibile">
+              <Button
+                type="button"
+                size="sm"
+                disabled
+                title="Non ancora disponibile"
+              >
                 Nuovo evento
               </Button>
             </div>
@@ -66,19 +106,23 @@ export function CalendarSection() {
         <Card className="bg-white">
           <CardHeader>
             <CardTitle>Settimana operativa</CardTitle>
-            <CardDescription>Vista compatta da lunedi a domenica</CardDescription>
+            <CardDescription>
+              Vista compatta da lunedi a domenica
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {calendarWeek.map((day) => {
-                const isToday = day.giorno === oggiWeekdayLabel
+                const isToday = day.giorno === oggiWeekdayLabel;
                 return (
                   <div
                     key={day.giorno}
                     className={`rounded-lg border p-3 ${isToday ? "border-sky-200 bg-sky-50/40" : "border-slate-200 bg-slate-50/70"}`}
                   >
                     <div className="mb-2 flex items-center justify-between">
-                      <p className="text-xs font-semibold text-slate-800">{day.giorno}</p>
+                      <p className="text-xs font-semibold text-slate-800">
+                        {day.giorno}
+                      </p>
                       <p className="text-xs text-slate-500">{day.data}</p>
                     </div>
                     <div className="space-y-2">
@@ -86,21 +130,38 @@ export function CalendarSection() {
                         <p className="text-xs text-slate-400">Nessun evento</p>
                       ) : (
                         day.eventi.map((event, index) => (
-                          <div key={`${day.giorno}-${event.ora}-${index}`} className="rounded-md border border-slate-200 bg-white p-2">
+                          <div
+                            key={`${day.giorno}-${event.ora}-${index}`}
+                            className="rounded-md border border-slate-200 bg-white p-2"
+                          >
                             <div className="mb-1 flex items-center justify-between">
-                              <p className="text-xs font-medium text-slate-700">{event.ora}</p>
-                              <Badge variant={event.stato === "Confermata" ? "default" : event.stato === "In arrivo" ? "secondary" : "outline"}>
+                              <p className="text-xs font-medium text-slate-700">
+                                {event.ora}
+                              </p>
+                              <Badge
+                                variant={
+                                  event.stato === "Confermata"
+                                    ? "default"
+                                    : event.stato === "In arrivo"
+                                      ? "secondary"
+                                      : "outline"
+                                }
+                              >
                                 {event.stato}
                               </Badge>
                             </div>
-                            <p className="text-xs font-medium text-slate-800">{event.barca}</p>
-                            <p className="text-xs text-slate-500">{event.dettaglio}</p>
+                            <p className="text-xs font-medium text-slate-800">
+                              {event.barca}
+                            </p>
+                            <p className="text-xs text-slate-500">
+                              {event.dettaglio}
+                            </p>
                           </div>
                         ))
                       )}
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </CardContent>
@@ -109,11 +170,15 @@ export function CalendarSection() {
           <Card className="bg-white">
             <CardHeader>
               <CardTitle>Agenda di oggi</CardTitle>
-              <CardDescription>Ordine cronologico partenze/eventi</CardDescription>
+              <CardDescription>
+                Ordine cronologico partenze/eventi
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
               {agendaOggi.length === 0 ? (
-                <p className="text-xs text-slate-400">Nessuna prenotazione per oggi nel store locale.</p>
+                <p className="text-xs text-slate-400">
+                  Nessuna prenotazione per oggi nel store locale.
+                </p>
               ) : (
                 agendaOggi.map((row) => (
                   <div
@@ -121,10 +186,16 @@ export function CalendarSection() {
                     className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2"
                   >
                     <div className="mb-1 flex items-center justify-between">
-                      <p className="text-xs font-semibold text-slate-700">{row.ora}</p>
-                      <Badge variant={badgeVariantAgenda(row.stato)}>{row.stato}</Badge>
+                      <p className="text-xs font-semibold text-slate-700">
+                        {row.ora}
+                      </p>
+                      <Badge variant={badgeVariantAgenda(row.stato)}>
+                        {row.stato}
+                      </Badge>
                     </div>
-                    <p className="text-xs font-medium text-slate-800">{row.barca}</p>
+                    <p className="text-xs font-medium text-slate-800">
+                      {row.barca}
+                    </p>
                     <p className="text-xs text-slate-500">
                       {row.cliente} · {row.servizio}
                     </p>
@@ -162,5 +233,5 @@ export function CalendarSection() {
         </div>
       </div>
     </>
-  )
+  );
 }

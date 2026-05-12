@@ -1,46 +1,60 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 
-import { registerPayment } from "@/lib/actions"
-import type { ActionResult, RegisterPaymentInput } from "@/types/actions"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Textarea } from "@/components/ui/textarea"
+import { registerPayment } from "@/lib/actions";
+import type { ActionResult, RegisterPaymentInput } from "@/types/actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 
 export type RegisterPaymentSheetProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onResult: (result: ActionResult<{ paymentId: string }>) => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onResult: (result: ActionResult<{ paymentId: string }>) => void;
+};
 
 const INITIAL: RegisterPaymentInput = {
   bookingRef: "",
   amount: 0,
   method: "POS",
   notes: "",
-}
+};
 
-export function RegisterPaymentSheet({ open, onOpenChange, onResult }: RegisterPaymentSheetProps) {
-  const [form, setForm] = useState<RegisterPaymentInput>(INITIAL)
-  const [submitting, setSubmitting] = useState(false)
+export function RegisterPaymentSheet({
+  open,
+  onOpenChange,
+  onResult,
+}: RegisterPaymentSheetProps) {
+  const [form, setForm] = useState<RegisterPaymentInput>(INITIAL);
+  const [submitting, setSubmitting] = useState(false);
 
   async function submit() {
-    setSubmitting(true)
-    const res = await registerPayment(form)
-    setSubmitting(false)
-    onResult(res)
+    setSubmitting(true);
+    const res = await registerPayment(form);
+    setSubmitting(false);
+    onResult(res);
     if (res.status === "success") {
-      setForm(INITIAL)
-      onOpenChange(false)
+      setForm(INITIAL);
+      onOpenChange(false);
     }
   }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[88vh] gap-0 p-0" showCloseButton>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88vh] gap-0 p-0"
+        showCloseButton
+      >
         <SheetHeader className="border-b border-slate-200 p-4">
           <SheetTitle>Registra incasso</SheetTitle>
         </SheetHeader>
@@ -50,7 +64,9 @@ export function RegisterPaymentSheet({ open, onOpenChange, onResult }: RegisterP
             <Input
               id="mobile-payment-ref"
               value={form.bookingRef}
-              onChange={(e) => setForm((prev) => ({ ...prev, bookingRef: e.target.value }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, bookingRef: e.target.value }))
+              }
               placeholder="Es. Blue Horizon 09:30"
             />
           </div>
@@ -61,7 +77,12 @@ export function RegisterPaymentSheet({ open, onOpenChange, onResult }: RegisterP
               type="number"
               min={0}
               value={form.amount}
-              onChange={(e) => setForm((prev) => ({ ...prev, amount: Number(e.target.value || 0) }))}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  amount: Number(e.target.value || 0),
+                }))
+              }
             />
           </div>
           <div className="space-y-1.5">
@@ -73,7 +94,8 @@ export function RegisterPaymentSheet({ open, onOpenChange, onResult }: RegisterP
               onChange={(e) =>
                 setForm((prev) => ({
                   ...prev,
-                  method: (e.target.value as RegisterPaymentInput["method"]) || "POS",
+                  method:
+                    (e.target.value as RegisterPaymentInput["method"]) || "POS",
                 }))
               }
             />
@@ -88,7 +110,9 @@ export function RegisterPaymentSheet({ open, onOpenChange, onResult }: RegisterP
             <Textarea
               id="mobile-payment-notes"
               value={form.notes}
-              onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, notes: e.target.value }))
+              }
               placeholder="Note incasso..."
             />
           </div>
@@ -99,18 +123,25 @@ export function RegisterPaymentSheet({ open, onOpenChange, onResult }: RegisterP
               type="button"
               variant="outline"
               onClick={() => {
-                onOpenChange(false)
-                onResult({ status: "cancelled", message: "Registrazione incasso annullata." })
+                onOpenChange(false);
+                onResult({
+                  status: "cancelled",
+                  message: "Registrazione incasso annullata.",
+                });
               }}
             >
               Annulla
             </Button>
-            <Button type="button" onClick={() => void submit()} disabled={submitting}>
+            <Button
+              type="button"
+              onClick={() => void submit()}
+              disabled={submitting}
+            >
               {submitting ? "Registrazione..." : "Conferma"}
             </Button>
           </div>
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

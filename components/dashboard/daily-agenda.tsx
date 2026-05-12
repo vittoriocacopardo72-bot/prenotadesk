@@ -1,13 +1,19 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 type Agenda = {
-  checkIn: readonly string[]
-  partenze: readonly string[]
-  manutenzioni: readonly string[]
-  vip: readonly string[]
-  ritardi: readonly string[]
-}
+  checkIn: readonly string[];
+  partenze: readonly string[];
+  manutenzioni: readonly string[];
+  vip: readonly string[];
+  ritardi: readonly string[];
+};
 
 export function DailyAgenda({ agenda }: { agenda: Agenda }) {
   return (
@@ -36,7 +42,10 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
         <Separator />
         <div>
-          <p className="mb-1 font-medium text-slate-700" title="Dato dimostrativo">
+          <p
+            className="mb-1 font-medium text-slate-700"
+            title="Dato dimostrativo"
+          >
             Manutenzioni programmate
           </p>
           {agenda.manutenzioni.map((item) => (
@@ -47,7 +56,10 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
         <Separator />
         <div>
-          <p className="mb-1 font-medium text-slate-700" title="Dato dimostrativo">
+          <p
+            className="mb-1 font-medium text-slate-700"
+            title="Dato dimostrativo"
+          >
             VIP / Clienti speciali
           </p>
           {agenda.vip.map((item) => (
@@ -58,7 +70,10 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
         <Separator />
         <div>
-          <p className="mb-1 font-medium text-slate-700" title="Dato dimostrativo">
+          <p
+            className="mb-1 font-medium text-slate-700"
+            title="Dato dimostrativo"
+          >
             Ritardi (dimostrativo)
           </p>
           {agenda.ritardi.map((item) => (
@@ -69,5 +84,5 @@ export function DailyAgenda({ agenda }: { agenda: Agenda }) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

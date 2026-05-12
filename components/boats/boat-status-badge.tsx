@@ -1,5 +1,5 @@
-import type { BoatStatus } from "@/types/boat"
-import { Badge } from "@/components/ui/badge"
+import type { BoatStatus } from "@/types/boat";
+import { Badge } from "@/components/ui/badge";
 
 export function BoatStatusBadge({ status }: { status: BoatStatus }) {
   return (
@@ -16,5 +16,5 @@ export function BoatStatusBadge({ status }: { status: BoatStatus }) {
     >
       {status}
     </Badge>
-  )
+  );
 }

@@ -1,21 +1,33 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useReportsLocalSnapshot } from "@/features/reports"
-import { reportSectionMeta } from "@/lib/mock/report"
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useReportsLocalSnapshot } from "@/features/reports";
+import { reportSectionMeta } from "@/lib/mock/report";
 
 function formatEur(n: number) {
-  return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(n)
+  return new Intl.NumberFormat("it-IT", {
+    style: "currency",
+    currency: "EUR",
+  }).format(n);
 }
 
 export function ReportSection() {
-  const snap = useReportsLocalSnapshot()
+  const snap = useReportsLocalSnapshot();
   const allSourcesEmpty =
-    snap.bookingTotal === 0 && snap.paymentRowCount === 0 && snap.financeMovementCount === 0
+    snap.bookingTotal === 0 &&
+    snap.paymentRowCount === 0 &&
+    snap.financeMovementCount === 0;
   const partialEmpty =
     !allSourcesEmpty &&
-    (snap.bookingTotal === 0 || snap.paymentRowCount === 0 || snap.financeMovementCount === 0)
+    (snap.bookingTotal === 0 ||
+      snap.paymentRowCount === 0 ||
+      snap.financeMovementCount === 0);
 
   return (
     <>
@@ -25,40 +37,52 @@ export function ReportSection() {
           <CardDescription className="space-y-3 text-pretty">
             <p>{reportSectionMeta.subtitle}</p>
             <p className="text-muted-foreground text-xs">
-              Questa sezione legge solo dati presenti su questo dispositivo; nulla è sincronizzato con altri browser o
-              utenti.
+              Questa sezione legge solo dati presenti su questo dispositivo;
+              nulla è sincronizzato con altri browser o utenti.
             </p>
             <div className="text-foreground space-y-2 text-sm">
-              <p className="font-medium">Riepilogo da dati locali (sola lettura)</p>
+              <p className="font-medium">
+                Riepilogo da dati locali (sola lettura)
+              </p>
               <ul className="list-disc space-y-1 pl-4">
                 <li>
-                  Prenotazioni nello store app: <strong>{snap.bookingTotal}</strong> totali,{" "}
+                  Prenotazioni nello store app:{" "}
+                  <strong>{snap.bookingTotal}</strong> totali,{" "}
                   <strong>{snap.bookingToday}</strong> con data oggi
                 </li>
                 <li>
-                  Righe incassi / pagamenti nello store app: <strong>{snap.paymentRowCount}</strong>
+                  Righe incassi / pagamenti nello store app:{" "}
+                  <strong>{snap.paymentRowCount}</strong>
                 </li>
                 <li>
-                  Movimenti registro Finanze (<code className="text-xs">prenotadesk_finance_movements_v1</code>
-                  ): <strong>{snap.financeMovementCount}</strong> — entrate {formatEur(snap.financeTotals.totaleEntrate)}
-                  , uscite {formatEur(snap.financeTotals.totaleUscite)}, saldo {formatEur(snap.financeTotals.saldo)}
-                  , movimenti con data oggi <strong>{snap.financeTotals.movimentiOggi}</strong>
+                  Movimenti registro Finanze (
+                  <code className="text-xs">
+                    prenotadesk_finance_movements_v1
+                  </code>
+                  ): <strong>{snap.financeMovementCount}</strong> — entrate{" "}
+                  {formatEur(snap.financeTotals.totaleEntrate)}, uscite{" "}
+                  {formatEur(snap.financeTotals.totaleUscite)}, saldo{" "}
+                  {formatEur(snap.financeTotals.saldo)}, movimenti con data oggi{" "}
+                  <strong>{snap.financeTotals.movimentiOggi}</strong>
                 </li>
               </ul>
               {allSourcesEmpty ? (
                 <p className="text-muted-foreground border-muted border-l-2 pl-3">
-                  In attesa dati reali: non risultano prenotazioni, righe incassi né movimenti finanziari nei
-                  archivi locali collegati. Usa Prenotazioni, Incassi e Finanze per popolare lo stato; questo Report
-                  si aggiorna in lettura.
+                  In attesa dati reali: non risultano prenotazioni, righe
+                  incassi né movimenti finanziari nei archivi locali collegati.
+                  Usa Prenotazioni, Incassi e Finanze per popolare lo stato;
+                  questo Report si aggiorna in lettura.
                 </p>
               ) : partialEmpty ? (
                 <p className="text-muted-foreground border-muted border-l-2 pl-3 text-xs">
-                  Alcune fonti sono ancora vuote (prenotazioni, incassi store app o movimenti Finanze); i valori
-                  mostrati riguardano solo le fonti con dati.
+                  Alcune fonti sono ancora vuote (prenotazioni, incassi store
+                  app o movimenti Finanze); i valori mostrati riguardano solo le
+                  fonti con dati.
                 </p>
               ) : null}
               <p className="text-muted-foreground text-xs">
-                {reportSectionMeta.demoLead} Nessun analytics server-side in questa build.
+                {reportSectionMeta.demoLead} Nessun analytics server-side in
+                questa build.
               </p>
             </div>
           </CardDescription>
@@ -78,5 +102,5 @@ export function ReportSection() {
         </Card>
       ))}
     </>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import type { BookingStatus } from "@/types/booking"
-import { Badge } from "@/components/ui/badge"
+import type { BookingStatus } from "@/types/booking";
+import { Badge } from "@/components/ui/badge";
 
 export function BookingStatusBadge({ status }: { status: BookingStatus }) {
   return (
@@ -16,5 +16,5 @@ export function BookingStatusBadge({ status }: { status: BookingStatus }) {
     >
       {status}
     </Badge>
-  )
+  );
 }

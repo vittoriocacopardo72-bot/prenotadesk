@@ -1,46 +1,68 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 
-import { setBoatBlockState } from "@/lib/actions"
-import { useAppStoreSelector } from "@/lib/store/app-store"
-import type { ActionResult } from "@/types/actions"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Textarea } from "@/components/ui/textarea"
+import { setBoatBlockState } from "@/lib/actions";
+import { useAppStoreSelector } from "@/lib/store/app-store";
+import type { ActionResult } from "@/types/actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 
 export type BlockBoatSheetProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onResult: (result: ActionResult<{ boatName: string; blocked: boolean }>) => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onResult: (
+    result: ActionResult<{ boatName: string; blocked: boolean }>
+  ) => void;
+};
 
-export function BlockBoatSheet({ open, onOpenChange, onResult }: BlockBoatSheetProps) {
-  const [boatName, setBoatName] = useState("")
-  const [reason, setReason] = useState("")
-  const [mode, setMode] = useState<"block" | "unblock">("block")
-  const [submitting, setSubmitting] = useState(false)
-  const boats = useAppStoreSelector((s) => s.boats)
+export function BlockBoatSheet({
+  open,
+  onOpenChange,
+  onResult,
+}: BlockBoatSheetProps) {
+  const [boatName, setBoatName] = useState("");
+  const [reason, setReason] = useState("");
+  const [mode, setMode] = useState<"block" | "unblock">("block");
+  const [submitting, setSubmitting] = useState(false);
+  const boats = useAppStoreSelector((s) => s.boats);
 
   async function submit() {
-    setSubmitting(true)
-    const res = await setBoatBlockState({ boatName, blocked: mode === "block", reason })
-    setSubmitting(false)
-    onResult(res)
+    setSubmitting(true);
+    const res = await setBoatBlockState({
+      boatName,
+      blocked: mode === "block",
+      reason,
+    });
+    setSubmitting(false);
+    onResult(res);
     if (res.status === "success") {
-      setBoatName("")
-      setReason("")
-      onOpenChange(false)
+      setBoatName("");
+      setReason("");
+      onOpenChange(false);
     }
   }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[88vh] gap-0 p-0" showCloseButton>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88vh] gap-0 p-0"
+        showCloseButton
+      >
         <SheetHeader className="border-b border-slate-200 p-4">
-          <SheetTitle>{mode === "block" ? "Blocca barca" : "Sblocca barca"}</SheetTitle>
+          <SheetTitle>
+            {mode === "block" ? "Blocca barca" : "Sblocca barca"}
+          </SheetTitle>
         </SheetHeader>
         <div className="space-y-3 p-4">
           <div className="grid grid-cols-2 gap-2">
@@ -89,18 +111,29 @@ export function BlockBoatSheet({ open, onOpenChange, onResult }: BlockBoatSheetP
               type="button"
               variant="outline"
               onClick={() => {
-                onOpenChange(false)
-                onResult({ status: "cancelled", message: "Operazione barca annullata." })
+                onOpenChange(false);
+                onResult({
+                  status: "cancelled",
+                  message: "Operazione barca annullata.",
+                });
               }}
             >
               Annulla
             </Button>
-            <Button type="button" onClick={() => void submit()} disabled={submitting}>
-              {submitting ? "Invio..." : mode === "block" ? "Conferma blocco" : "Conferma sblocco"}
+            <Button
+              type="button"
+              onClick={() => void submit()}
+              disabled={submitting}
+            >
+              {submitting
+                ? "Invio..."
+                : mode === "block"
+                  ? "Conferma blocco"
+                  : "Conferma sblocco"}
             </Button>
           </div>
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

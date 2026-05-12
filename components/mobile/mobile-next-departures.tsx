@@ -1,28 +1,36 @@
-import type { ComponentProps } from "react"
+import type { ComponentProps } from "react";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export type DepartureRow = {
-  time: string
-  boat: string
-  service: string
-  status: string
-}
+  time: string;
+  boat: string;
+  service: string;
+  status: string;
+};
 
 export type MobileNextDeparturesProps = {
-  departures: readonly DepartureRow[]
-  maxVisible?: number
-  onSeeAll?: () => void
-  className?: string
-}
+  departures: readonly DepartureRow[];
+  maxVisible?: number;
+  onSeeAll?: () => void;
+  className?: string;
+};
 
-function statusVariant(status: string): ComponentProps<typeof Badge>["variant"] {
-  if (status === "Confermata") return "default"
-  if (status === "Imbarco") return "secondary"
-  return "outline"
+function statusVariant(
+  status: string
+): ComponentProps<typeof Badge>["variant"] {
+  if (status === "Confermata") return "default";
+  if (status === "Imbarco") return "secondary";
+  return "outline";
 }
 
 export function MobileNextDepartures({
@@ -31,13 +39,18 @@ export function MobileNextDepartures({
   onSeeAll,
   className,
 }: MobileNextDeparturesProps) {
-  const rows = departures.slice(0, maxVisible)
+  const rows = departures.slice(0, maxVisible);
 
   return (
-    <Card className={cn("border-slate-200 bg-white shadow-xs", className)} size="sm">
+    <Card
+      className={cn("border-slate-200 bg-white shadow-xs", className)}
+      size="sm"
+    >
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base">Prossime partenze</CardTitle>
-        <span className="text-[10px] font-medium tracking-wide text-sky-700 uppercase">Live</span>
+        <span className="text-[10px] font-medium tracking-wide text-sky-700 uppercase">
+          Live
+        </span>
       </CardHeader>
       <CardContent className="space-y-2 pt-0">
         {rows.map((row) => (
@@ -51,7 +64,10 @@ export function MobileNextDepartures({
               </p>
               <p className="truncate text-xs text-slate-600">{row.service}</p>
             </div>
-            <Badge variant={statusVariant(row.status)} className="shrink-0 text-[10px]">
+            <Badge
+              variant={statusVariant(row.status)}
+              className="shrink-0 text-[10px]"
+            >
               {row.status}
             </Badge>
           </div>
@@ -71,5 +87,5 @@ export function MobileNextDepartures({
         </CardFooter>
       ) : null}
     </Card>
-  )
+  );
 }

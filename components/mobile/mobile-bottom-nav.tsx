@@ -1,11 +1,17 @@
-"use client"
+"use client";
 
-import { createElement } from "react"
-import { ClipboardList, Home, LayoutDashboard, MoreHorizontal, type LucideIcon } from "lucide-react"
+import { createElement } from "react";
+import {
+  ClipboardList,
+  Home,
+  LayoutDashboard,
+  MoreHorizontal,
+  type LucideIcon,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import type { MobileMainTab } from "@/types/mobile"
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import type { MobileMainTab } from "@/types/mobile";
 
 const TAB_CONFIG: Record<
   MobileMainTab,
@@ -13,18 +19,26 @@ const TAB_CONFIG: Record<
 > = {
   home: { label: "Home", icon: Home },
   operazioni: { label: "Operazioni", icon: LayoutDashboard, shortLabel: "Ops" },
-  prenotazioni: { label: "Prenotazioni", icon: ClipboardList, shortLabel: "Preno" },
+  prenotazioni: {
+    label: "Prenotazioni",
+    icon: ClipboardList,
+    shortLabel: "Preno",
+  },
   altro: { label: "Altro", icon: MoreHorizontal },
-}
+};
 
 export type MobileBottomNavProps = {
-  active: MobileMainTab
-  onChange: (tab: MobileMainTab) => void
-  className?: string
-}
+  active: MobileMainTab;
+  onChange: (tab: MobileMainTab) => void;
+  className?: string;
+};
 
-export function MobileBottomNav({ active, onChange, className }: MobileBottomNavProps) {
-  const tabs = Object.keys(TAB_CONFIG) as MobileMainTab[]
+export function MobileBottomNav({
+  active,
+  onChange,
+  className,
+}: MobileBottomNavProps) {
+  const tabs = Object.keys(TAB_CONFIG) as MobileMainTab[];
 
   return (
     <nav
@@ -36,9 +50,9 @@ export function MobileBottomNav({ active, onChange, className }: MobileBottomNav
     >
       <div className="mx-auto flex max-w-lg items-stretch justify-between gap-0 px-1 pt-1">
         {tabs.map((tab) => {
-          const cfg = TAB_CONFIG[tab]
-          const isActive = active === tab
-          const Icon = cfg.icon
+          const cfg = TAB_CONFIG[tab];
+          const isActive = active === tab;
+          const Icon = cfg.icon;
           return (
             <Button
               key={tab}
@@ -52,12 +66,15 @@ export function MobileBottomNav({ active, onChange, className }: MobileBottomNav
               )}
               onClick={() => onChange(tab)}
             >
-              {createElement(Icon, { className: "size-5 shrink-0", "aria-hidden": true })}
+              {createElement(Icon, {
+                className: "size-5 shrink-0",
+                "aria-hidden": true,
+              })}
               <span className="truncate">{cfg.shortLabel ?? cfg.label}</span>
             </Button>
-          )
+          );
         })}
       </div>
     </nav>
-  )
+  );
 }

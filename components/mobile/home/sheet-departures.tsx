@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -9,28 +9,30 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet"
-import type { ComponentProps } from "react"
+} from "@/components/ui/sheet";
+import type { ComponentProps } from "react";
 
 export type DepartureItem = {
-  ora: string
-  barca: string
-  servizio: string
-  stato: string
-}
+  ora: string;
+  barca: string;
+  servizio: string;
+  stato: string;
+};
 
-function statusVariant(status: string): ComponentProps<typeof Badge>["variant"] {
-  if (status === "Confermata") return "default"
-  if (status === "Imbarco") return "secondary"
-  return "outline"
+function statusVariant(
+  status: string
+): ComponentProps<typeof Badge>["variant"] {
+  if (status === "Confermata") return "default";
+  if (status === "Imbarco") return "secondary";
+  return "outline";
 }
 
 export type MobileDeparturesSheetProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  departures: readonly DepartureItem[]
-  onOpenOperazioni: () => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  departures: readonly DepartureItem[];
+  onOpenOperazioni: () => void;
+};
 
 export function MobileDeparturesSheet({
   open,
@@ -40,7 +42,11 @@ export function MobileDeparturesSheet({
 }: MobileDeparturesSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[88vh] gap-0 p-0" showCloseButton>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88vh] gap-0 p-0"
+        showCloseButton
+      >
         <SheetHeader className="border-b border-slate-200 p-4 text-left">
           <SheetTitle>Partenze</SheetTitle>
           <SheetDescription>Prossime uscite e stato imbarco.</SheetDescription>
@@ -60,9 +66,14 @@ export function MobileDeparturesSheet({
                   <p className="text-sm font-semibold text-slate-900">
                     {row.ora} · {row.barca}
                   </p>
-                  <p className="truncate text-xs text-slate-600">{row.servizio}</p>
+                  <p className="truncate text-xs text-slate-600">
+                    {row.servizio}
+                  </p>
                 </div>
-                <Badge variant={statusVariant(row.stato)} className="shrink-0 text-[10px]">
+                <Badge
+                  variant={statusVariant(row.stato)}
+                  className="shrink-0 text-[10px]"
+                >
                   {row.stato}
                 </Badge>
               </div>
@@ -70,11 +81,16 @@ export function MobileDeparturesSheet({
           )}
         </div>
         <SheetFooter className="border-t border-slate-200 p-4">
-          <Button type="button" className="w-full" variant="secondary" onClick={onOpenOperazioni}>
+          <Button
+            type="button"
+            className="w-full"
+            variant="secondary"
+            onClick={onOpenOperazioni}
+          >
             Timeline e centro operativo
           </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

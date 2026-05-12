@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -8,21 +8,21 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 
 export type MarineRow = {
-  label: string
-  value: string
-  detail: string
-}
+  label: string;
+  value: string;
+  detail: string;
+};
 
 export type MobileMarineSheetProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  rows: readonly MarineRow[]
-  onOpenMeteo: () => void
-  onRefreshWeather?: () => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  rows: readonly MarineRow[];
+  onOpenMeteo: () => void;
+  onRefreshWeather?: () => void;
+};
 
 export function MobileMarineSheet({
   open,
@@ -33,10 +33,16 @@ export function MobileMarineSheet({
 }: MobileMarineSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[88vh] gap-0 p-0" showCloseButton>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88vh] gap-0 p-0"
+        showCloseButton
+      >
         <SheetHeader className="border-b border-slate-200 p-4 text-left">
           <SheetTitle>Condizioni operative</SheetTitle>
-          <SheetDescription>Mare, vento e stato porto (anteprima).</SheetDescription>
+          <SheetDescription>
+            Mare, vento e stato porto (anteprima).
+          </SheetDescription>
         </SheetHeader>
         <div className="max-h-[55vh] space-y-2 overflow-y-auto p-4">
           {rows.length === 0 ? (
@@ -52,7 +58,9 @@ export function MobileMarineSheet({
                 <p className="text-[11px] font-medium tracking-wide text-sky-900 uppercase">
                   {row.label}
                 </p>
-                <p className="text-sm font-semibold text-slate-900">{row.value}</p>
+                <p className="text-sm font-semibold text-slate-900">
+                  {row.value}
+                </p>
                 <p className="text-xs text-slate-600">{row.detail}</p>
               </div>
             ))
@@ -70,5 +78,5 @@ export function MobileMarineSheet({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -9,22 +9,22 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 
 export type FleetRow = {
-  nome: string
-  readiness: string
-  fuel: string
-  next: string
-  crew: string
-}
+  nome: string;
+  readiness: string;
+  fuel: string;
+  next: string;
+  crew: string;
+};
 
 export type MobileFleetSheetProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  items: readonly FleetRow[]
-  onOpenBarche: () => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  items: readonly FleetRow[];
+  onOpenBarche: () => void;
+};
 
 export function MobileFleetSheet({
   open,
@@ -34,7 +34,11 @@ export function MobileFleetSheet({
 }: MobileFleetSheetProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[88vh] gap-0 p-0" showCloseButton>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88vh] gap-0 p-0"
+        showCloseButton
+      >
         <SheetHeader className="border-b border-slate-200 p-4 text-left">
           <SheetTitle>Flotta</SheetTitle>
           <SheetDescription>Stato unità e prossime uscite.</SheetDescription>
@@ -51,7 +55,9 @@ export function MobileFleetSheet({
                 className="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-sm font-semibold text-slate-900">{boat.nome}</p>
+                  <p className="text-sm font-semibold text-slate-900">
+                    {boat.nome}
+                  </p>
                   <Badge variant="outline" className="shrink-0 text-[10px]">
                     {boat.readiness}
                   </Badge>
@@ -59,17 +65,24 @@ export function MobileFleetSheet({
                 <p className="mt-1 text-xs text-slate-600">
                   Carburante {boat.fuel} · Prossima {boat.next}
                 </p>
-                <p className="text-xs text-slate-500">Equipaggio: {boat.crew}</p>
+                <p className="text-xs text-slate-500">
+                  Equipaggio: {boat.crew}
+                </p>
               </div>
             ))
           )}
         </div>
         <SheetFooter className="border-t border-slate-200 p-4">
-          <Button type="button" className="w-full" variant="secondary" onClick={onOpenBarche}>
+          <Button
+            type="button"
+            className="w-full"
+            variant="secondary"
+            onClick={onOpenBarche}
+          >
             Apri gestione barche
           </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

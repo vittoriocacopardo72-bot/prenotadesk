@@ -3,12 +3,12 @@ export type MobileActionSheetId =
   | "create-booking"
   | "register-payment"
   | "assign-crew"
-  | "toggle-boat-block"
+  | "toggle-boat-block";
 
-export type MobileFeedbackTone = "success" | "error" | "cancelled"
+export type MobileFeedbackTone = "success" | "error" | "cancelled";
 
 export type MobileFeedbackState = {
-  tone: MobileFeedbackTone
-  title: string
-  detail?: string
-}
+  tone: MobileFeedbackTone;
+  title: string;
+  detail?: string;
+};

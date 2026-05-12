@@ -1,4 +1,4 @@
-import type { BoatRow } from "@/types/boat"
+import type { BoatRow } from "@/types/boat";
 
 export const fleetRows: BoatRow[] = [
   {
@@ -51,4 +51,4 @@ export const fleetRows: BoatRow[] = [
     note: "Disponibile per charter pomeriggio",
     blocked: false,
   },
-]
+];

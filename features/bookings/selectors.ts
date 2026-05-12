@@ -1,6 +1,6 @@
-import { memoizeByState } from "@/lib/store/memoize-by-app-state"
-import type { AppState, Booking } from "@/types/domain"
-import type { BookingRow } from "@/types/booking"
+import { memoizeByState } from "@/lib/store/memoize-by-app-state";
+import type { AppState, Booking } from "@/types/domain";
+import type { BookingRow } from "@/types/booking";
 
 export const selectBookingRows = memoizeByState((s: AppState): BookingRow[] => {
   return s.bookings.map((b: Booking) => ({
@@ -13,5 +13,5 @@ export const selectBookingRows = memoizeByState((s: AppState): BookingRow[] => {
     ospiti: b.ospiti,
     stato: b.stato,
     importo: b.importo,
-  }))
-})
+  }));
+});

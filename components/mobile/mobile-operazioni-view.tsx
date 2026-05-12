@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { createElement } from "react"
+import { createElement } from "react";
 import {
   BarChart3,
   CalendarDays,
@@ -11,19 +11,26 @@ import {
   Sun,
   Users,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import type { AltroSectionKey } from "@/lib/mobile/altro-sections"
-import type { MobileMainTab } from "@/types/mobile"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import type { AltroSectionKey } from "@/lib/mobile/altro-sections";
+import type { MobileMainTab } from "@/types/mobile";
 
 type OperazioniCard = {
-  title: string
-  description: string
-  icon: LucideIcon
-  target: { kind: "tab"; tab: MobileMainTab } | { kind: "altro"; section: AltroSectionKey }
-}
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  target:
+    | { kind: "tab"; tab: MobileMainTab }
+    | { kind: "altro"; section: AltroSectionKey };
+};
 
 const OPERAZIONI_CARDS: readonly OperazioniCard[] = [
   {
@@ -74,26 +81,31 @@ const OPERAZIONI_CARDS: readonly OperazioniCard[] = [
     icon: Settings,
     target: { kind: "altro", section: "Impostazioni" },
   },
-] as const
+] as const;
 
 export type MobileOperazioniViewProps = {
-  onNavigateTab: (tab: MobileMainTab) => void
-  onOpenAltroSection: (key: AltroSectionKey) => void
-}
+  onNavigateTab: (tab: MobileMainTab) => void;
+  onOpenAltroSection: (key: AltroSectionKey) => void;
+};
 
-export function MobileOperazioniView({ onNavigateTab, onOpenAltroSection }: MobileOperazioniViewProps) {
+export function MobileOperazioniView({
+  onNavigateTab,
+  onOpenAltroSection,
+}: MobileOperazioniViewProps) {
   return (
     <div className="flex flex-col gap-3">
       <Card className="border-slate-200 bg-white shadow-xs" size="sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-base">Operazioni</CardTitle>
-          <CardDescription>Accedi ai moduli senza la vista dashboard desktop.</CardDescription>
+          <CardDescription>
+            Accedi ai moduli senza la vista dashboard desktop.
+          </CardDescription>
         </CardHeader>
       </Card>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {OPERAZIONI_CARDS.map((card) => {
-          const Icon = card.icon
+          const Icon = card.icon;
           return (
             <Button
               key={card.title}
@@ -102,21 +114,28 @@ export function MobileOperazioniView({ onNavigateTab, onOpenAltroSection }: Mobi
               className="h-auto min-h-[4.25rem] flex-col items-stretch justify-start gap-1 rounded-xl border-slate-200 px-3 py-3 text-left font-normal shadow-xs"
               onClick={() => {
                 if (card.target.kind === "tab") {
-                  onNavigateTab(card.target.tab)
-                  return
+                  onNavigateTab(card.target.tab);
+                  return;
                 }
-                onOpenAltroSection(card.target.section)
+                onOpenAltroSection(card.target.section);
               }}
             >
               <span className="flex items-center gap-2">
-                {createElement(Icon, { className: "size-4 shrink-0 text-sky-700", "aria-hidden": true })}
-                <span className="text-sm font-semibold text-slate-900">{card.title}</span>
+                {createElement(Icon, {
+                  className: "size-4 shrink-0 text-sky-700",
+                  "aria-hidden": true,
+                })}
+                <span className="text-sm font-semibold text-slate-900">
+                  {card.title}
+                </span>
               </span>
-              <span className="pl-6 text-xs leading-snug text-slate-600">{card.description}</span>
+              <span className="pl-6 text-xs leading-snug text-slate-600">
+                {card.description}
+              </span>
             </Button>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }

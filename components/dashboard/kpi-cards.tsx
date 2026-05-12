@@ -1,32 +1,38 @@
-import { Ship, Users, Wallet, Waves } from "lucide-react"
+import { Ship, Users, Wallet, Waves } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 const icons = {
   wallet: Wallet,
   waves: Waves,
   users: Users,
   ship: Ship,
-} as const
+} as const;
 
 type KPI = {
-  title: string
-  value: string
-  trend: string
-  occupancy: string
-  note: string
-  icon: keyof typeof icons
+  title: string;
+  value: string;
+  trend: string;
+  occupancy: string;
+  note: string;
+  icon: keyof typeof icons;
   /** When true, trend/occupancy/note are illustrative only (value may still be live). */
-  demoSubcopy?: boolean
+  demoSubcopy?: boolean;
   /** Tooltip for the main numeric value. */
-  valueTitle?: string
-}
+  valueTitle?: string;
+};
 
 export function DashboardKpiCards({ kpis }: { kpis: KPI[] }) {
   return (
     <>
       {kpis.map((metric) => {
-        const Icon = icons[metric.icon]
+        const Icon = icons[metric.icon];
         return (
           <Card key={metric.title} className="bg-white" size="sm">
             <CardHeader className="gap-2">
@@ -63,8 +69,8 @@ export function DashboardKpiCards({ kpis }: { kpis: KPI[] }) {
               </p>
             </CardContent>
           </Card>
-        )
+        );
       })}
     </>
-  )
+  );
 }

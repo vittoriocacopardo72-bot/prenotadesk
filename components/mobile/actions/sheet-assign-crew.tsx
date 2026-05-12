@@ -1,47 +1,61 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 
-import { assignCrew } from "@/lib/actions"
-import { useAppStoreSelector } from "@/lib/store/app-store"
-import type { ActionResult, AssignCrewInput } from "@/types/actions"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Textarea } from "@/components/ui/textarea"
+import { assignCrew } from "@/lib/actions";
+import { useAppStoreSelector } from "@/lib/store/app-store";
+import type { ActionResult, AssignCrewInput } from "@/types/actions";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 
 export type AssignCrewSheetProps = {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onResult: (result: ActionResult<{ assignmentId: string }>) => void
-}
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onResult: (result: ActionResult<{ assignmentId: string }>) => void;
+};
 
 const INITIAL: AssignCrewInput = {
   departureRef: "",
   crewName: "",
   notes: "",
-}
+};
 
-export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewSheetProps) {
-  const [form, setForm] = useState<AssignCrewInput>(INITIAL)
-  const [submitting, setSubmitting] = useState(false)
-  const bookings = useAppStoreSelector((s) => s.bookings.slice(0, 12))
+export function AssignCrewSheet({
+  open,
+  onOpenChange,
+  onResult,
+}: AssignCrewSheetProps) {
+  const [form, setForm] = useState<AssignCrewInput>(INITIAL);
+  const [submitting, setSubmitting] = useState(false);
+  const bookings = useAppStoreSelector((s) => s.bookings.slice(0, 12));
 
   async function submit() {
-    setSubmitting(true)
-    const res = await assignCrew(form)
-    setSubmitting(false)
-    onResult(res)
+    setSubmitting(true);
+    const res = await assignCrew(form);
+    setSubmitting(false);
+    onResult(res);
     if (res.status === "success") {
-      setForm(INITIAL)
-      onOpenChange(false)
+      setForm(INITIAL);
+      onOpenChange(false);
     }
   }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="max-h-[88vh] gap-0 p-0" showCloseButton>
+      <SheetContent
+        side="bottom"
+        className="max-h-[88vh] gap-0 p-0"
+        showCloseButton
+      >
         <SheetHeader className="border-b border-slate-200 p-4">
           <SheetTitle>Assegna equipaggio</SheetTitle>
         </SheetHeader>
@@ -52,7 +66,9 @@ export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewShee
               id="mobile-crew-dep"
               list="departure-options"
               value={form.departureRef}
-              onChange={(e) => setForm((prev) => ({ ...prev, departureRef: e.target.value }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, departureRef: e.target.value }))
+              }
               placeholder="Seleziona partenza"
             />
             <datalist id="departure-options">
@@ -66,7 +82,9 @@ export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewShee
             <Input
               id="mobile-crew-name"
               value={form.crewName}
-              onChange={(e) => setForm((prev) => ({ ...prev, crewName: e.target.value }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, crewName: e.target.value }))
+              }
               placeholder="Es. Marco + Luca"
             />
           </div>
@@ -75,7 +93,9 @@ export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewShee
             <Textarea
               id="mobile-crew-notes"
               value={form.notes}
-              onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
+              onChange={(e) =>
+                setForm((prev) => ({ ...prev, notes: e.target.value }))
+              }
               placeholder="Indicazioni operative..."
             />
           </div>
@@ -86,18 +106,25 @@ export function AssignCrewSheet({ open, onOpenChange, onResult }: AssignCrewShee
               type="button"
               variant="outline"
               onClick={() => {
-                onOpenChange(false)
-                onResult({ status: "cancelled", message: "Assegnazione annullata." })
+                onOpenChange(false);
+                onResult({
+                  status: "cancelled",
+                  message: "Assegnazione annullata.",
+                });
               }}
             >
               Annulla
             </Button>
-            <Button type="button" onClick={() => void submit()} disabled={submitting}>
+            <Button
+              type="button"
+              onClick={() => void submit()}
+              disabled={submitting}
+            >
               {submitting ? "Assegnazione..." : "Assegna"}
             </Button>
           </div>
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
+  );
 }

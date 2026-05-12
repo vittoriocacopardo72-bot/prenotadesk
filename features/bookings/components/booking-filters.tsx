@@ -1,9 +1,14 @@
-import { Search } from "lucide-react"
+import { Search } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import type { BookingFilter } from "@/types/booking"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import type { BookingFilter } from "@/types/booking";
 
 export function BookingFilters({
   search,
@@ -13,12 +18,12 @@ export function BookingFilters({
   filters,
   onCreateBookingClick,
 }: {
-  search: string
-  onSearchChange: (value: string) => void
-  filter: BookingFilter
-  onFilterChange: (value: BookingFilter) => void
-  filters: readonly BookingFilter[]
-  onCreateBookingClick?: () => void
+  search: string;
+  onSearchChange: (value: string) => void;
+  filter: BookingFilter;
+  onFilterChange: (value: BookingFilter) => void;
+  filters: readonly BookingFilter[];
+  onCreateBookingClick?: () => void;
 }) {
   return (
     <Card className="bg-white sm:col-span-2 xl:col-span-4">
@@ -26,7 +31,9 @@ export function BookingFilters({
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <CardTitle>Prenotazioni</CardTitle>
-            <CardDescription>Gestione richieste, conferme e partenze giornaliere</CardDescription>
+            <CardDescription>
+              Gestione richieste, conferme e partenze giornaliere
+            </CardDescription>
           </div>
           <Button type="button" onClick={onCreateBookingClick}>
             Nuova prenotazione
@@ -59,5 +66,5 @@ export function BookingFilters({
         </div>
       </CardHeader>
     </Card>
-  )
+  );
 }

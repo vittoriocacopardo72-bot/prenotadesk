@@ -1,4 +1,4 @@
-import type { BookingFilter, BookingRow } from "@/types/booking"
+import type { BookingFilter, BookingRow } from "@/types/booking";
 
 export const bookingStatusFilters: BookingFilter[] = [
   "Tutte",
@@ -6,7 +6,7 @@ export const bookingStatusFilters: BookingFilter[] = [
   "In arrivo",
   "In attesa",
   "Cancellate",
-]
+];
 
 export const prenotazioniRows: BookingRow[] = [
   {
@@ -59,4 +59,4 @@ export const prenotazioniRows: BookingRow[] = [
     stato: "Cancellate",
     importo: "€ 0",
   },
-]
+];

@@ -1,13 +1,18 @@
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 export function BookingSummaryCards({
   prenotazioniOggi,
   ospitiOggi,
   daConfermare,
 }: {
-  prenotazioniOggi: number
-  ospitiOggi: number
-  daConfermare: number
+  prenotazioniOggi: number;
+  ospitiOggi: number;
+  daConfermare: number;
 }) {
   return (
     <div className="grid gap-3 content-start">
@@ -17,7 +22,11 @@ export function BookingSummaryCards({
           <CardTitle className="text-xl">{prenotazioniOggi}</CardTitle>
         </CardHeader>
       </Card>
-      <Card className="bg-white" size="sm" title="Stima non collegata allo store locale">
+      <Card
+        className="bg-white"
+        size="sm"
+        title="Stima non collegata allo store locale"
+      >
         <CardHeader>
           <CardDescription>Incasso previsto</CardDescription>
           <CardTitle className="text-xl">—</CardTitle>
@@ -36,5 +45,5 @@ export function BookingSummaryCards({
         </CardHeader>
       </Card>
     </div>
-  )
+  );
 }

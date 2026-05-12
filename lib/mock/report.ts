@@ -20,4 +20,4 @@ export const reportSectionMeta = {
         "Dimostrativo — incidenza di esempio; in attesa di costi/ricavi servizi collegati ai pagamenti operativi.",
     },
   ],
-} as const
+} as const;

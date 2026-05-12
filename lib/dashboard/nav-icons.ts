@@ -9,9 +9,9 @@ import {
   Sun,
   Users,
   type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import type { NavIconId } from "@/types/dashboard"
+import type { NavIconId } from "@/types/dashboard";
 
 const navIconMap = {
   home: Home,
@@ -23,8 +23,8 @@ const navIconMap = {
   "credit-card": CreditCard,
   "bar-chart": BarChart3,
   settings: Settings,
-} as const satisfies Record<NavIconId, LucideIcon>
+} as const satisfies Record<NavIconId, LucideIcon>;
 
 export function getNavIcon(id: NavIconId): LucideIcon {
-  return navIconMap[id]
+  return navIconMap[id];
 }

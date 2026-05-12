@@ -1,1 +1,1 @@
-export type MobileMainTab = "home" | "operazioni" | "prenotazioni" | "altro"
+export type MobileMainTab = "home" | "operazioni" | "prenotazioni" | "altro";

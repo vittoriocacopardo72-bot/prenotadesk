@@ -1,7 +1,7 @@
-import { Gauge } from "lucide-react"
+import { Gauge } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function DashboardQuickActions({
   actions,
@@ -9,13 +9,13 @@ export function DashboardQuickActions({
   disabled = false,
   disabledHint,
 }: {
-  actions: readonly string[]
-  onAction?: (label: string) => void
+  actions: readonly string[];
+  onAction?: (label: string) => void;
   /** When true, actions are non-interactive (e.g. mobile shell without desktop navigation). */
-  disabled?: boolean
-  disabledHint?: string
+  disabled?: boolean;
+  disabledHint?: string;
 }) {
-  const title = disabled ? disabledHint : undefined
+  const title = disabled ? disabledHint : undefined;
   return (
     <Card className="bg-white" title={title}>
       <CardHeader>
@@ -39,5 +39,5 @@ export function DashboardQuickActions({
         ))}
       </CardContent>
     </Card>
-  )
+  );
 }

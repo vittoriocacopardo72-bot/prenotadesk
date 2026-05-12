@@ -1,16 +1,20 @@
 # AGENTS.md — Operational Contract
 
 ## Product Owner
+
 Vittorio is the decision maker. No agent may perform large structural changes without approval.
 
 ## Main Goal
+
 Build a real operational booking/management app, not a demo.
 
 ## Agent Roles
 
 ### Cursor
+
 Role: product implementation.
 Allowed:
+
 - build features
 - improve UI/UX
 - refactor approved modules
@@ -18,26 +22,32 @@ Allowed:
 - use Figma/shadcn guidance
 
 Forbidden:
+
 - global rewrites without approval
 - breaking desktop/mobile shells
 - changing unrelated files
 
 ### Codex
+
 Role: debugging and technical repair.
 Allowed:
+
 - runtime fixes
 - build/lint/type errors
 - store/hydration/client-server issues
 - import/cycle fixes
 
 Forbidden:
+
 - redesign UI
 - add features during bugfix
 - refactor product structure unless approved
 
 ### Figma
+
 Role: UX/UI reference.
 Used for:
+
 - layout hierarchy
 - spacing
 - mobile/desktop flow
@@ -46,8 +56,10 @@ Used for:
 Figma does not override product logic.
 
 ### shadcn/ui
+
 Role: UI primitive system.
 Used for:
+
 - Button
 - Card
 - Sheet
@@ -76,15 +88,16 @@ Do not replace shadcn primitives with random custom UI unless necessary.
 Each feature should eventually follow:
 
 features/
-  bookings/
-    actions/
-    components/
-    hooks/
-    selectors.ts
-    types.ts
-    index.ts
+bookings/
+actions/
+components/
+hooks/
+selectors.ts
+types.ts
+index.ts
 
 Repeat for:
+
 - clients
 - boats
 - payments
@@ -96,18 +109,21 @@ Repeat for:
 ## Workflow Rules
 
 Before editing:
+
 1. inspect relevant files
 2. explain exact plan
 3. list files to change
 4. wait for approval if structural
 
 During editing:
+
 1. keep changes small
 2. preserve UI unless task is UI-specific
 3. preserve mobile/desktop behavior
 4. avoid unrelated cleanup
 
 After editing:
+
 1. run npm run build
 2. run npm run lint
 3. summarize exact changes
@@ -116,6 +132,7 @@ After editing:
 ## Bugfix Mode
 
 When app is broken:
+
 - stop feature work
 - fix only the crash/error
 - do not redesign
@@ -128,6 +145,7 @@ When app is broken:
 Every stable chunk should be committed separately.
 
 Recommended commit style:
+
 - Fix runtime crash
 - Add booking module structure
 - Wire create booking action
